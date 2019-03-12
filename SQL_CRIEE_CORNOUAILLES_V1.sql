@@ -35,17 +35,19 @@ SET time_zone = "+00:00";
 CREATE TABLE `acheteur` (
   `mail` varchar(50) NOT NULL,
   `pwd` varchar(50) DEFAULT NULL,
-  `raisonSocialeEntreprise` varchar(50) DEFAULT NULL,
+  `nom` varchar(50) DEFAULT NULL,
+  `prenom` varchar(50) DEFAULT NULL,
   `adresse` varchar(50) DEFAULT NULL,
   `ville` varchar(50) DEFAULT NULL,
-  `codePostal` varchar(50) DEFAULT NULL,
-  `numHabilitation` varchar(50) DEFAULT NULL
+  `codePostal` varchar(50) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 CREATE TABLE `vendeur`(
 `mail` varchar(50) NOT NULL,
 `pwd` varchar(50) DEFAULT NULL,
+`nom` varchar(50) DEFAULT NULL,
+`prenom` varchar(50) DEFAULT NULL,
 `adresse` varchar(50) DEFAULT NULL,
 `ville` varchar(50) DEFAULT NULL,
 `codePostal` varchar(50) DEFAULT NULL
