@@ -53,14 +53,6 @@ CREATE TABLE `vendeur`(
 `ville` varchar(50) DEFAULT NULL,
 `codePostal` varchar(50) DEFAULT NULL
 )ENGINE=InnoDB DEFAULT CHARSET=latin1;
---
--- Structure de la table `bac`
---
-
-CREATE TABLE `bac` (
-  `idBac` varchar(50) NOT NULL,
-  `tare` float DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -72,7 +64,7 @@ CREATE TABLE `espece` (
   `idEspece` varchar(50) NOT NULL,
   `nomEsp` varchar(50) DEFAULT NULL,
   `nomSciEsp` varchar(50) DEFAULT NULL,
-  `nomComEsp` varchar(50) DEFAULT NULL
+  `image` varchar(50) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -83,16 +75,12 @@ CREATE TABLE `espece` (
 
 CREATE TABLE `lot` (
   `idLot` varchar(50) NOT NULL,
-  `libelleLot` varchar(50) NOT NULL,
-  `LienimageLot` varchar(50) NOT NULL
+  `libelleLot` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Déchargement des données de la table `lot`
 --
-
-INSERT INTO `lot` (`idLot`, `libelleLot`, `LienimageLot`) VALUES
-('005', '', '');
 
 -- --------------------------------------------------------
 
@@ -100,7 +88,7 @@ INSERT INTO `lot` (`idLot`, `libelleLot`, `LienimageLot`) VALUES
 -- Structure de la table `panier_intermedaire`
 --
 
-CREATE TABLE `panier_intermedaire` (
+CREATE TABLE `panier_temporaire` (
   `mailAcheteur` varchar(50) NOT NULL,
   `idLot` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -118,13 +106,6 @@ ALTER TABLE `acheteur`
 ALTER TABLE `vendeur`
   ADD PRIMARY KEY (`mail`);
 
---
--- Index pour la table `bac`
---
-ALTER TABLE `bac`
-  ADD PRIMARY KEY (`idBac`);
-
---
 -- Index pour la table `espece`
 --
 ALTER TABLE `espece`
@@ -139,7 +120,7 @@ ALTER TABLE `lot`
 --
 -- Index pour la table `panier_intermedaire`
 --
-ALTER TABLE `panier_intermedaire`
+ALTER TABLE `panier_temporaire`
   ADD PRIMARY KEY (`mailAcheteur`,`idLot`),
   ADD KEY `FK_PANINER_INTER_2` (`idLot`);
 
@@ -150,7 +131,7 @@ ALTER TABLE `panier_intermedaire`
 --
 -- Contraintes pour la table `panier_intermedaire`
 --
-ALTER TABLE `panier_intermedaire`
+ALTER TABLE `panier_temporaire`
   ADD CONSTRAINT `FK_PANINER_INTER_1` FOREIGN KEY (`mailAcheteur`) REFERENCES `acheteur` (`mail`),
   ADD CONSTRAINT `FK_PANINER_INTER_2` FOREIGN KEY (`idLot`) REFERENCES `lot` (`idLot`);
 COMMIT;
