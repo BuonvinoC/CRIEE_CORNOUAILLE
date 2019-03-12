@@ -7,7 +7,7 @@
 -- Version du serveur :  10.1.36-MariaDB
 -- Version de PHP :  7.2.10
 
-DROP DATABASE IF EXISTS crieev0;
+DROP DATABASE IF EXISTS CRIEE_CORNOUAILLES_V1;
 CREATE DATABASE IF NOT EXISTS CRIEE_CORNOUAILLES_V1;
 
 
@@ -35,19 +35,20 @@ SET time_zone = "+00:00";
 CREATE TABLE `acheteur` (
   `mail` varchar(50) NOT NULL,
   `pwd` varchar(50) DEFAULT NULL,
-  `nom` varchar(50) DEFAULT NULL,
   `prenom` varchar(50) DEFAULT NULL,
+  `nom` varchar(50) DEFAULT NULL,
   `adresse` varchar(50) DEFAULT NULL,
   `ville` varchar(50) DEFAULT NULL,
   `codePostal` varchar(50) DEFAULT NULL
+ 
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 CREATE TABLE `vendeur`(
 `mail` varchar(50) NOT NULL,
 `pwd` varchar(50) DEFAULT NULL,
-`nom` varchar(50) DEFAULT NULL,
 `prenom` varchar(50) DEFAULT NULL,
+`nom` varchar(50) DEFAULT NULL,
 `adresse` varchar(50) DEFAULT NULL,
 `ville` varchar(50) DEFAULT NULL,
 `codePostal` varchar(50) DEFAULT NULL
