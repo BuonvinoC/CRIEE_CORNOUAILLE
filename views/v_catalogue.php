@@ -9,6 +9,7 @@
 		<th>Libelle</th>
 		<th>Date Peche</th>
 		<th>Prix actuel</th>
+		<th>Acheteur Max</th>
 		<th>Enchérir</th>
 	</tr>
 				<?php
@@ -19,6 +20,7 @@
 		<td><?php echo $row['idLot'];?></td>
 		<td><?php echo $row['libelleLot'];?></td>
 		<td><?php echo $row['datePeche'];?></td>
+		<td><?php echo $row['acheteurMax'];?></td>
 		<td><p><?php echo $row['prixActuel'];?></p></td>
 		
 		<td>
