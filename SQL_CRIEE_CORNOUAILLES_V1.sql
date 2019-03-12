@@ -75,7 +75,8 @@ CREATE TABLE `espece` (
 
 CREATE TABLE `lot` (
   `idLot` varchar(50) NOT NULL,
-  `libelleLot` varchar(50) NOT NULL
+  `libelleLot` varchar(50) NOT NULL,
+  `DatePeche` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
