@@ -71,10 +71,10 @@ class Utilisateur extends CI_Controller {
 		$nom=$_POST['nom'];
 		$prenom=$_POST['prenom'];*/
 		/*$test=$mail+"bonjour";*/
-		$data = array ('nomClient' => $this->input->post('nomClient'),
-		'prenomClient' => $this->input->post('prenomClient'),
-		'mailClient' => $this->input->post('mailClient'),
-		'mdpClient' => $this->input->post('mdpClient'),
+		$data = array ('nom' => $this->input->post('nomClient'),
+		'prenom' => $this->input->post('prenomClient'),
+		'mail' => $this->input->post('mailClient'),
+		'pwd' => $this->input->post('mdpClient'),
 		);
 	  
 	  /*$this->load->model('main_model');
@@ -106,8 +106,8 @@ class Utilisateur extends CI_Controller {
 		
 		
 	public function connexion_utilisateur () {
-		$dataConnect = array ('mailClient' => $this->input->post('mailClient'),
-		'mdpClient' => $this->input->post('mdpClient'),
+		$dataConnect = array ('mail' => $this->input->post('mailClient'),
+		'pwd' => $this->input->post('mdpClient'),
 		);
 		
 		$this->load->model('main_model');
