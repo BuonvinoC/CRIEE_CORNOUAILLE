@@ -84,7 +84,7 @@ CREATE TABLE `lot` (
 -- Déchargement des données de la table `lot`
 --
 
-CREATE TABLE 'Enchere' (
+CREATE TABLE `enchere` (
   'idEnchere' int NOT NULL,
   'EnchereMax' int NOT NULL,
   'AcheteurMax' varchar(30) NOT NULL
