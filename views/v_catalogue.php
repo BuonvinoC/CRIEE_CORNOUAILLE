@@ -34,7 +34,7 @@
 				foreach ($donnees as $row) {?>
 	<tr>
 
-		<td class="tdImg"> <img class="imgEsp" src="<?php echo base_url('/images/Poisson/'.$row['image']);?>"/></td>
+		<td class="tdImg" style="background: no-repeat center url(<?php echo base_url('/images/Poisson/'.$row['image']);?>); background-size:contain " > </td> <!--<img class="imgEsp" src="<?php //echo base_url('/images/Poisson/'.$row['image']);?>"/> -->
 		<td><?php echo $row['idEspece'];?></td>
 		<td><?php echo $row['nomEsp'];?></td>
 		<td><?php echo $row['nomSciEsp'];?></td>
