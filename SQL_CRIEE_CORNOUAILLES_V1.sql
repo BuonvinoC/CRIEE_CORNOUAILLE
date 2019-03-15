@@ -77,18 +77,14 @@ CREATE TABLE `espece` (
 CREATE TABLE `lot` (
   `idLot` varchar(50) NOT NULL,
   `libelleLot` varchar(50) NOT NULL,
-  `DatePeche` date NOT NULL
+  `DatePeche` date NOT NULL,
+  'prixActuel' int NOT NULL,
+  'AcheteurMax' varchar(30) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Déchargement des données de la table `lot`
 --
-
-CREATE TABLE `enchere` (
-  'idEnchere' int NOT NULL,
-  'EnchereMax' int NOT NULL,
-  'AcheteurMax' varchar(30) NOT NULL
-  ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 -- --------------------------------------------------------
 
 --
