@@ -11,21 +11,6 @@ class Main_model extends CI_Model{
 		parent::__construct();
 	}
 
-
-	public function afficheProduits() {
-		$this->load->database();
-
-		$sql = $this->db->conn_id->prepare("SELECT * FROM categorie");
-
-		$sql->execute();
-
-		$donnees = $sql->fetchAll();
-
-		$this->db=null;
-
-		return $donnees;
-	}
-
 	public function updateEnchere($montant) {
 
 		$plus = reset($montant);
@@ -57,7 +42,7 @@ class Main_model extends CI_Model{
 		$sqql = $this->db->conn_id->prepare("SELECT * FROM ESPECE");
 		$sqql->execute();
 
-		$donnees = $sql->fetchAll();
+		$donnees = $sqql->fetchAll();
 
 		$this->db=null;
 
