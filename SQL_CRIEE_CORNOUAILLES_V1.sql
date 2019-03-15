@@ -84,6 +84,11 @@ CREATE TABLE `lot` (
 -- Déchargement des données de la table `lot`
 --
 
+CREATE TABLE 'Enchere' (
+  'idEnchere' int NOT NULL,
+  'EnchereMax' int NOT NULL,
+  'AcheteurMax' varchar(30) NOT NULL
+  ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 -- --------------------------------------------------------
 
 --
