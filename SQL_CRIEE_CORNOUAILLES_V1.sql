@@ -78,8 +78,8 @@ CREATE TABLE `lot` (
   `idLot` varchar(50) NOT NULL,
   `libelleLot` varchar(50) NOT NULL,
   `DatePeche` date NOT NULL,
-  'prixActuel' int NOT NULL,
-  'AcheteurMax' varchar(30) NOT NULL
+  `prixActuel` int NOT NULL,
+  `AcheteurMax` varchar(30) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
