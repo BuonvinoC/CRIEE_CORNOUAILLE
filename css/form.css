@@ -1,0 +1,26 @@
+body {
+    text-align: center;
+}
+form {
+    margin-top : 5%;
+	display: inline-block;
+	border: 1px solid black;
+	border-radius : 5px;	
+	padding : 5%;
+}
+
+input[type=text] {
+    padding: 6px 10px;
+    margin: 8px 0;
+    box-sizing: border-box;
+    border: 2px solid #ccc;
+    -webkit-transition: 0.5s;
+    transition: 0.5s;
+    outline: none;
+	border-radius : 5px;		
+}
+
+input[type=text]:focus {
+    border: 3px solid #555;
+}
+
