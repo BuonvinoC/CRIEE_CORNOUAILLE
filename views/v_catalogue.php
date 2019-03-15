@@ -16,12 +16,12 @@
 				foreach ($donnees as $row) {?>
 	<tr>
 
-		<td> <img src="<?php echo base_url('/images/Poisson/'.$row['image']);?>"/></td>
-		<td><?php echo $row['idEspece'];?></td>
-		<td><?php echo $row['nomEsp'];?></td>
-		<td><?php echo $row['nomSciEsp'];?></td>
-                <td><p><?php echo $row['prixActuel'];?></p></td>
-		<td><?php echo $row['acheteurMax'];?></td>
+		<td> <img src=""/></td>
+		<td>1</td>
+		<td>thon</td>
+		<td>athunamatata</td>
+    <td><p>120</p></td>
+		<td>100</td>
 
 
 		<td>
@@ -66,12 +66,12 @@
 				foreach ($donnees as $row) {?>
 	<tr>
 
-		<td> <img src=""/></td>
-		<td>1</td>
-		<td>thon</td>
-		<td>athunamatata</td>
-    <td><p>120</p></td>
-		<td>100</td>
+		<td> <img src="<?php echo base_url('/images/Poisson/'.$row['image']);?>"/></td>
+		<td><?php echo $row['idEspece'];?></td>
+		<td><?php echo $row['nomEsp'];?></td>
+		<td><?php echo $row['nomSciEsp'];?></td>
+                <td><p><?php echo $row['prixActuel'];?></p></td>
+		<td><?php echo $row['acheteurMax'];?></td>
 
 
 		<td>
