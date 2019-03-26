@@ -99,19 +99,7 @@ CREATE TABLE `panier_temporaire` (
 ALTER TABLE `panier_temporaire`
   ADD PRIMARY KEY (`mailAcheteur`,`idLot`);
 
---
-CREATE TABLE `encherir` (
-  `mailAcheteur` varchar(50) NOT NULL,
-  `idLot` varchar(50) NOT NULL,
-  `date_encherir`  datetime not null,
-  `prix_propose` float
-  
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-ALTER TABLE `encherir`
-  ADD constraint `pk_encherir` PRIMARY KEY (`mailAcheteur`,`idLot`, `date_encherir`);
-    
 
---
 -- Index pour la table `acheteur`
 --
 ALTER TABLE `acheteur`
