@@ -59,11 +59,7 @@ class Utilisateur extends CI_Controller {
 			}
 	$this->load->view('v_finPage');
 		}
-
-
 	public function ajout_utilisateur() {
-
-
   /**Chargement des méthodes si déclarées dans le contrôleur**/
 		/*$mail=$_POST['mail'];
 		$nom=$_POST['nom'];
@@ -74,20 +70,15 @@ class Utilisateur extends CI_Controller {
 		'mail' => $this->input->post('mailClient'),
 		'pwd' => $this->input->post('mdpClient'),
 		);
-
 	  /*$this->load->model('main_model');
 	  $this->main_model->InsertClient($nom,$prenom,$mail);*/
-
 	  $this->load->model('main_model');
 	  $this->main_model->InsertClient($data);
 	  /*$this->load->database();
 	  $sql = $this->db->conn_id->prepare("INSERT INTO client(nomClient, prenomClient, mailClient) VALUES ($nom,$prenom,$mail);");
     $sql->execute();*/
-
 		}
-
 	public function ajout_commentaire() {
-
 	$chex = array ('idLot'=>$this->input->post('chbx'),
 	'mail'=>$this->session->userdata('login'));
 	var_dump($chex);
@@ -97,28 +88,19 @@ class Utilisateur extends CI_Controller {
 	  $this->main_model->InsertPanierIntermediaire($chex);
 		$this->load->view('v_bandeau');
 		$this->load->view('v_commentaire');
-
 		}
-
-
 	public function connexion_utilisateur () {
 		$dataConnect = array ('mail' => $this->input->post('mailClient'),
 		'pwd' => $this->input->post('mdpClient'),
 		);
-
 		$this->load->model('main_model');
 		$this->main_model->connexionClient($dataConnect);
-
 	}
-
-	public function encherir ($montant) {
-
+	public function encherir () {
+                $data = array ('prix_propose' => $this->input->post('ajoutMontant'));
 		$this->load->model('main_model');
-		$this->main_model->updateEnchere($montant);
-
-
+		$this->main_model->updateEnchere($data);
 	}
-
 	public function index()
 	{
 		$this->load->helper('url_helper');
@@ -127,6 +109,5 @@ class Utilisateur extends CI_Controller {
 		$this->load->view('v_accueil');
 		$this->load->view('v_finPage');
 	}
-
 }
 ?>
