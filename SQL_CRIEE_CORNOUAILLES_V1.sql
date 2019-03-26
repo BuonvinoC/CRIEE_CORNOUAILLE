@@ -119,10 +119,6 @@ ALTER TABLE `espece`
 ALTER TABLE `lot`
   ADD PRIMARY KEY (`idLot`);
 
-  ALTER TABLE `encherir`
-  ADD CONSTRAINT `FK_encherir_acheteur` FOREIGN KEY (`mailAcheteur`) REFERENCES `acheteur`(`mail`),
-	ADD CONSTRAINT `FK_encherir_lot` FOREIGN KEY (`idLot`) REFERENCES `lot`(`idLot`);
---
 
 ALTER TABLE `panier_temporaire`
   ADD constraint FOREIGN KEY (`mailAcheteur`) REFERENCES `acheteur`(`mail`);
