@@ -143,10 +143,6 @@ ALTER TABLE `panier_temporaire`
 
 
 
--- Index pour la table `panier_intermedaire`
---
-
-
 
 INSERT INTO ESPECE
 VALUES
