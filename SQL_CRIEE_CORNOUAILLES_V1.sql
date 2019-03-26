@@ -140,6 +140,10 @@ VALUES
 (8, 'Thon', 'Thunnus thynnus', 'thon.png'),
 (9, 'Truite', 'Salmo trutta', 'truite.png'),
 (10, 'Turbot', 'Scophthalmus maximus', 'turbot.png');
+
+INSERT INTO LOT
+VALUES
+(1, 'LibelleLot', '27/03/2019', 150, 'Buonvino');
 --
 -- Contraintes pour les tables déchargées
 
