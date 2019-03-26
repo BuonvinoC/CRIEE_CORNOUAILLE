@@ -97,7 +97,7 @@ class Utilisateur extends CI_Controller {
 		$this->main_model->connexionClient($dataConnect);
 	}
 	public function encherir () {
-                $data = array ('prix_propose' => $this->input->post('ajoutMontant'));
+        $data = array ('nvMontant' => $this->input->post('ajoutMontant'), 'nvAcheteur' => $this->session->userdata('login'));
 		$this->load->model('main_model');
 		$this->main_model->updateEnchere($data);
 	}
