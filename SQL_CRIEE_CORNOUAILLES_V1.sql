@@ -96,9 +96,20 @@ CREATE TABLE `panier_temporaire` (
   `idLot` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+ALTER TABLE `panier_temporaire`
+  ADD PRIMARY KEY (`mailAcheteur`,`idLot`);
+
 --
--- Index pour les tables déchargées
---
+CREATE TABLE `encherir` (
+  `mailAcheteur` varchar(50) NOT NULL,
+  `idLot` varchar(50) NOT NULL,
+  `date_encherir`  datetime not null,
+  `prix_propose` float
+  
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+ALTER TABLE `encherir`
+  ADD constraint `pk_encherir` PRIMARY KEY (`mailAcheteur`,`idLot`, `date_encherir`);
+    
 
 --
 -- Index pour la table `acheteur`
@@ -120,12 +131,17 @@ ALTER TABLE `espece`
 ALTER TABLE `lot`
   ADD PRIMARY KEY (`idLot`);
 
+  ALTER TABLE `encherir`
+  ADD CONSTRAINT `FK_encherir_acheteur` FOREIGN KEY (`mailAcheteur`) REFERENCES `acheteur`(`mail`),
+	ADD CONSTRAINT `FK_encherir_lot` FOREIGN KEY (`idLot`) REFERENCES `lot`(`idLot`);
 --
--- Index pour la table `panier_intermedaire`
---
+
 ALTER TABLE `panier_temporaire`
-  ADD PRIMARY KEY (`mailAcheteur`,`idLot`),
-  ADD KEY `FK_PANINER_INTER_2` (`idLot`);
+  ADD constraint FOREIGN KEY (`mailAcheteur`) REFERENCES `acheteur`(`mail`);
+ALTER TABLE `panier_temporaire`
+  ADD constraint FOREIGN KEY (`idLot`) REFERENCES `lot`(`idLot`);
+
+
 
 
 INSERT INTO ESPECE
@@ -147,9 +163,6 @@ VALUES
 --
 -- Contraintes pour la table `panier_intermedaire`
 --
-ALTER TABLE `panier_temporaire`
-  ADD CONSTRAINT `FK_PANINER_INTER_1` FOREIGN KEY (`mailAcheteur`) REFERENCES `acheteur` (`mail`),
-  ADD CONSTRAINT `FK_PANINER_INTER_2` FOREIGN KEY (`idLot`) REFERENCES `lot` (`idLot`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
