@@ -87,6 +87,23 @@ CREATE TABLE `lot` (
 --
 -- --------------------------------------------------------
 
+INSERT INTO `lot` (`idLot`, `libelleLot`, `DatePeche`, `prixActuel`, `AcheteurMax`) VALUES
+('44', '', '0000-00-00', 300, '');
+
+--
+-- Déclencheurs `lot`
+--
+DELIMITER $$
+CREATE TRIGGER `refuser_encherir_inferieur` BEFORE UPDATE ON `lot` FOR EACH ROW BEGIN
+    IF NEW.prixActuel <= OLD.prixActuel THEN
+SET NEW.prixActuel = OLD.prixActuel;
+SET NEW.AcheteurMax = OLD.AcheteurMax;
+END IF;
+END
+$$
+DELIMITER ;
+
+-- --------------------------------------------------------
 --
 -- Structure de la table `panier_intermedaire`
 --
