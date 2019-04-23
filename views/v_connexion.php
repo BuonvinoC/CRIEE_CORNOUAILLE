@@ -24,7 +24,7 @@ $mdp= array(
 "value"=>set_value('Mdp')
 );
 
-echo form_input($mdp);
+echo form_password($mdp);
 
 echo "<br/><br/>";
 	
