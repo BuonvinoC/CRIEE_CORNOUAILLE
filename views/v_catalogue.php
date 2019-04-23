@@ -1,28 +1,6 @@
 <head>
 <link href="<?php echo base_url('css/catalogue.css');?>" rel="stylesheet" type="text/css">
 </head>
-
-<table>
-	<tr>
-		<th>Photo</th>
-		<th>Reference Lot</th>
-		<th>Nom</th>
-		<th>Nom Scientifique</th>
-
-	</tr>
-				<?php
-				foreach ($donnees as $row) {?>
-	<tr>
-
-		<td> <img src=""/></td>
-		<td>1</td>
-		<td>thon</td>
-		<td>athunamatata</td>
-
-	</tr>
-				<?php  } ?>
-</table>
-
 <table>
 	<tr>
 		<th>Photo</th>
