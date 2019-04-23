@@ -88,7 +88,7 @@ CREATE TABLE `lot` (
 -- --------------------------------------------------------
 
 INSERT INTO `lot` (`idLot`, `libelleLot`, `DatePeche`, `prixActuel`, `AcheteurMax`) VALUES
-('44', '', '0000-00-00', 300, '');
+('1', 'libelleLot', '1997-05-14', 300, 'dfihf@fds.com');
 
 --
 -- Déclencheurs `lot`
