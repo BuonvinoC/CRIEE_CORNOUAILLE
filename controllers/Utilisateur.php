@@ -16,6 +16,7 @@ class Utilisateur extends CI_Controller {
 			$this->load->model('main_model');
 			$data['donnees']=$this->main_model->afficheProduits2();
 			//$this->encherir($dataConnect);
+			$data['donnees']=$this->main_model->recupereDate();
 			$this->load->view('v_bandeau');
 			$this->load->view('v_enchere',$data);
 			break;
@@ -97,6 +98,7 @@ class Utilisateur extends CI_Controller {
 		$this->main_model->connexionClient($dataConnect);
 	}
 	public function encherir () {
+		header('Location: contenu/enchere/');
         $data = array ('nvMontant' => $this->input->post('ajoutMontant'), 'nvAcheteur' => $this->session->userdata('login'));
 		$this->load->model('main_model');
 		$this->main_model->updateEnchere($data);
