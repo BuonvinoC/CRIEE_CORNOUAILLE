@@ -8,12 +8,14 @@ class Main_model extends CI_Model{
 		parent::__construct();
 	}
 	public function updateEnchere($data) {                
-                $this->load->database();
-			$this->db->insert('ENCHERIR',$data);
-			$this->load->helper('url_helper');
-			$this->load->view('v_entete');
-			$this->load->view('v_bandeau');
-			$this->load->view('v_connexion');
+        $this->load->database();
+		$req = $this->db->conn_id->prepare("UPDATE LOT SET prixActuel=:nvMontant, AcheteurMax=:nvAcheteur WHERE LOT.idLot= 1");
+		// $sql = $this->db->conn_id->prepare("SELECT datePeche FROM LOT WHERE LOT.idLot= 1");
+		$req->bindParam('nvMontant', $data['nvMontant'], PDO::PARAM_STR); // on associe chaque paramètres
+		$req->bindParam('nvAcheteur', $data['nvAcheteur'], PDO::PARAM_INT);
+		$result = $req->execute();
+		return $result;
+		$this->db=null;
 		}
 	
 	public function afficheProduits1() {
@@ -26,7 +28,7 @@ class Main_model extends CI_Model{
 	}
 	public function afficheProduits2() {
 		$this->load->database();
-		$sqql = $this->db->conn_id->prepare("SELECT * FROM ESPECE");
+		$sqql = $this->db->conn_id->prepare("SELECT * FROM LOT");
 		$sqql->execute();
 		$donnees = $sqql->fetchAll();
 		$this->db=null;
@@ -101,6 +103,15 @@ class Main_model extends CI_Model{
 			$this->load->view('v_error_connexion');
 			$this->load->view('v_connexion');
 		}
+	}
+
+	public function recupereDate($data) {
+		$this->load->database();
+		$sql = $this->db->conn_id->prepare("SELECT dateFinEnchere FROM LOT");
+		$sql->execute();
+		$donnees = $sql->fetchAll();
+		$this->db=null;
+		return $donnees;
 	}
 }
 ?>
