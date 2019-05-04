@@ -41,7 +41,7 @@ CREATE TABLE IF NOT EXISTS `acheteur` (
 --
 
 INSERT INTO `acheteur` (`mail`, `pwd`, `prenom`, `nom`, `adresse`, `ville`, `codePostal`) VALUES
-('Buonvino.clement@gmail.com', 'xi0k9mjz', 'Clément', 'Buonvino', NULL, NULL, NULL);
+('Buonvino.clement@gmail.com', '11061997', 'Clément', 'Buonvino', NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -105,7 +105,7 @@ CREATE TABLE IF NOT EXISTS `lot` (
 --
 
 INSERT INTO `lot` (`idLot`, `libelleLot`, `DatePeche`, `prixActuel`, `AcheteurMax`, `dateFinEnchere`) VALUES
-('1', 'libelleLot', '2019-05-14', 500, 'Buonvino.clement@gmail.com', '0000-00-00 00:00:00');
+('1', 'libelleLot', '2019-05-14', 500, 'Buonvino.clement@gmail.com', '2019-05-30 10:30:00');
 
 --
 -- Déclencheurs `lot`
