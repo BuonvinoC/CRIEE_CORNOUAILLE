@@ -52,8 +52,7 @@ CREATE TABLE IF NOT EXISTS `acheteur` (
 -- Contenu de la table `acheteur`
 --
 
-INSERT INTO `acheteur` (`mail`, `pwd`, `prenom`, `nom`, `adresse`, `ville`, `codePostal`) VALUES
-('Buonvino.clement@gmail.com', '11061997', 'Clément', 'Buonvino', NULL, NULL, NULL);
+
 
 -- --------------------------------------------------------
 
@@ -63,7 +62,7 @@ INSERT INTO `acheteur` (`mail`, `pwd`, `prenom`, `nom`, `adresse`, `ville`, `cod
 
 CREATE TABLE IF NOT EXISTS `encherir` (
   `mailAcheteur` varchar(50) NOT NULL,
-  `idLot` varchar(50) NOT NULL,
+  `idLot` INT NOT NULL,
   `date_encherir` datetime NOT NULL,
   `prix_propose` float DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -104,12 +103,13 @@ INSERT INTO `espece` (`idEspece`, `nomEsp`, `nomSciEsp`, `image`) VALUES
 --
 
 CREATE TABLE IF NOT EXISTS `lot` (
-  `idLot` varchar(50) NOT NULL,
+  `idLot` INT NOT NULL AUTO_INCREMENT,
   `libelleLot` varchar(50) NOT NULL,
   `DatePeche` date NOT NULL,
   `prixActuel` int(11) NOT NULL,
   `AcheteurMax` varchar(30) NOT NULL,
-  `dateFinEnchere` datetime NOT NULL
+  `dateFinEnchere` datetime NOT NULL,
+  PRIMARY KEY(idLot)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -140,10 +140,11 @@ DELIMITER ;
 --
 
 CREATE TABLE IF NOT EXISTS `lot_proposé` (
-  `idLot` int(11) NOT NULL,
+  `idLot` int(11) NOT NULL AUTO_INCREMENT,
   `libelleLot` varchar(30) NOT NULL,
   `poisson` varchar(100) NOT NULL,
-  `datePeche` date NOT NULL
+  `datePeche` date NOT NULL,
+  PRIMARY KEY(idLot)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -198,8 +199,7 @@ ALTER TABLE `espece`
 --
 -- Index pour la table `lot`
 --
-ALTER TABLE `lot`
- ADD PRIMARY KEY (`idLot`);
+
 
 --
 -- Index pour la table `panier_temporaire`
@@ -212,6 +212,8 @@ ALTER TABLE `panier_temporaire`
 --
 ALTER TABLE `vendeur`
  ADD PRIMARY KEY (`mail`);
+
+
 
 --
 -- Contraintes pour les tables exportées
@@ -227,9 +229,7 @@ ADD CONSTRAINT `FK_encherir_lot` FOREIGN KEY (`idLot`) REFERENCES `lot` (`idLot`
 --
 -- Contraintes pour la table `panier_temporaire`
 --
-ALTER TABLE `panier_temporaire`
-ADD CONSTRAINT `panier_temporaire_ibfk_1` FOREIGN KEY (`mailAcheteur`) REFERENCES `acheteur` (`mail`),
-ADD CONSTRAINT `panier_temporaire_ibfk_2` FOREIGN KEY (`idLot`) REFERENCES `lot` (`idLot`);
+
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
