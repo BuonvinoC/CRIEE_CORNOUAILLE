@@ -40,13 +40,19 @@
 		<td><?php
 		date_default_timezone_set('Europe/Paris');
 		$date=$row['dateFinEnchere'];
-		echo $date;
-		$annee = date('Y');
-		$mois = 5;
-		$jour = 30;
-		$heure = 12;
-		$minute = 50;
-		$seconde = 0;
+		$resultat_date = explode('-', $row['dateFinEnchere']);
+		$resultat_heure = explode(':', $row['dateFinEnchere']);
+
+		$annee = intval($resultat_date[0]);
+		$mois = intval($resultat_date[1]);
+		$jour = intval($resultat_date[2]);
+		$heure = 10;
+		// $heure = intval($resultat_heure[0]);
+		$minute = intval($resultat_heure[1]);
+		$seconde = intval($resultat_heure[2]);
+
+		// echo $annee .'/' . $mois . '/' . $jour .'    ';
+		// echo $heure . '/' . $minute . '/' . $seconde;
 		// Heure, minute, seconde, mois, jour
 		// $heureFinEnchere = mktime(10, 50, 0, 5, 30, $annee);
 		$heureFinEnchere = mktime($heure, $minute, $seconde, $mois, $jour, $annee);
