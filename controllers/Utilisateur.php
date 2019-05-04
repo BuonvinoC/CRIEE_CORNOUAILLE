@@ -16,7 +16,6 @@ class Utilisateur extends CI_Controller {
 			$this->load->model('main_model');
 			$data['donnees']=$this->main_model->afficheProduits2();
 			//$this->encherir($dataConnect);
-			$data['donnees']=$this->main_model->recupereDate();
 			$this->load->view('v_bandeau');
 			$this->load->view('v_enchere',$data);
 			break;
@@ -27,8 +26,10 @@ class Utilisateur extends CI_Controller {
 			$this->load->view('v_panier',$data);
 			break;
 		case 'admin':
+		$this->load->model('main_model');
+		$data['donnees']=$this->main_model->afficheLotProposé();
 			$this->load->view('v_bandeau');
-			$this->load->view('v_admin');
+			$this->load->view('v_admin',$data);
 			break;
 		case 'inscription':
 			$this->load->view('v_bandeau');
@@ -48,11 +49,9 @@ class Utilisateur extends CI_Controller {
 			$this->load->view('v_bandeau');
 			session_destroy();
 			break;
-		case 'commentaire':
-			$this->load->model('main_model');
-			$data['donnees']=$this->main_model->afficheCommentaire();
+		case 'propose':
 			$this->load->view('v_bandeau');
-			$this->load->view('v_commentaire',$data);
+			$this->load->view('v_propose');
 			break;
 		default:
 			$this->load->view('v_bandeau');
@@ -90,6 +89,7 @@ class Utilisateur extends CI_Controller {
 		$this->load->view('v_bandeau');
 		$this->load->view('v_commentaire');
 		}
+
 	public function connexion_utilisateur () {
 		$dataConnect = array ('mail' => $this->input->post('mailClient'),
 		'pwd' => $this->input->post('mdpClient'),
@@ -98,11 +98,38 @@ class Utilisateur extends CI_Controller {
 		$this->main_model->connexionClient($dataConnect);
 	}
 	public function encherir () {
-		header('Location: contenu/enchere/');
-        $data = array ('nvMontant' => $this->input->post('ajoutMontant'), 'nvAcheteur' => $this->session->userdata('login'));
+                $data = array ('prix_propose' => $this->input->post('ajoutMontant'));
 		$this->load->model('main_model');
 		$this->main_model->updateEnchere($data);
 	}
+
+	public function proposer_lot() {
+
+		$data = array ('lbl' => $this->input->post('lblLot'),
+		'poi' => $this->input->post('poissonLot'),
+		'datePeche' => $this->input->post('datePeche'),
+		);
+	  $this->load->model('main_model');
+	  $this->main_model->InsertLotProposé($data['lbl'], $data['poi'], $data['datePeche']);
+		}
+
+		public function valider_lot() {
+
+			$data = array ('prix' => $this->input->post('prixLot'),
+			'dateFin' => $this->input->post('dateFinEnchere'),
+			'libel' => $this->input->post('lbl'),
+			'dat' => $this->input->post('datePeche')
+			);
+			$this->load->model('main_model');
+			$this->main_model->InsertLot($data['prix'], $data['dateFin'], $data['libel'], $data['dat']);
+			echo $data['prix'];
+			echo $data['dateFin'];
+			echo $data['libel'];
+			echo $data['dat'];
+			}
+
+
+
 	public function index()
 	{
 		$this->load->helper('url_helper');
