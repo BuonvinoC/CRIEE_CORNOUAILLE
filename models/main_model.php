@@ -7,16 +7,15 @@ class Main_model extends CI_Model{
 	function __construct(){
 		parent::__construct();
 	}
-	public function updateEnchere($data) {                
-        $this->load->database();
-		$req = $this->db->conn_id->prepare("UPDATE LOT SET prixActuel=:nvMontant, AcheteurMax=:nvAcheteur WHERE LOT.idLot= 1");
-		$req->bindParam('nvMontant', $data['nvMontant'], PDO::PARAM_STR); // on associe chaque paramètres
-		$req->bindParam('nvAcheteur', $data['nvAcheteur'], PDO::PARAM_INT);
-		$result = $req->execute();
-		return $result;
-		$this->db=null;
+	public function updateEnchere($data) {
+                $this->load->database();
+			$this->db->insert('ENCHERIR',$data);
+			$this->load->helper('url_helper');
+			$this->load->view('v_entete');
+			$this->load->view('v_bandeau');
+			$this->load->view('v_connexion');
 		}
-	
+
 	public function afficheProduits1() {
 		$this->load->database();
 		$sql = $this->db->conn_id->prepare("SELECT * FROM espece");
@@ -103,5 +102,42 @@ class Main_model extends CI_Model{
 			$this->load->view('v_connexion');
 		}
 	}
+
+	public function afficheLotProposé() {
+		$this->load->database();
+		$sql = $this->db->conn_id->prepare("SELECT * FROM lot_proposé");
+		$sql->execute();
+		$donnees = $sql->fetchAll();
+		$this->db=null;
+		return $donnees;
+	}
+
+	public function InsertLotProposé($lbl, $poi, $dat) {// fonction d'insertion dans la base de données DONNEES
+		$this->load->database();
+		$req = $this->db->conn_id->prepare('INSERT INTO lot_proposé(libelleLot, poisson, datePeche) VALUES (:lbl, :poi, :dat)');
+		$req->bindParam('lbl', $lbl, PDO::PARAM_STR); // on associe chaque paramètres
+		$req->bindParam('poi', $poi, PDO::PARAM_INT);
+		$req->bindParam('dat', $dat, PDO::PARAM_INT);
+		$result = $req->execute();
+		return $result;
+		$this->db=null;
+	}
+
+	public function InsertLot($prx, $dat, $lbl, $datP) {// fonction d'insertion dans la base de données DONNEES
+		$this->load->database();
+		$req = $this->db->conn_id->prepare('INSERT INTO lot(idLot, libelleLot, DatePeche, prixActuel, dateFinEnchere) VALUES (2, :lbl, :datP, :prx, :dat)');
+		$req->bindParam('lbl', $lbl, PDO::PARAM_STR);
+		$req->bindParam('datP', $datP, PDO::PARAM_STR);
+		$req->bindParam('prx', $prx, PDO::PARAM_STR); // on associe chaque paramètres
+		$req->bindParam('dat', $dat, PDO::PARAM_INT);
+
+		$result = $req->execute();
+		return $result;
+		$this->db=null;
+	}
+
+
+
+
 }
 ?>
