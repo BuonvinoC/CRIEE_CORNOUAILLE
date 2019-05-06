@@ -124,6 +124,13 @@ CREATE TABLE IF NOT EXISTS `lot_proposé` (
   PRIMARY KEY(idLot)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
+CREATE TABLE IF NOT EXISTS `lot_remporté` (
+  `idLot` NOT NULL AUTO_INCREMENT,
+  `libelleLot` varchar(30) NOT NULL,
+  `acheteur` date NOT NULL,
+  `prix` int NOT NULL,
+  PRIMARY KEY(idLot)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 -- --------------------------------------------------------
 
 INSERT INTO `lot` (`idLot`, `libelleLot`, `DatePeche`, `prixActuel`, `AcheteurMax`, `dateFinEnchere`) VALUES
