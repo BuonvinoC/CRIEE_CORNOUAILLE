@@ -112,31 +112,7 @@ CREATE TABLE IF NOT EXISTS `lot` (
   PRIMARY KEY(idLot)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
---
--- Contenu de la table `lot`
---
 
-INSERT INTO `lot` (`idLot`, `libelleLot`, `DatePeche`, `prixActuel`, `AcheteurMax`, `dateFinEnchere`) VALUES
-('1', 'libelleLot', '2019-05-14', 500, 'Buonvino.clement@gmail.com', '2019-05-30 10:30:00');
-
---
--- Déclencheurs `lot`
---
-DELIMITER //
-DROP TRIGGER IF EXISTS `refuser_encherir_inferieur`;
-CREATE TRIGGER `refuser_encherir_inferieur` BEFORE UPDATE ON `lot`
- FOR EACH ROW BEGIN
-    IF NEW.prixActuel <= OLD.prixActuel THEN
-SET NEW.prixActuel = OLD.prixActuel;
-SET NEW.AcheteurMax = OLD.AcheteurMax;
-END IF;
-END
-//
-DELIMITER ;
-
--- --------------------------------------------------------
-
---
 -- Structure de la table `lot_proposé`
 --
 
@@ -148,10 +124,17 @@ CREATE TABLE IF NOT EXISTS `lot_proposé` (
   PRIMARY KEY(idLot)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
+CREATE TABLE IF NOT EXISTS `lot_remporté` (
+  `idLot` int NOT NULL AUTO_INCREMENT,
+  `libelleLot` varchar(30) NOT NULL,
+  `acheteur` date NOT NULL,
+  `prix` int NOT NULL,
+  PRIMARY KEY(idLot)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 -- --------------------------------------------------------
 
-INSERT INTO `lot` (`idLot`, `libelleLot`, `DatePeche`, `prixActuel`, `AcheteurMax`) VALUES
-('1', 'libelleLot', '1997-05-14', 300, 'dfihf@fds.com');
+INSERT INTO `lot` (`idLot`, `libelleLot`, `DatePeche`, `prixActuel`, `AcheteurMax`, `dateFinEnchere`) VALUES
+('1', 'libelleLot', '2019-05-14', 500, 'Buonvino.clement@gmail.com', '2019-05-30 10:30:00');
 
 --
 -- Déclencheurs `lot`
@@ -176,13 +159,6 @@ CREATE TABLE IF NOT EXISTS `panier_temporaire` (
   `idLot` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-CREATE TABLE IF NOT EXISTS `enchere_remportee` (
-  `idLot` int(11) NOT NULL AUTO_INCREMENT,
-  `libelleLot` varchar(30) NOT NULL,
-  `prix` int NOT NULL,
-  `acheteur` varchar(30) NOT NULL,
-  PRIMARY KEY(idLot)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 -- --------------------------------------------------------
 
 --
