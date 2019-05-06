@@ -112,30 +112,7 @@ CREATE TABLE IF NOT EXISTS `lot` (
   PRIMARY KEY(idLot)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
---
--- Contenu de la table `lot`
---
 
-INSERT INTO `lot` ( `libelleLot`, `DatePeche`, `prixActuel`, `AcheteurMax`, `dateFinEnchere`) VALUES
-( 'libelleLot', '2019-05-14', 500, 'Buonvino.clement@gmail.com', '2019-05-30 10:30:00');
-
---
--- Déclencheurs `lot`
---
-DELIMITER //
-CREATE TRIGGER `refuser_encherir_inferieur` BEFORE UPDATE ON `lot`
- FOR EACH ROW BEGIN
-    IF NEW.prixActuel <= OLD.prixActuel THEN
-SET NEW.prixActuel = OLD.prixActuel;
-SET NEW.AcheteurMax = OLD.AcheteurMax;
-END IF;
-END
-//
-DELIMITER ;
-
--- --------------------------------------------------------
-
---
 -- Structure de la table `lot_proposé`
 --
 
