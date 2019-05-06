@@ -125,7 +125,7 @@ CREATE TABLE IF NOT EXISTS `lot_proposé` (
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 CREATE TABLE IF NOT EXISTS `lot_remporté` (
-  `idLot` NOT NULL AUTO_INCREMENT,
+  `idLot` int NOT NULL AUTO_INCREMENT,
   `libelleLot` varchar(30) NOT NULL,
   `acheteur` date NOT NULL,
   `prix` int NOT NULL,
