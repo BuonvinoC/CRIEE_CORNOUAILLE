@@ -149,6 +149,23 @@ CREATE TABLE IF NOT EXISTS `lot_proposé` (
 
 -- --------------------------------------------------------
 
+INSERT INTO `lot` (`idLot`, `libelleLot`, `DatePeche`, `prixActuel`, `AcheteurMax`) VALUES
+('1', 'libelleLot', '1997-05-14', 300, 'dfihf@fds.com');
+
+--
+-- Déclencheurs `lot`
+--
+DELIMITER $$
+CREATE TRIGGER `refuser_encherir_inferieur` BEFORE UPDATE ON `lot` FOR EACH ROW BEGIN
+    IF NEW.prixActuel <= OLD.prixActuel THEN
+SET NEW.prixActuel = OLD.prixActuel;
+SET NEW.AcheteurMax = OLD.AcheteurMax;
+END IF;
+END
+$$
+DELIMITER ;
+
+-- --------------------------------------------------------
 --
 -- Structure de la table `panier_temporaire`
 --

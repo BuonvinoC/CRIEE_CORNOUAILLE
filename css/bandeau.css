@@ -1,13 +1,18 @@
-
 ul {
 	list-style: none;
 	min-width : 100%;
 	}
 	
-	
-	.table{
-    background-color: #009900;
+        #style_bandeau{
+            background-image: url('../images/bandeau-poisson.jpg');
     overflow: hidden;
+        }
+        
+        
+	.table{
+    background-color: #a2ccf2;
+    overflow: hidden;
+    margin-bottom: 3%;
 }
 
 /* Style the links inside the navigation bar */
@@ -15,14 +20,19 @@ ul {
     float: left;
     color: #f2f2f2;
     text-align: center;
-    padding: 14px 16px;
+    padding: 1%;
     text-decoration: none;
-    font-size: 17px;
+    font-size: 20px;
+}
+
+li a{
+    margin-top:-0.3%;
+    margin-bottom:0.3%;
 }
 
 /* Change the color of links on hover */
 .table a:hover {
-    background-color: #ddd;
+    background-color: #2a68cc;
     color: black;
 }
 
