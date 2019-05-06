@@ -175,6 +175,13 @@ CREATE TABLE IF NOT EXISTS `panier_temporaire` (
   `idLot` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+CREATE TABLE IF NOT EXISTS `enchere_remportee` (
+  `idLot` int(11) NOT NULL AUTO_INCREMENT,
+  `libelleLot` varchar(30) NOT NULL,
+  `prix` int NOT NULL,
+  `acheteur` varchar(30) NOT NULL,
+  PRIMARY KEY(idLot)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 -- --------------------------------------------------------
 
 --
