@@ -126,8 +126,8 @@ CREATE TABLE IF NOT EXISTS `lot_proposé` (
 
 -- --------------------------------------------------------
 
-INSERT INTO `lot` (`idLot`, `libelleLot`, `DatePeche`, `prixActuel`, `AcheteurMax`) VALUES
-('1', 'libelleLot', '1997-05-14', 300, 'dfihf@fds.com');
+INSERT INTO `lot` (`idLot`, `libelleLot`, `DatePeche`, `prixActuel`, `AcheteurMax`, `dateFinEnchere`) VALUES
+( 'libelleLot', '2019-05-14', 500, 'Buonvino.clement@gmail.com', '2019-05-30 10:30:00');
 
 --
 -- Déclencheurs `lot`
