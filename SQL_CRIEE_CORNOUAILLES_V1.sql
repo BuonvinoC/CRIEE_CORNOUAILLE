@@ -123,6 +123,7 @@ INSERT INTO `lot` (`idLot`, `libelleLot`, `DatePeche`, `prixActuel`, `AcheteurMa
 -- Déclencheurs `lot`
 --
 DELIMITER //
+DROP TRIGGER IF EXISTS `refuser_encherir_inferieur`;
 CREATE TRIGGER `refuser_encherir_inferieur` BEFORE UPDATE ON `lot`
  FOR EACH ROW BEGIN
     IF NEW.prixActuel <= OLD.prixActuel THEN
