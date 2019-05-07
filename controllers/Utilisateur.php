@@ -27,7 +27,7 @@ class Utilisateur extends CI_Controller {
 			break;
 		case 'admin':
 		$this->load->model('main_model');
-		$data['donnees']=$this->main_model->afficheLotProposé();
+		$data['donnees']=$this->main_model->afficheLotPropose();
 			$this->load->view('v_bandeau');
 			$this->load->view('v_admin',$data);
 			break;
@@ -98,9 +98,10 @@ class Utilisateur extends CI_Controller {
 		$this->main_model->connexionClient($dataConnect);
 	}
 	public function encherir () {
-                $data = array ('prix_propose' => $this->input->post('ajoutMontant'));
+                $data = array ('prix_propose' => $this->input->post('ajoutMontant'), 'utilisateur' => $this->session->userdata('login'), 'idLot' =>$this->input->post('idL'));
 		$this->load->model('main_model');
-		$this->main_model->updateEnchere($data);
+		$this->main_model->updateEnchere($data['prix_propose'], $data['utilisateur'], $data['idLot']);
+                echo ($data['utilisateur'].' '.$data['prix_propose']);
 	}
 
 	public function proposer_lot() {
@@ -110,7 +111,7 @@ class Utilisateur extends CI_Controller {
 		'datePeche' => $this->input->post('datePeche'),
 		);
 	  $this->load->model('main_model');
-	  $this->main_model->InsertLotProposé($data['lbl'], $data['poi'], $data['datePeche']);
+	  $this->main_model->InsertLotPropose($data['lbl'], $data['poi'], $data['datePeche']);
 		}
 
 		public function valider_lot() {
