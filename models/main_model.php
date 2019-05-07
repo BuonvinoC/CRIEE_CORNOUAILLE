@@ -17,6 +17,18 @@ class Main_model extends CI_Model{
 		$this->db=null;
 		}
 	
+	public function lotRemporte($id, $libelle, $acheteur, $prix) {
+		$this->load->database();
+		$req = $this->db->conn_id->prepare("INSERT INTO lot_remporte(idLot, libelleLot, acheteur, prix VALUES (:id, :libelle, :acheteur, :prix");
+		$req->bindParam('id', $id, PDO::PARAM_INT);
+		$req->bindParam('libelle', $libelle, PDO::PARAM_STR);
+		$req->bindParam('acheteur', $acheteur, PDO::PARAM_STR);
+		$req->bindParam('prix', $prix, PDO::PARAM_INT);
+		$result = $req->execute();
+		return $result;
+		$this->db=null;
+	}	
+	
 	public function afficheProduits1() {
 		$this->load->database();
 		$sql = $this->db->conn_id->prepare("SELECT * FROM espece");
