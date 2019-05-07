@@ -41,15 +41,20 @@
 		</td>
 		<td><?php
 		date_default_timezone_set('Europe/Paris');
-		$date=$row['dateFinEnchere'];
-		$resultat_date = explode('-', $row['dateFinEnchere']);
-		$resultat_heure = explode(':', $row['dateFinEnchere']);
+		$dateF=$row['dateFinEnchere'];
+                $datetime = new DateTime($dateF);
+                
+                $date = $datetime->format('Y-m-d');
+                $time = $datetime->format('H:i:s');
+                
+		$resultat_date = explode('-', $date);
+		$resultat_heure = explode(':', $time);
 
 		$annee = intval($resultat_date[0]);
 		$mois = intval($resultat_date[1]);
 		$jour = intval($resultat_date[2]);
-		$heure = 10;
-		// $heure = intval($resultat_heure[0]);
+		//$heure = 10;
+		$heure = intval($resultat_heure[0]);
 		$minute = intval($resultat_heure[1]);
 		$seconde = intval($resultat_heure[2]);
 
@@ -72,6 +77,7 @@
 		$d_restants = floor($d_restants); // Jours restants
 		//==================
 		setlocale(LC_ALL, 'fr_FR');
+                echo $date;
 		echo
 		   '</strong> <strong>' . $d_restants .'J </strong> <strong>'. $H_restantes .'H </strong>'
 		   . ' <strong>'. $i_restantes .'MIN </strong> et <strong>'. $s_restantes .'s</strong>';
