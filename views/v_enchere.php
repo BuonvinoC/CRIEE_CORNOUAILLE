@@ -64,9 +64,7 @@
 		// $heureFinEnchere = mktime(10, 50, 0, 5, 30, $annee);
 		$heureFinEnchere = mktime($heure, $minute, $seconde, $mois, $jour, $annee);
 		$tps_restant = $heureFinEnchere - time();
-		 if ($heureFinEnchere < time())
-		 $heureDebutEnchere = mktime($heure, $minute, $seconde, $mois, $jour, ++$annee);
-		 $tps_restant = $heureFinEnchere - time();
+
 		//============ CONVERSIONS
 		$i_restantes = $tps_restant / 60;
 		$H_restantes = $i_restantes / 60;
@@ -77,6 +75,12 @@
 		$d_restants = floor($d_restants); // Jours restants
 		//==================
 		setlocale(LC_ALL, 'fr_FR');
+							    
+		if ($heureFinEnchere < time())
+		 	echo 'L enchere est terminée';
+			echo form_open('utilisateur/finEnchere');
+			// echo form_close();
+		else
 		echo
 		   '</strong> <strong>' . $d_restants .'J </strong> <strong>'. $H_restantes .'H </strong>'
 		   . ' <strong>'. $i_restantes .'MIN </strong> et <strong>'. $s_restantes .'s</strong>';
