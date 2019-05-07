@@ -6,17 +6,20 @@
 <table>
 	<tr>
 		<th>Reference Lot</th>
+                <th>Libelle Lot</th>
 		<th>Prix actuel</th>
 		<th>Acheteur Max</th>
 		<th>Enchérir</th>
         <th>Temps restant</th>
 	</tr>
 				<?php
+                                $i=0;
 				foreach ($donnees as $row) {?>
 	<tr>
 
 		<td><?php echo $row['idLot'];?></td>
-    <td><p><?php echo $row['prixActuel'];?></p></td>
+                <td><?php echo $row['libelleLot'];?></td>
+                <td><p><?php echo $row['prixActuel'];?></p></td>
 		<td><?php echo $row['AcheteurMax'];?></td>
 
 
@@ -39,7 +42,7 @@
 			<!-- <input type="text" name="ajoutPrix"><br/>
 			<input type="button" name="valider" value="Valider" onclick="window.location.reload()"><br/> -->
 		</td>
-		<td><?php
+		<td id="time <?php echo $i?>"><?php
 		date_default_timezone_set('Europe/Paris');
 		$dateF=$row['dateFinEnchere'];
                 $datetime = new DateTime($dateF);
@@ -64,7 +67,12 @@
 		// $heureFinEnchere = mktime(10, 50, 0, 5, 30, $annee);
 		$heureFinEnchere = mktime($heure, $minute, $seconde, $mois, $jour, $annee);
 		$tps_restant = $heureFinEnchere - time();
-
+		
+                                
+                
+			// echo form_close();
+		
+                
 		//============ CONVERSIONS
 		$i_restantes = $tps_restant / 60;
 		$H_restantes = $i_restantes / 60;
@@ -75,20 +83,32 @@
 		$d_restants = floor($d_restants); // Jours restants
 		//==================
 		setlocale(LC_ALL, 'fr_FR');
-							    
-		if ($heureFinEnchere < time())
-		 	echo 'L enchere est terminée';
-			echo form_open('utilisateur/finEnchere');
-			// echo form_close();
-		else
-		echo
-		   '</strong> <strong>' . $d_restants .'J </strong> <strong>'. $H_restantes .'H </strong>'
-		   . ' <strong>'. $i_restantes .'MIN </strong> et <strong>'. $s_restantes .'s</strong>';
-		?></td>
+                
+                $CI =& get_instance();
+                $CI->finEnchere($row['idLot'], $row['libelleLot'], $row['prixActuel'], $row['AcheteurMax']);
+                if ($tps_restant == 0)
+                {
+                echo "L enchere est terminée";}
+                
+                else {
+                ?>
+                    
+                    
+                    <script type="text/javascript">
+                        var txt=<?php echo $d_restants ?> + 'J ' + <?php echo $H_restantes ?> +'H '
+		   + <?php echo $i_restantes ?> +'MIN et '+ <?php echo $s_restantes ?> +'s ';
+                   
+                   function myFunction() {
+                        setInterval(function(){ document.getElementById("time <?php echo $i?>").innerHTML = txt}, 1000);
+                    }
+                    </script>
+                    
+                    <?php  } ?>
+                               </td>
+                    
 
 	</tr>
 
-				<?php  } ?>
-
+				<?php $i++; } ?>
 
 </table>
