@@ -139,5 +139,12 @@ class Utilisateur extends CI_Controller {
 		$this->load->view('v_accueil');
 		$this->load->view('v_finPage');
 	}
+	
+	public function finEnchere($idlot)
+	{
+
+		$this->load->model('main_model');
+		$this->main_model->lotRemporte($idlot);
+	}
 }
 ?>
