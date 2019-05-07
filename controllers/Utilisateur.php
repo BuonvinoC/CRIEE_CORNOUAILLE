@@ -114,20 +114,35 @@ class Utilisateur extends CI_Controller {
 	  $this->main_model->InsertLotPropose($data['lbl'], $data['poi'], $data['datePeche']);
 		}
 
-		public function valider_lot() {
+        public function valider_lot() {
 
-			$data = array ('prix' => $this->input->post('prixLot'),
-			'dateFin' => $this->input->post('dateFinEnchere'),
-			'libel' => $this->input->post('lbl'),
-			'dat' => $this->input->post('datePeche')
-			);
-			$this->load->model('main_model');
-			$this->main_model->InsertLot($data['prix'], $data['dateFin'], $data['libel'], $data['dat']);
-			echo $data['prix'];
-			echo $data['dateFin'];
-			echo $data['libel'];
-			echo $data['dat'];
-			}
+                $data = array ('prix' => $this->input->post('prixLot'),
+                'dateFin' => $this->input->post('dateFinEnchere'),
+                'libel' => $this->input->post('lbl'),
+                'dat' => $this->input->post('datePeche')
+                );
+                $this->load->model('main_model');
+                $this->main_model->InsertLot($data['prix'], $data['dateFin'], $data['libel'], $data['dat']);
+                echo $data['prix'];
+                echo $data['dateFin'];
+                echo $data['libel'];
+                echo $data['dat'];
+                }
+                
+                
+        public function finEnchere($id, $libl, $prix, $acht)
+	{
+		$this->load->model('main_model');
+                echo($id.''. $libl. " " .$prix. " " .$acht); 
+		$this->main_model->lotRemporte($id, $libl, $prix, $acht);
+	}
+        
+        public function read()
+{
+
+            $object['controller']=$this; 
+            $this->load->view('read',$object);
+}
 
 
 
@@ -138,13 +153,6 @@ class Utilisateur extends CI_Controller {
 		$this->load->view('v_bandeau');
 		$this->load->view('v_accueil');
 		$this->load->view('v_finPage');
-	}
-	
-	public function finEnchere($idlot)
-	{
-
-		$this->load->model('main_model');
-		$this->main_model->lotRemporte($idlot);
 	}
 }
 ?>
