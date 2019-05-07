@@ -1,9 +1,13 @@
 <head>
     <meta charset="utf-8">
-<link href="<?php echo base_url('css/finPage.css');?>" rel="stylesheet" type="text/css">
+    <link type="text/css" rel="stylesheet" href="<?php echo base_url()?>css/finPage.css"/>
 </head>
-<div id="finPage" class="footer">
+<div id="finPage">
+   
     <table align="center">
+        <td>Adresse: Terre plein de Plougoazec, 29780, PLOUHINEC, FRANCE<br>
+        Tel: 02.98.70.87.33<br>
+        Fax: 02.98.74.93.31</td>
         <td><img src="./../images/paiement.png" width="50%" align="right"></td>
         <td><img src="./../images/livraison48.jpg" width="50%" align="left"></td>
     </table>
@@ -14,3 +18,4 @@
     </table>
 <p><a href="">Copyright...</a></p>
 </div>
+
