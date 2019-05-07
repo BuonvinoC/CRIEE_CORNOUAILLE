@@ -30,6 +30,8 @@
 				"value"=>set_value('ajoutMontant')
 				);
 				echo form_input($montant);
+                                
+                                echo form_hidden('idL',$row['idLot']);
 				echo form_submit('envoi','Ajouter');
 				echo form_close();
 			?>
