@@ -77,7 +77,6 @@
 		$d_restants = floor($d_restants); // Jours restants
 		//==================
 		setlocale(LC_ALL, 'fr_FR');
-                echo $date;
 		echo
 		   '</strong> <strong>' . $d_restants .'J </strong> <strong>'. $H_restantes .'H </strong>'
 		   . ' <strong>'. $i_restantes .'MIN </strong> et <strong>'. $s_restantes .'s</strong>';
