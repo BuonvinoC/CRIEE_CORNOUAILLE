@@ -4,6 +4,8 @@ class Utilisateur extends CI_Controller {
 	public function contenu($id){
 		$this->load->helper('url_helper');
 		$this->load->view('v_entete');
+		$data['Utilisateur'] = $this;
+		$this->method_call =& get_instance();
 	switch ($id) {
 		case 'catalogue':
 			$this->load->model('main_model');
@@ -128,21 +130,22 @@ class Utilisateur extends CI_Controller {
                 echo $data['libel'];
                 echo $data['dat'];
                 }
-                
-                
-        public function finEnchere($id, $libl, $prix, $acht)
-	{
-		$this->load->model('main_model');
-                echo($id.''. $libl. " " .$prix. " " .$acht); 
-		$this->main_model->lotRemporte($id, $libl, $prix, $acht);
-	}
-        
-        public function read()
-{
 
-            $object['controller']=$this; 
-            $this->load->view('read',$object);
-}
+
+        public function finEnchere()
+	{
+
+		$data = array ('idLot' => $this->input->post('idLot')
+		//'prix' => $this->input->post('prx'),
+		//'acheteur' => $this->input->post('acht')
+		);
+
+		$this->load->model('main_model');
+	$this->main_model->lotRemporte($data['idLot']/*,$data['prix'],$data['acheteur']*/);
+	}
+
+
+
 
 
 
