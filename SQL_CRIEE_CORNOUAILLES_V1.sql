@@ -246,6 +246,8 @@ INSERT INTO `lot` (`idLot`, `libelleLot`, `DatePeche`, `prixActuel`, `AcheteurMa
 ('1', 'libelleLot', '2019-05-14', 500, 'Buonvino.clement@gmail.com', '2019-05-30 10:30:00','CARP', 50);
 
 
+INSERT INTO `lot_remporté`(idLot) VALUES (1);
+
 
 -- ************************************************************************************************************************************************ 
 
