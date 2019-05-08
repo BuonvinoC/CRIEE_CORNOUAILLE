@@ -124,11 +124,10 @@ CREATE TABLE IF NOT EXISTS `lot_proposé` (
   PRIMARY KEY(idLot)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
-CREATE TABLE IF NOT EXISTS `lot_remporté` (
-  `idLot` int NOT NULL AUTO_INCREMENT,
-  `libelleLot` varchar(30) NOT NULL,
-  `acheteur` date NOT NULL,
-  `prix` int NOT NULL,
+
+CREATE TABLE IF NOT EXISTS lot_remporté (
+  idLot int NOT NULL,
+
   PRIMARY KEY(idLot)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 -- --------------------------------------------------------
@@ -178,6 +177,9 @@ CREATE TABLE IF NOT EXISTS `vendeur` (
 --
 -- Index pour les tables exportées
 --
+
+ALTER TABLE lot_remporté
+ADD CONSTRAINT FK_lotRemp_Lot FOREIGN KEY (idLot) REFERENCES lot(idLot);
 
 --
 -- Index pour la table `acheteur`
