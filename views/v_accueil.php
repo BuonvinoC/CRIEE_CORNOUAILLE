@@ -25,6 +25,7 @@
     <h2>Moyens de paiement sécurisées</h2>
     <p>Les cartes bancaires suivantes sont acceptées sur notre site : Carte Bleue, Visa, Visa Electron, MasterCard, American Express. <br>
 Le paiement par carte bancaire est intégralement sécurisé. <br><br> Paypal offre la possibilité de payer par carte bancaire ou virement bancaire AVEC ou SANS compte paypal. Pour éviter tout risque de détournement de votre carte bancaire, nous utilisons un système de paiement sécurisé aux normes SSL, le protocole de cryptage le plus sûr et le plus répandu actuellement. Vos coordonnées bancaires sont directement cryptées et routées vers Paypal sans passer par notre site. <br>
-Cela signifie qu’aucune information bancaire ne nous est transmise. Votre numéro de carte ne sera jamais connu ni conservé.</p>
+Cela signifie qu’aucune information bancaire ne nous est transmise. Votre numéro de carte ne sera jamais connu ni conservé. <br><br> Pour toute commande passée sur le web ou par téléphone, vous disposez de 21 jours à compter de la date de votre commande pour changer d'avis.
+Quelle que soit la raison, vous pouvez nous retourner un article ou annuler votre commande.</p>
 </body>
 </html>
