@@ -243,7 +243,12 @@ INSERT INTO `espece` (`idEspece`, `nomEsp`, `nomSciEsp`, `image`) VALUES
 
 --
 INSERT INTO `lot` (`idLot`, `libelleLot`, `DatePeche`, `prixActuel`, `AcheteurMax`, `dateFinEnchere`, `idEsp`, `poids`) VALUES
-(1, 'libelleLot', '2019-05-14', 500, 'Buonvino.clement@gmail.com', '2019-05-30 10:30:00','CARP', 50);
+(1, 'libelleLot', '2019-05-14', 500, 'Buonvino.clement@gmail.com', '2019-05-30 10:30:00','CARP', 50),
+(2, 'Gros pack de harengs', '2019-05-14', 500, 'Buonvino.clement@gmail.com', '2019-05-30 12:30:00','HARG', 100),
+(3, 'Lot de harengs peu utilisés', '2019-05-14', 500, 'Buonvino.clement@gmail.com', '2111-11-11 11:11:11','HARG', 12),
+(4, 'Je vends ma femme, bon etat', '2019-05-14', 500, 'Buonvino.clement@gmail.com', '2019-02-30 09:30:00','THON', 666)
+;
+
 
 
 INSERT INTO `lot_remporté`(idLot) VALUES (1);
@@ -251,14 +256,18 @@ INSERT INTO `lot_remporté`(idLot) VALUES (1);
 
 
 
--- *************************************** L E   S E L E C T   D E S   E N C H E R E S   R E M P O R T E E S  ***************************************************************** 
+-- *************************************** L E   S E L E C T   D E S   L O T S   R E M P O R T E S  ***************************************************************** 
 
 -- SELECT lot_remporté.idLot, lot.libelleLot, lot.prixActuel, lot.AcheteurMax, lot.idEsp, espece.image FROM lot_remporté, lot, espece
 -- where lot_remporté.idLot = lot.idLot and lot.idEsp = espece.idEspece;
 
--- *********************************************************************************************************************************************************************
+-- **************************************** L E   S E L E C T   D E S   L O T S   P A S   E N C O R E   R E M P O R T E S ***********************************************************************
 
 
+-- SELECT * FROM LOT WHERE LOT.idLot NOT IN (SELECT idLot FROM lot_remporté)
+
+
+-- ************************************************************************************************************************************************ 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
