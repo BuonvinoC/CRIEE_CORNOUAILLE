@@ -4,6 +4,8 @@ class Utilisateur extends CI_Controller {
 	public function contenu($id){
 		$this->load->helper('url_helper');
 		$this->load->view('v_entete');
+		$data['Utilisateur'] = $this;
+		$this->method_call =& get_instance();
 	switch ($id) {
 		case 'catalogue':
 			$this->load->model('main_model');
@@ -114,20 +116,36 @@ class Utilisateur extends CI_Controller {
 	  $this->main_model->InsertLotPropose($data['lbl'], $data['poi'], $data['datePeche']);
 		}
 
-		public function valider_lot() {
+        public function valider_lot() {
 
-			$data = array ('prix' => $this->input->post('prixLot'),
-			'dateFin' => $this->input->post('dateFinEnchere'),
-			'libel' => $this->input->post('lbl'),
-			'dat' => $this->input->post('datePeche')
-			);
-			$this->load->model('main_model');
-			$this->main_model->InsertLot($data['prix'], $data['dateFin'], $data['libel'], $data['dat']);
-			echo $data['prix'];
-			echo $data['dateFin'];
-			echo $data['libel'];
-			echo $data['dat'];
-			}
+                $data = array ('prix' => $this->input->post('prixLot'),
+                'dateFin' => $this->input->post('dateFinEnchere'),
+                'libel' => $this->input->post('lbl'),
+                'dat' => $this->input->post('datePeche')
+                );
+                $this->load->model('main_model');
+                $this->main_model->InsertLot($data['prix'], $data['dateFin'], $data['libel'], $data['dat']);
+                echo $data['prix'];
+                echo $data['dateFin'];
+                echo $data['libel'];
+                echo $data['dat'];
+                }
+
+
+        public function finEnchere()
+	{
+
+		$data = array ('idLot' => $this->input->post('idLot')
+		//'prix' => $this->input->post('prx'),
+		//'acheteur' => $this->input->post('acht')
+		);
+
+		$this->load->model('main_model');
+	$this->main_model->lotRemporte($data['idLot']/*,$data['prix'],$data['acheteur']*/);
+	}
+
+
+
 
 
 
@@ -138,13 +156,6 @@ class Utilisateur extends CI_Controller {
 		$this->load->view('v_bandeau');
 		$this->load->view('v_accueil');
 		$this->load->view('v_finPage');
-	}
-	
-	public function finEnchere($idlot)
-	{
-
-		$this->load->model('main_model');
-		$this->main_model->lotRemporte($idlot);
 	}
 }
 ?>
