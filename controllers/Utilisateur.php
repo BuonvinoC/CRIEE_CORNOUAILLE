@@ -21,12 +21,12 @@ class Utilisateur extends CI_Controller {
 			$this->load->view('v_bandeau');
 			$this->load->view('v_enchere',$data);
 			break;
-		case 'remporte':
-			$this->load->model('main_model');
-			$data['donnees']=$this->main_model->afficheLotRemporte();
-			$this->load->view('v_bandeau');
-			$this->load->view('v_remporte',$data);
-			break;
+			case 'remporte':
+				$this->load->model('main_model');
+				$data['donnees']=$this->main_model->afficheLotRemporte();
+				$this->load->view('v_bandeau');
+				$this->load->view('v_remporte',$data);
+				break;
 		case 'admin':
 		$this->load->model('main_model');
 		$data['donnees']=$this->main_model->afficheLotPropose();
@@ -91,53 +91,68 @@ class Utilisateur extends CI_Controller {
 		$this->load->view('v_bandeau');
 		$this->load->view('v_commentaire');
 		}
+
 	public function connexion_utilisateur () {
 		$dataConnect = array ('mail' => $this->input->post('mailClient'),
 		'pwd' => $this->input->post('mdpClient'),
 		);
 		$this->load->model('main_model');
 		$this->main_model->connexionClient($dataConnect);
-		$this->load->view('v_accueil');
 	}
 	public function encherir () {
-        $data = array ('prix_propose' => $this->input->post('ajoutMontant'), 'utilisateur' => $this->session->userdata('login'), 'idLot' =>$this->input->post('idL'));
+                $data = array ('prix_propose' => $this->input->post('ajoutMontant'), 'utilisateur' => $this->session->userdata('login'), 'idLot' =>$this->input->post('idL'));
 		$this->load->model('main_model');
 		$this->main_model->updateEnchere($data['prix_propose'], $data['utilisateur'], $data['idLot']);
-        echo ($data['utilisateur'].' '.$data['prix_propose']);
+                echo ($data['utilisateur'].' '.$data['prix_propose']);
 	}
+
 	public function proposer_lot() {
+
 		$data = array ('lbl' => $this->input->post('lblLot'),
 		'poi' => $this->input->post('poissonLot'),
 		'datePeche' => $this->input->post('datePeche'),
+		'poids' => $this->input->post('poids')
 		);
 	  $this->load->model('main_model');
-	  $this->main_model->InsertLotPropose($data['lbl'], $data['poi'], $data['datePeche']);
-	  header('Location: http://[::1]/CodeIgniter-3.1.9_Criee/index.php/utilisateur/');
-  	  exit();
-
+	  $this->main_model->InsertLotPropose($data['lbl'], $data['poi'], $data['datePeche'], $data['poids']);
+		header('Location: http://[::1]/CodeIgniter-3.1.9_Criee/index.php/utilisateur/');
+		exit();
 		}
+
         public function valider_lot() {
+
                 $data = array ('prix' => $this->input->post('prixLot'),
                 'dateFin' => $this->input->post('dateFinEnchere'),
                 'libel' => $this->input->post('lbl'),
-                'dat' => $this->input->post('datePeche')
+                'dat' => $this->input->post('datePeche'),
+								'poids' => $this->input->post('poids')
                 );
                 $this->load->model('main_model');
-                $this->main_model->InsertLot($data['prix'], $data['dateFin'], $data['libel'], $data['dat']);
-	  			header('Location: http://[::1]/CodeIgniter-3.1.9_Criee/index.php/utilisateur/contenu/enchere');
+                $this->main_model->InsertLot($data['prix'], $data['dateFin'], $data['libel'], $data['dat'], $data['poids']);
+								header('Location: http://[::1]/CodeIgniter-3.1.9_Criee/index.php/utilisateur/contenu/enchere');
   	  			exit();
                 }
+
+
         public function finEnchere()
 	{
+
 		$data = array ('idLot' => $this->input->post('idLot')
 		//'prix' => $this->input->post('prx'),
 		//'acheteur' => $this->input->post('acht')
 		);
+
 		$this->load->model('main_model');
 	$this->main_model->lotRemporte($data['idLot']/*,$data['prix'],$data['acheteur']*/);
 	header('Location: http://[::1]/CodeIgniter-3.1.9_Criee/index.php/utilisateur/contenu/enchere');
   	  exit();
 	}
+
+
+
+
+
+
 	public function index()
 	{
 		$this->load->helper('url_helper');
