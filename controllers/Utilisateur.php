@@ -51,6 +51,14 @@ class Utilisateur extends CI_Controller {
 			$this->load->view('v_bandeau');
 			session_destroy();
 			break;
+		case 'contact':
+			$this->load->view('v_bandeau');
+			$this->load->view('v_contact');
+			break;
+		case 'mentions':
+			$this->load->view('v_bandeau');
+			$this->load->view('v_mentions');
+			break;
 		case 'propose':
 			$this->load->view('v_bandeau');
 			$this->load->view('v_propose');
