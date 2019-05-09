@@ -1,11 +1,16 @@
 -- phpMyAdmin SQL Dump
--- version 4.7.9
+-- version 4.8.3
 -- https://www.phpmyadmin.net/
 --
--- Hôte : 127.0.0.1:3306
--- Généré le :  jeu. 09 mai 2019 à 12:36
--- Version du serveur :  5.7.21
--- Version de PHP :  5.6.35
+-- Hôte : 127.0.0.1
+-- Généré le :  mar. 12 mars 2019 à 10:25
+-- Version du serveur :  10.1.36-MariaDB
+-- Version de PHP :  7.2.10
+
+DROP DATABASE IF EXISTS CRIEE_CORNOUAILLES_V1;
+CREATE DATABASE IF NOT EXISTS CRIEE_CORNOUAILLES_V1;
+USE CRIEE_CORNOUAILLES_V1;
+
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -19,6 +24,11 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
+-- Base de données :  `crieev0`
+--
+
+
+--
 -- Base de données :  `criee_cornouailles_v1`
 --
 
@@ -28,7 +38,6 @@ SET time_zone = "+00:00";
 -- Structure de la table `acheteur`
 --
 
-DROP TABLE IF EXISTS `acheteur`;
 CREATE TABLE IF NOT EXISTS `acheteur` (
   `mail` varchar(50) NOT NULL,
   `pwd` varchar(50) DEFAULT NULL,
@@ -36,16 +45,14 @@ CREATE TABLE IF NOT EXISTS `acheteur` (
   `nom` varchar(50) DEFAULT NULL,
   `adresse` varchar(50) DEFAULT NULL,
   `ville` varchar(50) DEFAULT NULL,
-  `codePostal` varchar(50) DEFAULT NULL,
-  PRIMARY KEY (`mail`)
+  `codePostal` varchar(50) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Déchargement des données de la table `acheteur`
+-- Contenu de la table `acheteur`
 --
 
-INSERT INTO `acheteur` (`mail`, `pwd`, `prenom`, `nom`, `adresse`, `ville`, `codePostal`) VALUES
-('admin', 'admin', 'admin', 'admin', NULL, NULL, NULL);
+
 
 -- --------------------------------------------------------
 
@@ -53,14 +60,11 @@ INSERT INTO `acheteur` (`mail`, `pwd`, `prenom`, `nom`, `adresse`, `ville`, `cod
 -- Structure de la table `encherir`
 --
 
-DROP TABLE IF EXISTS `encherir`;
 CREATE TABLE IF NOT EXISTS `encherir` (
   `mailAcheteur` varchar(50) NOT NULL,
-  `idLot` int(11) NOT NULL,
+  `idLot` INT NOT NULL,
   `date_encherir` datetime NOT NULL,
-  `prix_propose` float DEFAULT NULL,
-  PRIMARY KEY (`mailAcheteur`,`idLot`,`date_encherir`),
-  KEY `FK_encherir_lot` (`idLot`)
+  `prix_propose` float DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -69,30 +73,17 @@ CREATE TABLE IF NOT EXISTS `encherir` (
 -- Structure de la table `espece`
 --
 
-DROP TABLE IF EXISTS `espece`;
 CREATE TABLE IF NOT EXISTS `espece` (
   `idEspece` varchar(50) NOT NULL,
   `nomEsp` varchar(50) DEFAULT NULL,
   `nomSciEsp` varchar(50) DEFAULT NULL,
-  `image` varchar(50) DEFAULT NULL,
-  PRIMARY KEY (`idEspece`)
+  `image` varchar(50) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Déchargement des données de la table `espece`
+-- Contenu de la table `espece`
 --
 
-INSERT INTO `espece` (`idEspece`, `nomEsp`, `nomSciEsp`, `image`) VALUES
-('1', 'Cabillaud', 'Gadus morhua', 'cabillaud.png'),
-('10', 'Turbot', 'Scophthalmus maximus', 'turbot.png'),
-('2', 'Carpe', 'Cyprinus carpio', 'carpe.png'),
-('3', 'Hareng', 'Clupea harengus', 'hareng.png'),
-('4', 'Maquereau', ' Scomber scombrus', 'maquereau.png'),
-('5', 'Sardine', 'Sardina pilchardus', 'sardine.png'),
-('6', 'Saumon', 'Salmo Salar', 'saumon.png'),
-('7', 'Sole', 'Solea solea', 'sole.png'),
-('8', 'Thon', 'Thunnus thynnus', 'thon.png'),
-('9', 'Truite', 'Salmo trutta', 'truite.png');
 
 -- --------------------------------------------------------
 
@@ -100,29 +91,44 @@ INSERT INTO `espece` (`idEspece`, `nomEsp`, `nomSciEsp`, `image`) VALUES
 -- Structure de la table `lot`
 --
 
-DROP TABLE IF EXISTS `lot`;
 CREATE TABLE IF NOT EXISTS `lot` (
-  `idLot` int(11) NOT NULL AUTO_INCREMENT,
+  `idLot` INT NOT NULL AUTO_INCREMENT,
   `libelleLot` varchar(50) NOT NULL,
   `DatePeche` date NOT NULL,
-  `prixActuel` int(11) NOT NULL,
+  `prixActuel` int(20) NOT NULL,
   `AcheteurMax` varchar(30) NOT NULL,
   `dateFinEnchere` datetime NOT NULL,
-  PRIMARY KEY (`idLot`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+  `idEsp` varchar(50) NOT NULL,
+  `poids` int(20) NULL, -- IL FAUDRA LE METTRE EN NOT NULL PLUS TARD
+  PRIMARY KEY(idLot)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
---
--- Déchargement des données de la table `lot`
+
+-- Structure de la table `lot_proposé`
 --
 
-INSERT INTO `lot` (`idLot`, `libelleLot`, `DatePeche`, `prixActuel`, `AcheteurMax`, `dateFinEnchere`) VALUES
-(1, 'libelleLot', '2019-05-14', 500, 'Buonvino.clement@gmail.com', '2019-05-30 10:30:00'),
-(2, 'penis', '2038-02-02', 300, '', '2018-05-08 18:59:00');
+CREATE TABLE IF NOT EXISTS `lot_proposé` (
+  `idLot` int(11) NOT NULL AUTO_INCREMENT,
+  `libelleLot` varchar(30) NOT NULL,
+  `poisson` varchar(100) NOT NULL,
+  `datePeche` date NOT NULL,
+  PRIMARY KEY(idLot)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+
+
+CREATE TABLE IF NOT EXISTS `lot_remporté` (
+  `idLot` int NOT NULL,
+  
+  PRIMARY KEY(idLot)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+-- --------------------------------------------------------
+
+
 
 --
 -- Déclencheurs `lot`
 --
-DROP TRIGGER IF EXISTS `refuser_encherir_inferieur`;
 DELIMITER $$
 CREATE TRIGGER `refuser_encherir_inferieur` BEFORE UPDATE ON `lot` FOR EACH ROW BEGIN
     IF NEW.prixActuel <= OLD.prixActuel THEN
@@ -134,58 +140,13 @@ $$
 DELIMITER ;
 
 -- --------------------------------------------------------
-
---
--- Structure de la table `lot_proposé`
---
-
-DROP TABLE IF EXISTS `lot_proposé`;
-CREATE TABLE IF NOT EXISTS `lot_proposé` (
-  `idLot` int(11) NOT NULL AUTO_INCREMENT,
-  `libelleLot` varchar(30) NOT NULL,
-  `poisson` varchar(100) NOT NULL,
-  `datePeche` date NOT NULL,
-  PRIMARY KEY (`idLot`)
-) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
-
---
--- Déchargement des données de la table `lot_proposé`
---
-
-INSERT INTO `lot_proposé` (`idLot`, `libelleLot`, `poisson`, `datePeche`) VALUES
-(1, 'penis', 'penis', '2038-02-02');
-
--- --------------------------------------------------------
-
---
--- Structure de la table `lot_remporté`
---
-
-DROP TABLE IF EXISTS `lot_remporté`;
-CREATE TABLE IF NOT EXISTS `lot_remporté` (
-  `idLot` int(11) NOT NULL,
-  PRIMARY KEY (`idLot`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
-
---
--- Déchargement des données de la table `lot_remporté`
---
-
-INSERT INTO `lot_remporté` (`idLot`) VALUES
-(2);
-
--- --------------------------------------------------------
-
 --
 -- Structure de la table `panier_temporaire`
 --
 
-DROP TABLE IF EXISTS `panier_temporaire`;
 CREATE TABLE IF NOT EXISTS `panier_temporaire` (
   `mailAcheteur` varchar(50) NOT NULL,
-  `idLot` varchar(50) NOT NULL,
-  PRIMARY KEY (`mailAcheteur`,`idLot`),
-  KEY `idLot` (`idLot`)
+  `idLot` INT NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -194,7 +155,6 @@ CREATE TABLE IF NOT EXISTS `panier_temporaire` (
 -- Structure de la table `vendeur`
 --
 
-DROP TABLE IF EXISTS `vendeur`;
 CREATE TABLE IF NOT EXISTS `vendeur` (
   `mail` varchar(50) NOT NULL,
   `pwd` varchar(50) DEFAULT NULL,
@@ -202,22 +162,114 @@ CREATE TABLE IF NOT EXISTS `vendeur` (
   `nom` varchar(50) DEFAULT NULL,
   `adresse` varchar(50) DEFAULT NULL,
   `ville` varchar(50) DEFAULT NULL,
-  `codePostal` varchar(50) DEFAULT NULL,
-  PRIMARY KEY (`mail`)
+  `codePostal` varchar(50) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Contraintes pour les tables déchargées
+-- Index pour les tables exportées
 --
 
 --
+-- Index pour la table `acheteur`
+--
+ALTER TABLE `acheteur`
+ ADD PRIMARY KEY (`mail`);
+
+--
+-- Index pour la table `encherir`
+--
+ALTER TABLE `encherir`
+ ADD PRIMARY KEY (`mailAcheteur`,`idLot`,`date_encherir`), ADD KEY `FK_encherir_lot` (`idLot`);
+
+--
+-- Index pour la table `espece`
+--
+ALTER TABLE `espece`
+ ADD PRIMARY KEY (`idEspece`);
+
+--
+-- Index pour la table `lot`
+--
+ALTER TABLE `lot_remporté`
+ADD CONSTRAINT `FK_lotRemp_Lot` FOREIGN KEY (`idLot`) REFERENCES `lot`(`idLot`);
+
+--
+-- Index pour la table `panier_temporaire`
+--
+ALTER TABLE `panier_temporaire`
+ ADD PRIMARY KEY (`mailAcheteur`,`idLot`),
+
+
+ ADD CONSTRAINT `FK_panier_acheteur` FOREIGN KEY (`mailAcheteur`) REFERENCES `acheteur`(`mail`),
+ADD CONSTRAINT `FK_panier_lot` FOREIGN KEY (`idLot`) REFERENCES `lot`(`idLot`);
+--
+-- Index pour la table `vendeur`
+--
+ALTER TABLE `vendeur`
+ ADD PRIMARY KEY (`mail`);
+
+
+ALTER TABLE `lot`
+ADD CONSTRAINT `FK_lot_espece` FOREIGN KEY (`idEsp`) REFERENCES `espece`(`idEspece`);
+--
+-- Contraintes pour lots remportés
+--
+
+
+
+
 -- Contraintes pour la table `encherir`
 --
 ALTER TABLE `encherir`
-  ADD CONSTRAINT `FK_encherir_acheteur` FOREIGN KEY (`mailAcheteur`) REFERENCES `acheteur` (`mail`),
-  ADD CONSTRAINT `FK_encherir_lot` FOREIGN KEY (`idLot`) REFERENCES `lot` (`idLot`);
-COMMIT;
+ADD CONSTRAINT `FK_encherir_acheteur` FOREIGN KEY (`mailAcheteur`) REFERENCES `acheteur` (`mail`),
+ADD CONSTRAINT `FK_encherir_lot` FOREIGN KEY (`idLot`) REFERENCES `lot` (`idLot`);
 
+--
+
+
+--  ***************************   L E S   I N S E R T S   *****************************************************************************************
+
+INSERT INTO `espece` (`idEspece`, `nomEsp`, `nomSciEsp`, `image`) VALUES
+('CAB', 'Cabillaud', 'Gadus morhua', 'cabillaud.png'),
+('TURB', 'Turbot', 'Scophthalmus maximus', 'turbot.png'),
+('CARP', 'Carpe', 'Cyprinus carpio', 'carpe.png'),
+('HARG', 'Hareng', 'Clupea harengus', 'hareng.png'),
+('MAQ', 'Maquereau', ' Scomber scombrus', 'maquereau.png'),
+('SARD', 'Sardine', 'Sardina pilchardus', 'sardine.png'),
+('SAU', 'Saumon', 'Salmo Salar', 'saumon.png'),
+('SOL', 'Sole', 'Solea solea', 'sole.png'),
+('THON', 'Thon', 'Thunnus thynnus', 'thon.png'),
+('TRU', 'Truite', 'Salmo trutta', 'truite.png');
+
+--
+INSERT INTO `lot` (`idLot`, `libelleLot`, `DatePeche`, `prixActuel`, `AcheteurMax`, `dateFinEnchere`, `idEsp`, `poids`) VALUES
+(1, 'libelleLot', '2019-05-14', 500, 'Buonvino.clement@gmail.com', '2019-05-30 10:30:00','CARP', 50),
+(2, 'Gros pack de harengs', '2019-05-14', 500, 'Buonvino.clement@gmail.com', '2019-05-30 12:30:00','HARG', 100),
+(3, 'Lot de harengs peu utilisés', '2019-05-14', 500, 'Buonvino.clement@gmail.com', '2111-11-11 11:11:11','HARG', 12),
+(4, 'Je vends ma femme, bon etat', '2019-05-14', 500, 'Buonvino.clement@gmail.com', '2019-02-30 09:30:00','THON', 666)
+;
+
+
+
+INSERT INTO `lot_remporté`(idLot) VALUES (1);
+-- ************************************************************************************************************************************************ 
+
+
+
+-- *************************************** L E   S E L E C T   D E S   L O T S   R E M P O R T E S  ***************************************************************** 
+
+-- SELECT lot_remporté.idLot, lot.libelleLot, lot.prixActuel, lot.AcheteurMax, lot.idEsp, espece.image FROM lot_remporté, lot, espece
+-- where lot_remporté.idLot = lot.idLot and lot.idEsp = espece.idEspece;
+
+-- **************************************** L E   S E L E C T   D E S   L O T S   P A S   E N C O R E   R E M P O R T E S ***********************************************************************
+
+
+-- SELECT * FROM LOT WHERE LOT.idLot NOT IN (SELECT idLot FROM lot_remporté)
+
+
+-- ************************************************************************************************************************************************ 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+
+
