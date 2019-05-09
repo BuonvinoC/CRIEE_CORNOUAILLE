@@ -96,7 +96,7 @@ CREATE TABLE IF NOT EXISTS `lot` (
   `libelleLot` varchar(50) NOT NULL,
   `DatePeche` date NOT NULL,
   `prixActuel` int(20) NOT NULL,
-  `AcheteurMax` varchar(30) NULL,
+  `AcheteurMax` varchar(30) NOT NULL,
   `dateFinEnchere` datetime NOT NULL,
   `idEsp` varchar(50) NULL,
   `poids` int(20) NULL, -- IL FAUDRA LE METTRE EN NOT NULL PLUS TARD
@@ -124,20 +124,9 @@ CREATE TABLE IF NOT EXISTS `lot_remporté` (
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 -- --------------------------------------------------------
 
-
-
 --
 -- Déclencheurs `lot`
---
-DELIMITER $$
-CREATE TRIGGER `refuser_encherir_inferieur` BEFORE UPDATE ON `lot` FOR EACH ROW BEGIN
-    IF NEW.prixActuel <= OLD.prixActuel THEN
-SET NEW.prixActuel = OLD.prixActuel;
-SET NEW.AcheteurMax = OLD.AcheteurMax;
-END IF;
-END
-$$
-DELIMITER ;
+
 
 -- --------------------------------------------------------
 --
@@ -165,9 +154,46 @@ CREATE TABLE IF NOT EXISTS `vendeur` (
   `codePostal` varchar(50) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+
+
+
+DELIMITER $$
+CREATE TRIGGER `refuser_encherir_inferieur` BEFORE UPDATE ON `lot` FOR EACH ROW BEGIN
+    IF NEW.prixActuel <= OLD.prixActuel THEN
+SET NEW.prixActuel = OLD.prixActuel;
+SET NEW.AcheteurMax = OLD.AcheteurMax;
+END IF;
+END
+$$
+DELIMITER ;
+
 --
 -- Index pour les tables exportées
 --
+
+INSERT INTO `espece` (`idEspece`, `nomEsp`, `nomSciEsp`, `image`) VALUES
+('CAB', 'Cabillaud', 'Gadus morhua', 'cabillaud.png'),
+('TURB', 'Turbot', 'Scophthalmus maximus', 'turbot.png'),
+('CARP', 'Carpe', 'Cyprinus carpio', 'carpe.png'),
+('HARG', 'Hareng', 'Clupea harengus', 'hareng.png'),
+('MAQ', 'Maquereau', ' Scomber scombrus', 'maquereau.png'),
+('SARD', 'Sardine', 'Sardina pilchardus', 'sardine.png'),
+('SAU', 'Saumon', 'Salmo Salar', 'saumon.png'),
+('SOL', 'Sole', 'Solea solea', 'sole.png'),
+('THON', 'Thon', 'Thunnus thynnus', 'thon.png'),
+('TRU', 'Truite', 'Salmo trutta', 'truite.png');
+
+
+INSERT INTO `lot` (`idLot`, `libelleLot`, `DatePeche`, `prixActuel`, `AcheteurMax`, `dateFinEnchere`, `idEsp`, `poids`) VALUES
+(1, 'libelleLot', '2019-05-14', 500, 'Buonvino.clement@gmail.com', '2019-05-30 10:30:00','CARP', 50),
+(2, 'Gros pack de harengs', '2019-05-14', 500, 'Buonvino.clement@gmail.com', '2019-05-30 12:30:00','HARG', 100),
+(3, 'Lot de harengs peu utilisés', '2019-05-14', 500, 'Buonvino.clement@gmail.com', '2111-11-11 11:11:11','HARG', 12),
+(4, 'Je vends ma femme, bon etat', '2019-05-14', 500, 'Buonvino.clement@gmail.com', '2019-02-30 09:30:00','THON', 666);
+
+
+INSERT INTO `lot_remporté`(idLot) VALUES (1);
+
+
 
 --
 -- Index pour la table `acheteur`
@@ -213,45 +239,25 @@ ALTER TABLE `lot`
 ADD CONSTRAINT `FK_lot_espece` FOREIGN KEY (`idEsp`) REFERENCES `espece`(`idEspece`);
 --
 -- Contraintes pour lots remportés
---
-
 
 
 
 -- Contraintes pour la table `encherir`
---
+
 ALTER TABLE `encherir`
 ADD CONSTRAINT `FK_encherir_acheteur` FOREIGN KEY (`mailAcheteur`) REFERENCES `acheteur` (`mail`),
 ADD CONSTRAINT `FK_encherir_lot` FOREIGN KEY (`idLot`) REFERENCES `lot` (`idLot`);
 
---
 
 
 --  ***************************   L E S   I N S E R T S   *****************************************************************************************
 
-INSERT INTO `espece` (`idEspece`, `nomEsp`, `nomSciEsp`, `image`) VALUES
-('CAB', 'Cabillaud', 'Gadus morhua', 'cabillaud.png'),
-('TURB', 'Turbot', 'Scophthalmus maximus', 'turbot.png'),
-('CARP', 'Carpe', 'Cyprinus carpio', 'carpe.png'),
-('HARG', 'Hareng', 'Clupea harengus', 'hareng.png'),
-('MAQ', 'Maquereau', ' Scomber scombrus', 'maquereau.png'),
-('SARD', 'Sardine', 'Sardina pilchardus', 'sardine.png'),
-('SAU', 'Saumon', 'Salmo Salar', 'saumon.png'),
-('SOL', 'Sole', 'Solea solea', 'sole.png'),
-('THON', 'Thon', 'Thunnus thynnus', 'thon.png'),
-('TRU', 'Truite', 'Salmo trutta', 'truite.png');
-
---
-INSERT INTO `lot` (`idLot`, `libelleLot`, `DatePeche`, `prixActuel`, `AcheteurMax`, `dateFinEnchere`, `idEsp`, `poids`) VALUES
-(1, 'libelleLot', '2019-05-14', 500, 'Buonvino.clement@gmail.com', '2019-05-30 10:30:00','CARP', 50),
-(2, 'Gros pack de harengs', '2019-05-14', 500, 'Buonvino.clement@gmail.com', '2019-05-30 12:30:00','HARG', 100),
-(3, 'Lot de harengs peu utilisés', '2019-05-14', 500, 'Buonvino.clement@gmail.com', '2111-11-11 11:11:11','HARG', 12),
-(4, 'Je vends ma femme, bon etat', '2019-05-14', 500, 'Buonvino.clement@gmail.com', '2019-02-30 09:30:00','THON', 666)
-;
 
 
 
-INSERT INTO `lot_remporté`(idLot) VALUES (1);
+
+
+
 -- ************************************************************************************************************************************************ 
 
 
