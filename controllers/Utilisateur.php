@@ -23,7 +23,7 @@ class Utilisateur extends CI_Controller {
 			break;
 		case 'remporte':
 			$this->load->model('main_model');
-			$data['donnees']=$this->main_model->afficheProduits1();
+			$data['donnees']=$this->main_model->afficheLotRemporte();
 			$this->load->view('v_bandeau');
 			$this->load->view('v_remporte',$data);
 			break;
