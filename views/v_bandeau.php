@@ -19,10 +19,10 @@
 	<li><a href="<?php echo site_url('utilisateur/contenu/catalogue');?>"> Voir le catalogue</a></li>
         <?php
 		if ($this->session->userdata('logged_in')==TRUE){?>
-	<li><a href="<?php echo site_url('utilisateur/contenu/enchere');?>"> Voir les enchere</a></li>
+	<li><a href="<?php echo site_url('utilisateur/contenu/enchere');?>"> Voir les enchères</a></li>
         <?php } ?>
 
-	<li><a href="<?php echo site_url('utilisateur/contenu/admin');?>"> Enchères remportées </a></li>
+	<li><a href="<?php echo site_url('utilisateur/contenu/remporte');?>"> Enchères remportées </a></li>
         <?php
 		if ($this->session->userdata('logged_in')!=TRUE){?>
                         <li><a href="<?php echo site_url('utilisateur/contenu/inscription');?>"> Inscription </a></li>
