@@ -84,17 +84,6 @@ CREATE TABLE IF NOT EXISTS `espece` (
 -- Contenu de la table `espece`
 --
 
-INSERT INTO `espece` (`idEspece`, `nomEsp`, `nomSciEsp`, `image`) VALUES
-('1', 'Cabillaud', 'Gadus morhua', 'cabillaud.png'),
-('10', 'Turbot', 'Scophthalmus maximus', 'turbot.png'),
-('2', 'Carpe', 'Cyprinus carpio', 'carpe.png'),
-('3', 'Hareng', 'Clupea harengus', 'hareng.png'),
-('4', 'Maquereau', ' Scomber scombrus', 'maquereau.png'),
-('5', 'Sardine', 'Sardina pilchardus', 'sardine.png'),
-('6', 'Saumon', 'Salmo Salar', 'saumon.png'),
-('7', 'Sole', 'Solea solea', 'sole.png'),
-('8', 'Thon', 'Thunnus thynnus', 'thon.png'),
-('9', 'Truite', 'Salmo trutta', 'truite.png');
 
 -- --------------------------------------------------------
 
@@ -106,9 +95,11 @@ CREATE TABLE IF NOT EXISTS `lot` (
   `idLot` INT NOT NULL AUTO_INCREMENT,
   `libelleLot` varchar(50) NOT NULL,
   `DatePeche` date NOT NULL,
-  `prixActuel` int(11) NOT NULL,
+  `prixActuel` int(20) NOT NULL,
   `AcheteurMax` varchar(30) NOT NULL,
   `dateFinEnchere` datetime NOT NULL,
+  `idEsp` varchar(50) NULL,
+  `poids` int(20) NULL, -- IL FAUDRA LE METTRE EN NOT NULL PLUS TARD
   PRIMARY KEY(idLot)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -124,30 +115,18 @@ CREATE TABLE IF NOT EXISTS `lot_proposé` (
   PRIMARY KEY(idLot)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
+
+
 CREATE TABLE IF NOT EXISTS `lot_remporté` (
-  `idLot` int NOT NULL AUTO_INCREMENT,
-  `libelleLot` varchar(30) NOT NULL,
-  `acheteur` date NOT NULL,
-  `prix` int NOT NULL,
+  `idLot` int NOT NULL,
+  
   PRIMARY KEY(idLot)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 -- --------------------------------------------------------
 
-INSERT INTO `lot` (`idLot`, `libelleLot`, `DatePeche`, `prixActuel`, `AcheteurMax`, `dateFinEnchere`) VALUES
-('1', 'libelleLot', '2019-05-14', 500, 'Buonvino.clement@gmail.com', '2019-05-30 10:30:00');
-
 --
 -- Déclencheurs `lot`
---
-DELIMITER $$
-CREATE TRIGGER `refuser_encherir_inferieur` BEFORE UPDATE ON `lot` FOR EACH ROW BEGIN
-    IF NEW.prixActuel <= OLD.prixActuel THEN
-SET NEW.prixActuel = OLD.prixActuel;
-SET NEW.AcheteurMax = OLD.AcheteurMax;
-END IF;
-END
-$$
-DELIMITER ;
+
 
 -- --------------------------------------------------------
 --
@@ -156,7 +135,7 @@ DELIMITER ;
 
 CREATE TABLE IF NOT EXISTS `panier_temporaire` (
   `mailAcheteur` varchar(50) NOT NULL,
-  `idLot` varchar(50) NOT NULL
+  `idLot` INT NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -175,9 +154,46 @@ CREATE TABLE IF NOT EXISTS `vendeur` (
   `codePostal` varchar(50) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+
+
+
+DELIMITER $$
+CREATE TRIGGER `refuser_encherir_inferieur` BEFORE UPDATE ON `lot` FOR EACH ROW BEGIN
+    IF NEW.prixActuel <= OLD.prixActuel THEN
+SET NEW.prixActuel = OLD.prixActuel;
+SET NEW.AcheteurMax = OLD.AcheteurMax;
+END IF;
+END
+$$
+DELIMITER ;
+
 --
 -- Index pour les tables exportées
 --
+
+INSERT INTO `espece` (`idEspece`, `nomEsp`, `nomSciEsp`, `image`) VALUES
+('CAB', 'Cabillaud', 'Gadus morhua', 'cabillaud.png'),
+('TURB', 'Turbot', 'Scophthalmus maximus', 'turbot.png'),
+('CARP', 'Carpe', 'Cyprinus carpio', 'carpe.png'),
+('HARG', 'Hareng', 'Clupea harengus', 'hareng.png'),
+('MAQ', 'Maquereau', ' Scomber scombrus', 'maquereau.png'),
+('SARD', 'Sardine', 'Sardina pilchardus', 'sardine.png'),
+('SAU', 'Saumon', 'Salmo Salar', 'saumon.png'),
+('SOL', 'Sole', 'Solea solea', 'sole.png'),
+('THON', 'Thon', 'Thunnus thynnus', 'thon.png'),
+('TRU', 'Truite', 'Salmo trutta', 'truite.png');
+
+
+INSERT INTO `lot` (`idLot`, `libelleLot`, `DatePeche`, `prixActuel`, `AcheteurMax`, `dateFinEnchere`, `idEsp`, `poids`) VALUES
+(1, 'libelleLot', '2019-05-14', 500, 'Buonvino.clement@gmail.com', '2019-05-30 10:30:00','CARP', 50),
+(2, 'Gros pack de harengs', '2019-05-14', 500, 'Buonvino.clement@gmail.com', '2019-05-30 12:30:00','HARG', 100),
+(3, 'Lot de harengs peu utilisés', '2019-05-14', 500, 'Buonvino.clement@gmail.com', '2111-11-11 11:11:11','HARG', 12),
+(4, 'Je vends ma femme, bon etat', '2019-05-14', 500, 'Buonvino.clement@gmail.com', '2019-02-30 09:30:00','THON', 666);
+
+
+INSERT INTO `lot_remporté`(idLot) VALUES (1);
+
+
 
 --
 -- Index pour la table `acheteur`
@@ -200,14 +216,18 @@ ALTER TABLE `espece`
 --
 -- Index pour la table `lot`
 --
-
+ALTER TABLE `lot_remporté`
+ADD CONSTRAINT `FK_lotRemp_Lot` FOREIGN KEY (`idLot`) REFERENCES `lot`(`idLot`);
 
 --
 -- Index pour la table `panier_temporaire`
 --
 ALTER TABLE `panier_temporaire`
- ADD PRIMARY KEY (`mailAcheteur`,`idLot`), ADD KEY `idLot` (`idLot`);
+ ADD PRIMARY KEY (`mailAcheteur`,`idLot`),
 
+
+ ADD CONSTRAINT `FK_panier_acheteur` FOREIGN KEY (`mailAcheteur`) REFERENCES `acheteur`(`mail`),
+ADD CONSTRAINT `FK_panier_lot` FOREIGN KEY (`idLot`) REFERENCES `lot`(`idLot`);
 --
 -- Index pour la table `vendeur`
 --
@@ -215,23 +235,47 @@ ALTER TABLE `vendeur`
  ADD PRIMARY KEY (`mail`);
 
 
+ALTER TABLE `lot`
+ADD CONSTRAINT `FK_lot_espece` FOREIGN KEY (`idEsp`) REFERENCES `espece`(`idEspece`);
+--
+-- Contraintes pour lots remportés
 
---
--- Contraintes pour les tables exportées
---
 
---
+
 -- Contraintes pour la table `encherir`
---
+
 ALTER TABLE `encherir`
 ADD CONSTRAINT `FK_encherir_acheteur` FOREIGN KEY (`mailAcheteur`) REFERENCES `acheteur` (`mail`),
 ADD CONSTRAINT `FK_encherir_lot` FOREIGN KEY (`idLot`) REFERENCES `lot` (`idLot`);
 
---
--- Contraintes pour la table `panier_temporaire`
---
 
 
+--  ***************************   L E S   I N S E R T S   *****************************************************************************************
+
+
+
+
+
+
+
+-- ************************************************************************************************************************************************ 
+
+
+
+-- *************************************** L E   S E L E C T   D E S   L O T S   R E M P O R T E S  ***************************************************************** 
+
+-- SELECT lot_remporté.idLot, lot.libelleLot, lot.prixActuel, lot.AcheteurMax, lot.idEsp, espece.image FROM lot_remporté, lot, espece
+-- where lot_remporté.idLot = lot.idLot and lot.idEsp = espece.idEspece;
+
+-- **************************************** L E   S E L E C T   D E S   L O T S   P A S   E N C O R E   R E M P O R T E S ***********************************************************************
+
+
+-- SELECT * FROM LOT WHERE LOT.idLot NOT IN (SELECT idLot FROM lot_remporté)
+
+
+-- ************************************************************************************************************************************************ 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+
+

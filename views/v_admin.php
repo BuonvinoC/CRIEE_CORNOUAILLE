@@ -22,10 +22,8 @@
     <td>
       <?php
       if ($this->session->userdata('logged_in')!=FALSE){
-
       echo "<br/><br/>";
       echo form_open('utilisateur/valider_lot/');
-
       $prix= array(
       'name'=>'prixLot',
       'id'=>'prixLot',
@@ -33,11 +31,8 @@
       'type'=>'text',
       "value"=>set_value('Commentaire')
       );
-
       echo form_input($prix);
-
       echo "<br/><br/>";
-
       $dateFinEnchere= array(
       'name'=>'dateFinEnchere',
       'id'=>'dateFinEnchere',
@@ -45,23 +40,14 @@
       'type'=>'text',
       "value"=>set_value('Commentaire')
       );
-
       echo form_input($dateFinEnchere);
-
       echo "<br/><br/>";
-
       echo form_hidden('lbl',$row['libelleLot']);
-
       echo form_hidden('poi',$row['poisson']);
-
       echo form_hidden('datePeche',$row['datePeche']);
-
       echo "<br/><br/>";
-
       echo form_submit('envoi','Valider lot');
-
       echo form_close();
-
       }
       ?>
     </td>
