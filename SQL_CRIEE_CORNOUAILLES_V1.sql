@@ -96,9 +96,9 @@ CREATE TABLE IF NOT EXISTS `lot` (
   `libelleLot` varchar(50) NOT NULL,
   `DatePeche` date NOT NULL,
   `prixActuel` int(20) NOT NULL,
-  `AcheteurMax` varchar(30) NOT NULL,
+  `AcheteurMax` varchar(30) NULL,
   `dateFinEnchere` datetime NOT NULL,
-  `idEsp` varchar(50) NOT NULL,
+  `idEsp` varchar(50) NULL,
   `poids` int(20) NULL, -- IL FAUDRA LE METTRE EN NOT NULL PLUS TARD
   PRIMARY KEY(idLot)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
