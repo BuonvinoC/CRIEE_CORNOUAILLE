@@ -1,24 +1,25 @@
 <head>
 <link href="<?php echo base_url('css/commentaire.css');?>" rel="stylesheet" type="text/css">
+<link href="<?php echo base_url('css/catalogue.css');?>" rel="stylesheet" type="text/css">
 </head>
 
 
 
 <table>
   <tr>
-		<th>Reférence lot</th>
-		<th>Nom du lot</th>
-		<th>Poisson</th>
+    <th>Reférence lot</th>
+    <th>Nom du lot</th>
+    <th>Poisson</th>
     <th>Date de peche</th>
     <th>poids</th>
     <th>Valider le lot</th>
-	</tr>
-				<?php
-				foreach ($donnees as $row) {?>
-	<tr>
-		<td><?php echo $row['idLot'];?></td>
-		<td><?php echo $row['libelleLot'];?></td>
-		<td><?php echo $row['poisson'];?></td>
+  </tr>
+        <?php
+        foreach ($donnees as $row) {?>
+  <tr>
+    <td><?php echo $row['idLot'];?></td>
+    <td><?php echo $row['libelleLot'];?></td>
+    <td><?php echo $row['poisson'];?></td>
     <td><?php echo $row['datePeche'];?></td>
     <td><?php echo $row['poids'];?></td>
     <td>
@@ -54,6 +55,6 @@
       }
       ?>
     </td>
-	</tr>
-				<?php } ?>
+  </tr>
+        <?php } ?>
 </table>
