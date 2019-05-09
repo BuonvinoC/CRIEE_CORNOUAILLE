@@ -94,31 +94,10 @@
 
                     <?php
                         //echo ($d_restants. 'J ' . $H_restantes .'H '. $i_restantes. 'MIN et '. $s_restantes .'s ');?>
-												<div id="time">
-		    <span id="jour">jj</span>:<span id="hour">hh</span>:<span id="min">mm</span>:<span id="sec">ss</span>
-		</div>
-<script>
-		setInterval(update, 1000);
-		function update() {
-		  var date = new Date()
 
-			var jours = <?php echo $d_restants ?>;
-		  if (hours < 10) jours = '0'+jours
-		  document.getElementById('hour').innerHTML = jours
+		<p id="<?php echo $i?>demo"></p>
 
-		  var hours = <?php echo $H_restantes ?>;
-		  if (hours < 10) hours = '0'+hours
-		  document.getElementById('hour').innerHTML = hours
 
-		  var minutes = <?php echo $i_restantes ?>;
-		  if (minutes < 10) minutes = '0'+minutes
-		  document.getElementById('min').innerHTML = minutes
-
-		  var seconds = <?php echo $s_restantes ?>;
-		  if (seconds < 10) seconds = '0'+seconds
-		  document.getElementById('sec').innerHTML = seconds
-		}
-</script>
 
 
 										<?php
@@ -163,6 +142,40 @@
 
 
 												// expected output: "NOT positive"
+										</script>
+
+										<script>
+										// Set the date we're counting down to
+										var countDownDate<?php echo $i?> = new Date("<?php echo $annee?>-<?php if($mois<10) echo ("0")?><?php echo $mois?>-<?php if($jour<10) echo ("0")?><?php echo $jour?>T<?php if($heure<10) echo ("0")?><?php echo $heure?>:<?php if($minute<10) echo ("0")?><?php echo $minute?>:<?php if($seconde<10) echo ("0")?><?php echo $seconde?>").getTime();
+										console.log("<?php echo $dateF?>");
+
+										// Update the count down every 1 second
+										var x = setInterval(function() {
+
+										  // Get todays date and time
+										  var now<?php echo $i?> = new Date().getTime();
+
+										  // Find the distance between now and the count down date
+										  var distance<?php echo $i?> = countDownDate<?php echo $i?> - now<?php echo $i?>;
+											console.log("<?php echo $i?> "+ distance<?php echo $i?>);
+
+										  // Time calculations for days, hours, minutes and seconds
+										  var days<?php echo $i?> = Math.floor(distance<?php echo $i?> / (1000 * 60 * 60 * 24));
+										  var hours<?php echo $i?> = Math.floor((distance<?php echo $i?> % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+										  var minutes<?php echo $i?> = Math.floor((distance<?php echo $i?> % (1000 * 60 * 60)) / (1000 * 60));
+										  var seconds<?php echo $i?> = Math.floor((distance<?php echo $i?> % (1000 * 60)) / 1000);
+
+										  // Display the result in the element with id="demo"
+										  document.getElementById("<?php echo $i?>demo").innerHTML = days<?php echo $i?> + "d " + hours<?php echo $i?> + "h "
+										  + minutes<?php echo $i?> + "m " + seconds<?php echo $i?> + "s ";
+
+										  // If the count down is finished, write some text
+										  if (distance<?php echo $i?> < 0) {
+										    clearInterval(x);
+										    document.getElementById("<?php echo $i?>demo").innerHTML = "EXPIRED";
+												//ICI LANCER LA FONCTION D'INSERTION !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+										  }
+										}, 1000);
 										</script>
 
 
