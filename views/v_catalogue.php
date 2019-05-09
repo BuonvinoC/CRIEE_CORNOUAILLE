@@ -6,16 +6,18 @@
 <table>
 	<tr>
 		<th>Photo</th>
-		<th>Reference Lot</th>
-		<th>Nom</th>
-		<th>Nom Scientifique</th>
+        <th>Espèce</th>
+		<th>Référence Lot</th>
+        <th>Libellé</th>
+		<th>Poids du lot</th>
+        <th>Prix</th>
                 <th>
                     <?php
                         if ($this->session->userdata('login')=="admin"){                           
                         echo "Lancer enchère";
                         }
                         else {
-                        echo "Ce poisson m'interesse"; }
+                        echo "Ce lot m'interesse"; }
                             ?>
                         
                         
@@ -24,11 +26,18 @@
 				<?php
 				foreach ($donnees as $row) {?>
 	<tr>
-
-		<td class="tdImg" style="background: no-repeat center url(<?php echo base_url('/images/Poisson/'.$row['image']);?>); background-size:contain " > </td> <!--<img class="imgEsp" src="<?php //echo base_url('/images/Poisson/'.$row['image']);?>"/> -->
-		<td><?php echo $row['idEspece'];?></td>
+<!-- select lot.idLot, lot.libelleLot, lot.PrixActuel, espece.nomEsp, espece.nomSciEsp, espece.image -->
+		<td class="tdImg" style="background: no-repeat center url(<?php echo base_url('/images/Poisson/'.$row['image']);?>); background-size:contain " >  <a href="lien.shtm"></td > <!--<img class="imgEsp" src="<?php //echo base_url('/images/Poisson/'.$row['image']);?>"/> -->
+		
 		<td><?php echo $row['nomEsp'];?></td>
-		<td><?php echo $row['nomSciEsp'];?></td>
+		<td><?php echo $row['idLot'];?></td>
+        <td><?php echo $row['libelleLot'];?></td>
+        <td><?php echo $row['poids'] ;?> kg</td>
+       
+
+        <td><?php echo $row['PrixActuel'];?> €</td>
+
+
                 <td>
                     <?php
                         if ($this->session->userdata('login')=="admin"){
@@ -36,7 +45,7 @@
                             $data = array(
                                     'name'=> 'enchere[]',
                                     'id'=> 'enchere',
-                                    'value'=>$row['idEspece']
+                                    'value'=>$row['idLot']
                             );
                             echo form_checkbox($data);
                                             }
@@ -45,7 +54,7 @@
                             $data = array(
                                     'name'=> 'enchere[]',
                                     'id'=> 'enchere',
-                                    'value'=>$row['idEspece']
+                                    'value'=>$row['idLot']
                             );
                             echo form_checkbox($data);
                                                     }
