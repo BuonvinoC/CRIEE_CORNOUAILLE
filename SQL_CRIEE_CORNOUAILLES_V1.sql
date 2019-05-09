@@ -1,213 +1,223 @@
-<?php
-defined('BASEPATH') OR exit('No direct script access allowed');
-class Main_model extends CI_Model{
-	private $id;
-	private $nom;
-	private $prenom;
-	function __construct(){
-		parent::__construct();
-	}
-	public function updateEnchere($mont,$util,$id) {
-        $this->load->database();
-		$req = $this->db->conn_id->prepare("UPDATE LOT SET prixActuel=:nvMontant, AcheteurMax=:nvAcheteur WHERE LOT.idLot= $id");
-		$req->bindParam('nvMontant', $mont, PDO::PARAM_INT); // on associe chaque paramètres
-		$req->bindParam('nvAcheteur', $util, PDO::PARAM_STR);
-		$result = $req->execute();
-		return $result;
-		$this->db=null;
-		}
+-- phpMyAdmin SQL Dump
+-- version 4.7.9
+-- https://www.phpmyadmin.net/
+--
+-- Hôte : 127.0.0.1:3306
+-- Généré le :  jeu. 09 mai 2019 à 12:36
+-- Version du serveur :  5.7.21
+-- Version de PHP :  5.6.35
 
-	public function afficheProduits1() {
-		$this->load->database();
-		$sql = $this->db->conn_id->prepare("SELECT * FROM espece");
-                //CATALOGUE
-                //SELECT ESPECE.LibelleEspece, ESPECE.Image, LOT.Qtt, LOT.Code, LOT.Libelle FROM LOT, ESPECE WHERE Lot.idEspece = Espece.idEspece
-		$sql->execute();
-		$donnees = $sql->fetchAll();
-		$this->db=null;
-		return $donnees;
-	}
-	public function afficheProduits2() {
-		$this->load->database();
-		$sqql = $this->db->conn_id->prepare("SELECT * FROM LOT WHERE LOT.idLot NOT IN (SELECT idLot FROM lot_remporté)");
-
-                 //SELECT ESPECE.LibelleEspece, ESPECE.Image, LOT.Qtt, LOT.Code, LOT.Libelle FROM LOT, ESPECE WHERE Lot.idEspece = Espece.idEspece and LOT.AcheteurMax NOT NULL
-		$sqql->execute();
-		$donnees = $sqql->fetchAll();
-		$this->db=null;
-		return $donnees;
-	}
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT = 0;
+START TRANSACTION;
+SET time_zone = "+00:00";
 
 
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
 
-	public function InsertPanier($designation, $quantite) {// fonction d'insertion dans la base de données DONNEES
-		$this->load->database();
-		$req = $this->db->conn_id->prepare('INSERT INTO PANIER(designationProduit, quantite) VALUES (:designation, :quantite)');
-		$req->bindParam('designation', $designation, PDO::PARAM_STR); // on associe chaque paramètres
-		$req->bindParam('quantite', $quantite, PDO::PARAM_INT);
-		$result = $req->execute();
-		return $result;
-		$this->db=null;
-	}
-	public function InsertClient($data) {// fonction d'insertion dans la base de données DONNEES
-		$this->load->database();
-		$sql = $this->db->conn_id->prepare("SELECT mailClient FROM ACHETEUR");
-		$sql->execute();
-		$donnees = $sql->fetchAll();
-		$test=0;
-		foreach ($donnees as $row)
-		{
-			if ($row['mail']==$data['mail'])
-			{$test=1;}
-		}
-		if ($test==1)
-			$this->load->view('v_error_inscription');
-		else
-		{
-			$this->load->database();
-			$this->db->insert('ACHETEUR',$data);
-			$this->load->helper('url_helper');
-			$this->load->view('v_entete');
-			$this->load->view('v_bandeau');
-			$this->load->view('v_connexion');
-		}
-		$this->db=null;
-	}
-	public function InsertCommentaire($data) {// fonction d'insertion dans la base de données DONNEES
-			$this->load->database();
-			$this->db->insert('COMMENTAIRE',$data);
-			$this->load->helper('url_helper');
-		$this->db=null;
-	}
-	public function connexionClient($data) {
-		$this->load->database();
-		$sql = $this->db->conn_id->prepare("SELECT mail,pwd FROM ACHETEUR");
-		$sql->execute();
-		$donnees = $sql->fetchAll();
-		foreach ($donnees as $row)
-		{
-                    if (($data['mail']=="admin")&&($data['pwd']=="admin"))
-				$session=2;
+--
+-- Base de données :  `criee_cornouailles_v1`
+--
 
-                    if (($row['mail']==$data['mail'])&&($row['pwd']==$data['pwd']))
-				$session=1;
-		}
-		if ($session == 1){
-			$sessionData= array(
-					'login' => $data['mail'],
-					'mdp' => $data['pwd'],
-					'logged_in' => TRUE
-				);
-			$this->session->set_userdata($sessionData);
-			$this->load->helper('url_helper');
-			$this->load->view('v_entete');
-			$this->load->view('v_bandeau');
-		}
-                elseif ($session == 2){
-                    $sessionData= array(
-					'login' => "admin",
-					'mdp' => "admin",
-					'logged_in' => TRUE
-				);
-			$this->session->set_userdata($sessionData);
-			$this->load->helper('url_helper');
-			$this->load->view('v_entete');
-			$this->load->view('v_bandeau');
+-- --------------------------------------------------------
 
-                }
+--
+-- Structure de la table `acheteur`
+--
 
-                else{
-			$this->load->helper('url_helper');
-			$this->load->view('v_entete');
-			$this->load->view('v_bandeau');
-			$this->load->view('v_error_connexion');
-			$this->load->view('v_connexion');
-		}
-	}
+DROP TABLE IF EXISTS `acheteur`;
+CREATE TABLE IF NOT EXISTS `acheteur` (
+  `mail` varchar(50) NOT NULL,
+  `pwd` varchar(50) DEFAULT NULL,
+  `prenom` varchar(50) DEFAULT NULL,
+  `nom` varchar(50) DEFAULT NULL,
+  `adresse` varchar(50) DEFAULT NULL,
+  `ville` varchar(50) DEFAULT NULL,
+  `codePostal` varchar(50) DEFAULT NULL,
+  PRIMARY KEY (`mail`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-         public function insertLotPropose($lbl,$poi,$date) {// fonction d'insertion dans la base de données DONNEES
-			$this->load->database();
+--
+-- Déchargement des données de la table `acheteur`
+--
 
-                            $req = $this->db->conn_id->prepare('INSERT INTO lot_proposé (libelleLot, poisson, datePeche ) VALUES (:lbl, :poi, :date )');
-                            $req->bindParam('lbl', $lbl, PDO::PARAM_STR); // on associe chaque paramètres
-                            $req->bindParam('poi', $poi, PDO::PARAM_STR); // on associe chaque paramètres
-                            $req->bindParam('date', $date, PDO::PARAM_STR); // on associe chaque paramètres
-                            $result = $req->execute();
-                            return $result;
-                            $this->db=null;
+INSERT INTO `acheteur` (`mail`, `pwd`, `prenom`, `nom`, `adresse`, `ville`, `codePostal`) VALUES
+('admin', 'admin', 'admin', 'admin', NULL, NULL, NULL);
 
-	}
+-- --------------------------------------------------------
 
-        public function insertLotValide($prix,$date) {// fonction d'insertion dans la base de données DONNEES
-			$this->load->database();
+--
+-- Structure de la table `encherir`
+--
 
-                            $req = $this->db->conn_id->prepare('INSERT INTO lot (prixActuel, DateFinEnchère ) VALUES (:prix, :date )');
-                            $req->bindParam('prix', $prix, PDO::PARAM_STR); // on associe chaque paramètres
-                            $req->bindParam('date', $date, PDO::PARAM_STR); // on associe chaque paramètres
-                            $result = $req->execute();
-                            return $result;
-                            $this->db=null;
+DROP TABLE IF EXISTS `encherir`;
+CREATE TABLE IF NOT EXISTS `encherir` (
+  `mailAcheteur` varchar(50) NOT NULL,
+  `idLot` int(11) NOT NULL,
+  `date_encherir` datetime NOT NULL,
+  `prix_propose` float DEFAULT NULL,
+  PRIMARY KEY (`mailAcheteur`,`idLot`,`date_encherir`),
+  KEY `FK_encherir_lot` (`idLot`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-	}
+-- --------------------------------------------------------
 
-        public function ajoutEnchere($data) {// fonction d'insertion dans la base de données DONNEES
-			$this->load->database();
-                        foreach ($data as $poisson ){
-                            foreach ($poisson as $poi)
-                            $req = $this->db->conn_id->prepare('INSERT INTO Lot(idLot ) VALUES (:poi)');
-                            $req->bindParam('poi', $poi, PDO::PARAM_STR); // on associe chaque paramètres
-                            $result = $req->execute();
-                            return $result;
-                            $this->db=null;
-                        }
-	}
+--
+-- Structure de la table `espece`
+--
 
-       public function afficheLotPropose() {
-		$this->load->database();
-		$sqql = $this->db->conn_id->prepare("SELECT * FROM lot_proposé");
+DROP TABLE IF EXISTS `espece`;
+CREATE TABLE IF NOT EXISTS `espece` (
+  `idEspece` varchar(50) NOT NULL,
+  `nomEsp` varchar(50) DEFAULT NULL,
+  `nomSciEsp` varchar(50) DEFAULT NULL,
+  `image` varchar(50) DEFAULT NULL,
+  PRIMARY KEY (`idEspece`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-                 //SELECT ESPECE.LibelleEspece, ESPECE.Image, LOT.Qtt, LOT.Code, LOT.Libelle FROM LOT, ESPECE WHERE Lot.idEspece = Espece.idEspece and LOT.AcheteurMax NOT NULL
-		$sqql->execute();
-		$donnees = $sqql->fetchAll();
-		$this->db=null;
-		return $donnees;
-	}
+--
+-- Déchargement des données de la table `espece`
+--
 
-	public function InsertLot($prx, $dat, $lbl, $datP) {// fonction d'insertion dans la base de données DONNEES
-		$this->load->database();
-		$req = $this->db->conn_id->prepare('INSERT INTO lot(libelleLot, DatePeche, prixActuel, dateFinEnchere) VALUES (:lbl, :datP, :prx, :dat)');
-		$req->bindParam('lbl', $lbl, PDO::PARAM_STR);
-		$req->bindParam('datP', $datP, PDO::PARAM_STR);
-		$req->bindParam('prx', $prx, PDO::PARAM_STR); // on associe chaque paramètres
-		$req->bindParam('dat', $dat, PDO::PARAM_INT);
-		$result = $req->execute();
-		return $result;
-		$this->db=null;
-	}
+INSERT INTO `espece` (`idEspece`, `nomEsp`, `nomSciEsp`, `image`) VALUES
+('1', 'Cabillaud', 'Gadus morhua', 'cabillaud.png'),
+('10', 'Turbot', 'Scophthalmus maximus', 'turbot.png'),
+('2', 'Carpe', 'Cyprinus carpio', 'carpe.png'),
+('3', 'Hareng', 'Clupea harengus', 'hareng.png'),
+('4', 'Maquereau', ' Scomber scombrus', 'maquereau.png'),
+('5', 'Sardine', 'Sardina pilchardus', 'sardine.png'),
+('6', 'Saumon', 'Salmo Salar', 'saumon.png'),
+('7', 'Sole', 'Solea solea', 'sole.png'),
+('8', 'Thon', 'Thunnus thynnus', 'thon.png'),
+('9', 'Truite', 'Salmo trutta', 'truite.png');
 
-public function lotRemporte($idLot/*, $prix, $acht*/) {
-		$this->load->database();
+-- --------------------------------------------------------
 
-		$req = $this->db->conn_id->prepare("INSERT INTO lot_remporté(idLot) VALUES (:idL)");
-		$req->bindParam('idL', $idLot, PDO::PARAM_STR);
+--
+-- Structure de la table `lot`
+--
 
-		$result = $req->execute();
-		return $result;
-		$this->db=null;
-	/*	$this->load->database();
-        echo ($libl. " " .$prix. " " .$acht);
+DROP TABLE IF EXISTS `lot`;
+CREATE TABLE IF NOT EXISTS `lot` (
+  `idLot` int(11) NOT NULL AUTO_INCREMENT,
+  `libelleLot` varchar(50) NOT NULL,
+  `DatePeche` date NOT NULL,
+  `prixActuel` int(11) NOT NULL,
+  `AcheteurMax` varchar(30) NOT NULL,
+  `dateFinEnchere` datetime NOT NULL,
+  PRIMARY KEY (`idLot`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 
-        $pdo = new PDO("mysql:host=localhost;dbname=criee_cornouailles_v1","root","");
-        $req = 'SELECT libelleLot FROM LOT WHERE idLot = 1';
-        $stmt = $pdo->prepare($req);
-        $stmt->execute();
-        var_dump($stmt);
-        return $stmt;
-        $this->db=null;*/
-	}
+--
+-- Déchargement des données de la table `lot`
+--
 
+INSERT INTO `lot` (`idLot`, `libelleLot`, `DatePeche`, `prixActuel`, `AcheteurMax`, `dateFinEnchere`) VALUES
+(1, 'libelleLot', '2019-05-14', 500, 'Buonvino.clement@gmail.com', '2019-05-30 10:30:00'),
+(2, 'penis', '2038-02-02', 300, '', '2018-05-08 18:59:00');
 
+--
+-- Déclencheurs `lot`
+--
+DROP TRIGGER IF EXISTS `refuser_encherir_inferieur`;
+DELIMITER $$
+CREATE TRIGGER `refuser_encherir_inferieur` BEFORE UPDATE ON `lot` FOR EACH ROW BEGIN
+    IF NEW.prixActuel <= OLD.prixActuel THEN
+SET NEW.prixActuel = OLD.prixActuel;
+SET NEW.AcheteurMax = OLD.AcheteurMax;
+END IF;
+END
+$$
+DELIMITER ;
 
+-- --------------------------------------------------------
 
-}
-?>
+--
+-- Structure de la table `lot_proposé`
+--
+
+DROP TABLE IF EXISTS `lot_proposé`;
+CREATE TABLE IF NOT EXISTS `lot_proposé` (
+  `idLot` int(11) NOT NULL AUTO_INCREMENT,
+  `libelleLot` varchar(30) NOT NULL,
+  `poisson` varchar(100) NOT NULL,
+  `datePeche` date NOT NULL,
+  PRIMARY KEY (`idLot`)
+) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+
+--
+-- Déchargement des données de la table `lot_proposé`
+--
+
+INSERT INTO `lot_proposé` (`idLot`, `libelleLot`, `poisson`, `datePeche`) VALUES
+(1, 'penis', 'penis', '2038-02-02');
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `lot_remporté`
+--
+
+DROP TABLE IF EXISTS `lot_remporté`;
+CREATE TABLE IF NOT EXISTS `lot_remporté` (
+  `idLot` int(11) NOT NULL,
+  PRIMARY KEY (`idLot`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+--
+-- Déchargement des données de la table `lot_remporté`
+--
+
+INSERT INTO `lot_remporté` (`idLot`) VALUES
+(2);
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `panier_temporaire`
+--
+
+DROP TABLE IF EXISTS `panier_temporaire`;
+CREATE TABLE IF NOT EXISTS `panier_temporaire` (
+  `mailAcheteur` varchar(50) NOT NULL,
+  `idLot` varchar(50) NOT NULL,
+  PRIMARY KEY (`mailAcheteur`,`idLot`),
+  KEY `idLot` (`idLot`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `vendeur`
+--
+
+DROP TABLE IF EXISTS `vendeur`;
+CREATE TABLE IF NOT EXISTS `vendeur` (
+  `mail` varchar(50) NOT NULL,
+  `pwd` varchar(50) DEFAULT NULL,
+  `prenom` varchar(50) DEFAULT NULL,
+  `nom` varchar(50) DEFAULT NULL,
+  `adresse` varchar(50) DEFAULT NULL,
+  `ville` varchar(50) DEFAULT NULL,
+  `codePostal` varchar(50) DEFAULT NULL,
+  PRIMARY KEY (`mail`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Contraintes pour les tables déchargées
+--
+
+--
+-- Contraintes pour la table `encherir`
+--
+ALTER TABLE `encherir`
+  ADD CONSTRAINT `FK_encherir_acheteur` FOREIGN KEY (`mailAcheteur`) REFERENCES `acheteur` (`mail`),
+  ADD CONSTRAINT `FK_encherir_lot` FOREIGN KEY (`idLot`) REFERENCES `lot` (`idLot`);
+COMMIT;
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
