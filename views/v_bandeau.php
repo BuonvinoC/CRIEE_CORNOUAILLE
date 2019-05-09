@@ -21,29 +21,34 @@
 		if ($this->session->userdata('logged_in')==TRUE){?>
 	<li><a href="<?php echo site_url('utilisateur/contenu/enchere');?>"> Voir les enchere</a></li>
         <?php } ?>
-        
+
 	<li><a href="<?php echo site_url('utilisateur/contenu/admin');?>"> Enchères remportées </a></li>
         <?php
 		if ($this->session->userdata('logged_in')!=TRUE){?>
                         <li><a href="<?php echo site_url('utilisateur/contenu/inscription');?>"> Inscription </a></li>
         <?php } ?>
-                        
+
 	<?php
 		if ($this->session->userdata('logged_in')!=TRUE){?>
 		<li><a href="<?php echo site_url('utilisateur/contenu/connexion');?>"> Connexion </a></li>
 		<?php } else {?>
 		<li><a href="<?php echo site_url('utilisateur/contenu/deconnexion');?>"> Deconnexion </a></li>
 	<?php } ?>
-                
+
         <?php
 		if ($this->session->userdata('login')=="admin"){?>
 		<li><a href="<?php echo site_url('utilisateur/contenu/admin');?>"> Administration </a></li>
-		
+
 	<?php } ?>
+
+	<?php
+if ($this->session->userdata('login')=="admin"){?>
+<li><a href="<?php echo site_url('utilisateur/contenu/propose');?>"> Proposer lot </a></li>
+
+<?php } ?>
 
 
 
 </ul>
 </div>
-</div>	
-	
+</div>
