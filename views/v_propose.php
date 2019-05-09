@@ -46,6 +46,18 @@ echo form_input($datePeche);
 
 echo "<br/><br/>";
 
+$poids= array(
+'name'=>'poids',
+'id'=>'poids',
+'placeholder'=>'poids',
+'type'=>'text',
+"value"=>set_value('Commentaire')
+);
+
+echo form_input($poids);
+
+echo "<br/><br/>";
+
 echo form_submit('envoi','Proposer lot');
 
 echo form_close();
