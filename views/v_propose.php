@@ -38,7 +38,7 @@ echo "<br/><br/>";
 $poids= array(
 'name'=>'poids',
 'id'=>'poids',
-'placeholder'=>'poids',
+'placeholder'=>'Poids',
 'type'=>'text',
 "value"=>set_value('Commentaire')
 );
