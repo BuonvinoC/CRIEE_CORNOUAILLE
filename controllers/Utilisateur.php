@@ -21,11 +21,11 @@ class Utilisateur extends CI_Controller {
 			$this->load->view('v_bandeau');
 			$this->load->view('v_enchere',$data);
 			break;
-		case 'panier':
+		case 'remporte':
 			$this->load->model('main_model');
 			$data['donnees']=$this->main_model->afficheProduits1();
 			$this->load->view('v_bandeau');
-			$this->load->view('v_panier',$data);
+			$this->load->view('v_remporte',$data);
 			break;
 		case 'admin':
 		$this->load->model('main_model');
@@ -135,6 +135,8 @@ class Utilisateur extends CI_Controller {
 		);
 		$this->load->model('main_model');
 	$this->main_model->lotRemporte($data['idLot']/*,$data['prix'],$data['acheteur']*/);
+	header('Location: http://[::1]/CodeIgniter-3.1.9_Criee/index.php/utilisateur/contenu/enchere');
+  	  exit();
 	}
 	public function index()
 	{
