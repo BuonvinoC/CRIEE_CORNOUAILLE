@@ -1,16 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.8.3
+-- version 4.7.9
 -- https://www.phpmyadmin.net/
 --
--- Hôte : 127.0.0.1
--- Généré le :  mar. 12 mars 2019 à 10:25
--- Version du serveur :  10.1.36-MariaDB
--- Version de PHP :  7.2.10
-
-DROP DATABASE IF EXISTS CRIEE_CORNOUAILLES_V1;
-CREATE DATABASE IF NOT EXISTS CRIEE_CORNOUAILLES_V1;
-USE CRIEE_CORNOUAILLES_V1;
-
+-- Hôte : 127.0.0.1:3306
+-- Généré le :  jeu. 09 mai 2019 à 12:36
+-- Version du serveur :  5.7.21
+-- Version de PHP :  5.6.35
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -24,11 +19,6 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Base de données :  `crieev0`
---
-
-
---
 -- Base de données :  `criee_cornouailles_v1`
 --
 
@@ -38,6 +28,7 @@ SET time_zone = "+00:00";
 -- Structure de la table `acheteur`
 --
 
+DROP TABLE IF EXISTS `acheteur`;
 CREATE TABLE IF NOT EXISTS `acheteur` (
   `mail` varchar(50) NOT NULL,
   `pwd` varchar(50) DEFAULT NULL,
@@ -45,14 +36,16 @@ CREATE TABLE IF NOT EXISTS `acheteur` (
   `nom` varchar(50) DEFAULT NULL,
   `adresse` varchar(50) DEFAULT NULL,
   `ville` varchar(50) DEFAULT NULL,
-  `codePostal` varchar(50) DEFAULT NULL
+  `codePostal` varchar(50) DEFAULT NULL,
+  PRIMARY KEY (`mail`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Contenu de la table `acheteur`
+-- Déchargement des données de la table `acheteur`
 --
 
-
+INSERT INTO `acheteur` (`mail`, `pwd`, `prenom`, `nom`, `adresse`, `ville`, `codePostal`) VALUES
+('admin', 'admin', 'admin', 'admin', NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -60,11 +53,14 @@ CREATE TABLE IF NOT EXISTS `acheteur` (
 -- Structure de la table `encherir`
 --
 
+DROP TABLE IF EXISTS `encherir`;
 CREATE TABLE IF NOT EXISTS `encherir` (
   `mailAcheteur` varchar(50) NOT NULL,
-  `idLot` INT NOT NULL,
+  `idLot` int(11) NOT NULL,
   `date_encherir` datetime NOT NULL,
-  `prix_propose` float DEFAULT NULL
+  `prix_propose` float DEFAULT NULL,
+  PRIMARY KEY (`mailAcheteur`,`idLot`,`date_encherir`),
+  KEY `FK_encherir_lot` (`idLot`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -73,15 +69,17 @@ CREATE TABLE IF NOT EXISTS `encherir` (
 -- Structure de la table `espece`
 --
 
+DROP TABLE IF EXISTS `espece`;
 CREATE TABLE IF NOT EXISTS `espece` (
   `idEspece` varchar(50) NOT NULL,
   `nomEsp` varchar(50) DEFAULT NULL,
   `nomSciEsp` varchar(50) DEFAULT NULL,
-  `image` varchar(50) DEFAULT NULL
+  `image` varchar(50) DEFAULT NULL,
+  PRIMARY KEY (`idEspece`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Contenu de la table `espece`
+-- Déchargement des données de la table `espece`
 --
 
 INSERT INTO `espece` (`idEspece`, `nomEsp`, `nomSciEsp`, `image`) VALUES
@@ -102,42 +100,29 @@ INSERT INTO `espece` (`idEspece`, `nomEsp`, `nomSciEsp`, `image`) VALUES
 -- Structure de la table `lot`
 --
 
+DROP TABLE IF EXISTS `lot`;
 CREATE TABLE IF NOT EXISTS `lot` (
-  `idLot` INT NOT NULL AUTO_INCREMENT,
+  `idLot` int(11) NOT NULL AUTO_INCREMENT,
   `libelleLot` varchar(50) NOT NULL,
   `DatePeche` date NOT NULL,
   `prixActuel` int(11) NOT NULL,
   `AcheteurMax` varchar(30) NOT NULL,
   `dateFinEnchere` datetime NOT NULL,
-  PRIMARY KEY(idLot)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  PRIMARY KEY (`idLot`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 
-
--- Structure de la table `lot_proposé`
+--
+-- Déchargement des données de la table `lot`
 --
 
-CREATE TABLE IF NOT EXISTS `lot_proposé` (
-  `idLot` int(11) NOT NULL AUTO_INCREMENT,
-  `libelleLot` varchar(30) NOT NULL,
-  `poisson` varchar(100) NOT NULL,
-  `datePeche` date NOT NULL,
-  PRIMARY KEY(idLot)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
-
-
-CREATE TABLE IF NOT EXISTS lot_remporté (
-  idLot int NOT NULL,
-
-  PRIMARY KEY(idLot)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
--- --------------------------------------------------------
-
 INSERT INTO `lot` (`idLot`, `libelleLot`, `DatePeche`, `prixActuel`, `AcheteurMax`, `dateFinEnchere`) VALUES
-('1', 'libelleLot', '2019-05-14', 500, 'Buonvino.clement@gmail.com', '2019-05-30 10:30:00');
+(1, 'libelleLot', '2019-05-14', 500, 'Buonvino.clement@gmail.com', '2019-05-30 10:30:00'),
+(2, 'penis', '2038-02-02', 300, '', '2018-05-08 18:59:00');
 
 --
 -- Déclencheurs `lot`
 --
+DROP TRIGGER IF EXISTS `refuser_encherir_inferieur`;
 DELIMITER $$
 CREATE TRIGGER `refuser_encherir_inferieur` BEFORE UPDATE ON `lot` FOR EACH ROW BEGIN
     IF NEW.prixActuel <= OLD.prixActuel THEN
@@ -149,13 +134,58 @@ $$
 DELIMITER ;
 
 -- --------------------------------------------------------
+
+--
+-- Structure de la table `lot_proposé`
+--
+
+DROP TABLE IF EXISTS `lot_proposé`;
+CREATE TABLE IF NOT EXISTS `lot_proposé` (
+  `idLot` int(11) NOT NULL AUTO_INCREMENT,
+  `libelleLot` varchar(30) NOT NULL,
+  `poisson` varchar(100) NOT NULL,
+  `datePeche` date NOT NULL,
+  PRIMARY KEY (`idLot`)
+) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+
+--
+-- Déchargement des données de la table `lot_proposé`
+--
+
+INSERT INTO `lot_proposé` (`idLot`, `libelleLot`, `poisson`, `datePeche`) VALUES
+(1, 'penis', 'penis', '2038-02-02');
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `lot_remporté`
+--
+
+DROP TABLE IF EXISTS `lot_remporté`;
+CREATE TABLE IF NOT EXISTS `lot_remporté` (
+  `idLot` int(11) NOT NULL,
+  PRIMARY KEY (`idLot`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+--
+-- Déchargement des données de la table `lot_remporté`
+--
+
+INSERT INTO `lot_remporté` (`idLot`) VALUES
+(2);
+
+-- --------------------------------------------------------
+
 --
 -- Structure de la table `panier_temporaire`
 --
 
+DROP TABLE IF EXISTS `panier_temporaire`;
 CREATE TABLE IF NOT EXISTS `panier_temporaire` (
   `mailAcheteur` varchar(50) NOT NULL,
-  `idLot` varchar(50) NOT NULL
+  `idLot` varchar(50) NOT NULL,
+  PRIMARY KEY (`mailAcheteur`,`idLot`),
+  KEY `idLot` (`idLot`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -164,6 +194,7 @@ CREATE TABLE IF NOT EXISTS `panier_temporaire` (
 -- Structure de la table `vendeur`
 --
 
+DROP TABLE IF EXISTS `vendeur`;
 CREATE TABLE IF NOT EXISTS `vendeur` (
   `mail` varchar(50) NOT NULL,
   `pwd` varchar(50) DEFAULT NULL,
@@ -171,68 +202,21 @@ CREATE TABLE IF NOT EXISTS `vendeur` (
   `nom` varchar(50) DEFAULT NULL,
   `adresse` varchar(50) DEFAULT NULL,
   `ville` varchar(50) DEFAULT NULL,
-  `codePostal` varchar(50) DEFAULT NULL
+  `codePostal` varchar(50) DEFAULT NULL,
+  PRIMARY KEY (`mail`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Index pour les tables exportées
---
-
-ALTER TABLE lot_remporté
-ADD CONSTRAINT FK_lotRemp_Lot FOREIGN KEY (idLot) REFERENCES lot(idLot);
-
---
--- Index pour la table `acheteur`
---
-ALTER TABLE `acheteur`
- ADD PRIMARY KEY (`mail`);
-
---
--- Index pour la table `encherir`
---
-ALTER TABLE `encherir`
- ADD PRIMARY KEY (`mailAcheteur`,`idLot`,`date_encherir`), ADD KEY `FK_encherir_lot` (`idLot`);
-
---
--- Index pour la table `espece`
---
-ALTER TABLE `espece`
- ADD PRIMARY KEY (`idEspece`);
-
---
--- Index pour la table `lot`
---
-
-
---
--- Index pour la table `panier_temporaire`
---
-ALTER TABLE `panier_temporaire`
- ADD PRIMARY KEY (`mailAcheteur`,`idLot`), ADD KEY `idLot` (`idLot`);
-
---
--- Index pour la table `vendeur`
---
-ALTER TABLE `vendeur`
- ADD PRIMARY KEY (`mail`);
-
-
-
---
--- Contraintes pour les tables exportées
+-- Contraintes pour les tables déchargées
 --
 
 --
 -- Contraintes pour la table `encherir`
 --
 ALTER TABLE `encherir`
-ADD CONSTRAINT `FK_encherir_acheteur` FOREIGN KEY (`mailAcheteur`) REFERENCES `acheteur` (`mail`),
-ADD CONSTRAINT `FK_encherir_lot` FOREIGN KEY (`idLot`) REFERENCES `lot` (`idLot`);
-
---
--- Contraintes pour la table `panier_temporaire`
---
-
+  ADD CONSTRAINT `FK_encherir_acheteur` FOREIGN KEY (`mailAcheteur`) REFERENCES `acheteur` (`mail`),
+  ADD CONSTRAINT `FK_encherir_lot` FOREIGN KEY (`idLot`) REFERENCES `lot` (`idLot`);
+COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
