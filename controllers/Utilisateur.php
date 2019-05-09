@@ -51,14 +51,6 @@ class Utilisateur extends CI_Controller {
 			$this->load->view('v_bandeau');
 			session_destroy();
 			break;
-		case 'contact':
-			$this->load->view('v_bandeau');
-			$this->load->view('v_contact');
-			break;
-		case 'mentions':
-			$this->load->view('v_bandeau');
-			$this->load->view('v_mentions');
-			break;
 		case 'propose':
 			$this->load->view('v_bandeau');
 			$this->load->view('v_propose');
@@ -99,7 +91,6 @@ class Utilisateur extends CI_Controller {
 		$this->load->view('v_bandeau');
 		$this->load->view('v_commentaire');
 		}
-
 	public function connexion_utilisateur () {
 		$dataConnect = array ('mail' => $this->input->post('mailClient'),
 		'pwd' => $this->input->post('mdpClient'),
@@ -113,9 +104,7 @@ class Utilisateur extends CI_Controller {
 		$this->main_model->updateEnchere($data['prix_propose'], $data['utilisateur'], $data['idLot']);
                 echo ($data['utilisateur'].' '.$data['prix_propose']);
 	}
-
 	public function proposer_lot() {
-
 		$data = array ('lbl' => $this->input->post('lblLot'),
 		'poi' => $this->input->post('poissonLot'),
 		'datePeche' => $this->input->post('datePeche'),
@@ -126,9 +115,7 @@ class Utilisateur extends CI_Controller {
 		header('Location: http://[::1]/CodeIgniter-3.1.9_Criee/index.php/utilisateur/');
 		exit();
 		}
-
         public function valider_lot() {
-
                 $data = array ('prix' => $this->input->post('prixLot'),
                 'dateFin' => $this->input->post('dateFinEnchere'),
                 'libel' => $this->input->post('lbl'),
@@ -140,27 +127,17 @@ class Utilisateur extends CI_Controller {
 								header('Location: http://[::1]/CodeIgniter-3.1.9_Criee/index.php/utilisateur/contenu/enchere');
   	  			exit();
                 }
-
-
         public function finEnchere()
 	{
-
 		$data = array ('idLot' => $this->input->post('idLot')
 		//'prix' => $this->input->post('prx'),
 		//'acheteur' => $this->input->post('acht')
 		);
-
 		$this->load->model('main_model');
 	$this->main_model->lotRemporte($data['idLot']/*,$data['prix'],$data['acheteur']*/);
 	header('Location: http://[::1]/CodeIgniter-3.1.9_Criee/index.php/utilisateur/contenu/enchere');
   	  exit();
 	}
-
-
-
-
-
-
 	public function index()
 	{
 		$this->load->helper('url_helper');
