@@ -17,9 +17,10 @@ class Main_model extends CI_Model{
 		$this->db=null;
 		}
 
+	
 	public function afficheProduits1() {
 		$this->load->database();
-		$sql = $this->db->conn_id->prepare("SELECT * FROM espece");
+		$sql = $this->db->conn_id->prepare("select lot.idLot, lot.libelleLot, lot.PrixActuel, lot.poids, espece.nomEsp, espece.nomSciEsp, espece.image from lot, espece where lot.idEsp = espece.idEspece");
                 //CATALOGUE
                 //SELECT ESPECE.LibelleEspece, ESPECE.Image, LOT.Qtt, LOT.Code, LOT.Libelle FROM LOT, ESPECE WHERE Lot.idEspece = Espece.idEspece
 		$sql->execute();
