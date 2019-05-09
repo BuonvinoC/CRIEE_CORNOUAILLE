@@ -1,225 +1,151 @@
-<?php
-defined('BASEPATH') OR exit('No direct script access allowed');
-class Main_model extends CI_Model{
-	private $id;
-	private $nom;
-	private $prenom;
-	function __construct(){
-		parent::__construct();
-	}
-	public function updateEnchere($mont,$util,$id) {
-        $this->load->database();
-		$req = $this->db->conn_id->prepare("UPDATE LOT SET prixActuel=:nvMontant, AcheteurMax=:nvAcheteur WHERE LOT.idLot= $id");
-		$req->bindParam('nvMontant', $mont, PDO::PARAM_INT); // on associe chaque paramètres
-		$req->bindParam('nvAcheteur', $util, PDO::PARAM_STR);
-		$result = $req->execute();
-		return $result;
-		$this->db=null;
-		}
+<head>
+<link href="<?php echo base_url('css/catalogue.css');?>" rel="stylesheet" type="text/css">
+<script src="<?php echo base_url('js/jquery.js');?>"></script>
+</head>
 
-	public function afficheProduits1() {
-		$this->load->database();
-		//$sql = $this->db->conn_id->prepare("SELECT * FROM espece");
-                //CATALOGUE
-                //SELECT ESPECE.LibelleEspece, ESPECE.Image, LOT.Qtt, LOT.Code, LOT.Libelle FROM LOT, ESPECE WHERE Lot.idEspece = Espece.idEspece
-		$sql = $this->db->conn_id->prepare("select lot.idLot, lot.libelleLot, lot.PrixActuel, lot.poids, espece.nomEsp, espece.nomSciEsp, espece.image from lot, espece where lot.idEsp = espece.idEspece");
-		$sql->execute();
-		$donnees = $sql->fetchAll();
-		$this->db=null;
-		return $donnees;
-	}
-	public function afficheProduits2() {
-		$this->load->database();
-		$sqql = $this->db->conn_id->prepare("SELECT * FROM LOT WHERE LOT.idLot NOT IN (SELECT idLot FROM lot_remporté)");
+<table>
+	<tr>
+		<th>Reference Lot</th>
+                <th>Libelle Lot</th>
+		<th>Prix actuel</th>
+		<th>Acheteur Max</th>
+		<th>Enchérir</th>
+        <th>Temps restant</th>
+	</tr>
+				<?php
+                                $i=0;
+				foreach ($donnees as $row) {?>
+	<tr>
 
-                 //SELECT ESPECE.LibelleEspece, ESPECE.Image, LOT.Qtt, LOT.Code, LOT.Libelle FROM LOT, ESPECE WHERE Lot.idEspece = Espece.idEspece and LOT.AcheteurMax NOT NULL
-		$sqql->execute();
-		$donnees = $sqql->fetchAll();
-		$this->db=null;
-		return $donnees;
-	}
+		<td><?php echo $row['idLot'];?></td>
+                <td><?php echo $row['libelleLot'];?></td>
+                <td><p><?php echo $row['prixActuel'];?></p></td>
+		<td><?php echo $row['AcheteurMax'];?></td>
 
 
-
-	public function InsertPanier($designation, $quantite) {// fonction d'insertion dans la base de données DONNEES
-		$this->load->database();
-		$req = $this->db->conn_id->prepare('INSERT INTO PANIER(designationProduit, quantite) VALUES (:designation, :quantite)');
-		$req->bindParam('designation', $designation, PDO::PARAM_STR); // on associe chaque paramètres
-		$req->bindParam('quantite', $quantite, PDO::PARAM_INT);
-		$result = $req->execute();
-		return $result;
-		$this->db=null;
-	}
-	public function InsertClient($data) {// fonction d'insertion dans la base de données DONNEES
-		$this->load->database();
-		$sql = $this->db->conn_id->prepare("SELECT mailClient FROM ACHETEUR");
-		$sql->execute();
-		$donnees = $sql->fetchAll();
-		$test=0;
-		foreach ($donnees as $row)
-		{
-			if ($row['mail']==$data['mail'])
-			{$test=1;}
-		}
-		if ($test==1)
-			$this->load->view('v_error_inscription');
-		else
-		{
-			$this->load->database();
-			$this->db->insert('ACHETEUR',$data);
-			$this->load->helper('url_helper');
-			$this->load->view('v_entete');
-			$this->load->view('v_bandeau');
-			$this->load->view('v_connexion');
-		}
-		$this->db=null;
-	}
-	public function InsertCommentaire($data) {// fonction d'insertion dans la base de données DONNEES
-			$this->load->database();
-			$this->db->insert('COMMENTAIRE',$data);
-			$this->load->helper('url_helper');
-		$this->db=null;
-	}
-	public function connexionClient($data) {
-		$this->load->database();
-		$sql = $this->db->conn_id->prepare("SELECT mail,pwd FROM ACHETEUR");
-		$sql->execute();
-		$donnees = $sql->fetchAll();
-		foreach ($donnees as $row)
-		{
-                    if (($data['mail']=="admin")&&($data['pwd']=="admin"))
-				$session=2;
-
-                    if (($row['mail']==$data['mail'])&&($row['pwd']==$data['pwd']))
-				$session=1;
-		}
-		if ($session == 1){
-			$sessionData= array(
-					'login' => $data['mail'],
-					'mdp' => $data['pwd'],
-					'logged_in' => TRUE
+		<td>
+			<?php
+				echo form_open('utilisateur/encherir');
+				$montant= array(
+				'name'=>'ajoutMontant',
+				'id'=>'ajoutMontant',
+				'placeholder'=>'Montant à ajouter',
+				"value"=>set_value('ajoutMontant')
 				);
-			$this->session->set_userdata($sessionData);
-			$this->load->helper('url_helper');
-			$this->load->view('v_entete');
-			$this->load->view('v_bandeau');
+				echo form_input($montant);
+                                echo form_hidden('idL',$row['idLot']);
+				echo form_submit('envoi','Ajouter');
+				echo form_close();
+			?>
+
+			<!-- <input type="text" name="ajoutPrix"><br/>
+			<input type="button" name="valider" value="Valider" onclick="window.location.reload()"><br/> -->
+		</td>
+		<td id="time <?php echo $i?>"><?php
+		date_default_timezone_set('Europe/Paris');
+		$dateF=$row['dateFinEnchere'];
+                $datetime = new DateTime($dateF);
+                $date = $datetime->format('Y-m-d');
+                $time = $datetime->format('H:i:s');
+		$resultat_date = explode('-', $date);
+		$resultat_heure = explode(':', $time);
+		$annee = intval($resultat_date[0]);
+		$mois = intval($resultat_date[1]);
+		$jour = intval($resultat_date[2]);
+		//$heure = 10;
+		$heure = intval($resultat_heure[0]);
+		$minute = intval($resultat_heure[1]);
+		$seconde = intval($resultat_heure[2]);
+		// echo $annee .'/' . $mois . '/' . $jour .'    ';
+		// echo $heure . '/' . $minute . '/' . $seconde;
+		// Heure, minute, seconde, mois, jour
+		// $heureFinEnchere = mktime(10, 50, 0, 5, 30, $annee);
+		$heureFinEnchere = mktime($heure, $minute, $seconde, $mois, $jour, $annee);
+		$tps_restant = $heureFinEnchere - time();
+			// echo form_close();
+		//============ CONVERSIONS
+		$i_restantes = $tps_restant / 60;
+		$H_restantes = $i_restantes / 60;
+		$d_restants = $H_restantes / 24;
+		$s_restantes = floor($tps_restant % 60); // Secondes restantes
+		$i_restantes = floor($i_restantes % 60); // Minutes restantes
+		$H_restantes = floor($H_restantes % 24); // Heures restantes
+		$d_restants = floor($d_restants); // Jours restants
+		//==================
+		setlocale(LC_ALL, 'fr_FR');
+                //$Utilisateur->finEnchere($row['libelleLot'], $row['prixActuel'], $row['AcheteurMax']);
+							//	$this->method_call->finEnchere($row['libelleLot'], $row['prixActuel'], $row['AcheteurMax']);
+                ?>
+
+
+                    <?php
+                        //echo ($d_restants. 'J ' . $H_restantes .'H '. $i_restantes. 'MIN et '. $s_restantes .'s ');?>
+												<div id="time">
+		    <span id="jour">jj</span>:<span id="hour">hh</span>:<span id="min">mm</span>:<span id="sec">ss</span>
+		</div>
+<script>
+		setInterval(update, 1000);
+		function update() {
+		  var date = new Date()
+			var jours = <?php echo $d_restants ?>;
+		  if (hours < 10) jours = '0'+jours
+		  document.getElementById('hour').innerHTML = jours
+		  var hours = <?php echo $H_restantes ?>;
+		  if (hours < 10) hours = '0'+hours
+		  document.getElementById('hour').innerHTML = hours
+		  var minutes = <?php echo $i_restantes ?>;
+		  if (minutes < 10) minutes = '0'+minutes
+		  document.getElementById('min').innerHTML = minutes
+		  var seconds = <?php echo $s_restantes ?>;
+		  if (seconds < 10) seconds = '0'+seconds
+		  document.getElementById('sec').innerHTML = seconds
 		}
-                elseif ($session == 2){
-                    $sessionData= array(
-					'login' => "admin",
-					'mdp' => "admin",
-					'logged_in' => TRUE
-				);
-			$this->session->set_userdata($sessionData);
-			$this->load->helper('url_helper');
-			$this->load->view('v_entete');
-			$this->load->view('v_bandeau');
+</script>
 
-                }
 
-                else{
-			$this->load->helper('url_helper');
-			$this->load->view('v_entete');
-			$this->load->view('v_bandeau');
-			$this->load->view('v_error_connexion');
-			$this->load->view('v_connexion');
-		}
-	}
+										<?php
+							      if ($this->session->userdata('logged_in')!=FALSE){
+							      echo "<br/><br/>";
+							      echo form_open('utilisateur/finEnchere/');
+							      echo form_hidden('idLot',$row['idLot']);
+							      //echo form_hidden('prx',$row['prixActuel']);
+							      //echo form_hidden('acht',$row['AcheteurMax']);
+							      echo "<br/><br/>";
+							      echo form_submit('envoi','Valider lot',['onclick'=>'this.form.submit()','id'=>$i.'valider']);
+							      echo form_close();
+							      }
+							      ?>
 
-         public function insertLotPropose($lbl,$poi,$date,$poids) {// fonction d'insertion dans la base de données DONNEES
-			$this->load->database();
 
-                            $req = $this->db->conn_id->prepare('INSERT INTO lot_proposé (libelleLot, poisson, datePeche, poids) VALUES (:lbl, :poi, :date, :poids )');
-                            $req->bindParam('lbl', $lbl, PDO::PARAM_STR); // on associe chaque paramètres
-                            $req->bindParam('poi', $poi, PDO::PARAM_STR); // on associe chaque paramètres
-                            $req->bindParam('date', $date, PDO::PARAM_STR); // on associe chaque paramètres
-														$req->bindParam('poids', $poids, PDO::PARAM_STR); // on associe chaque paramètres
-                            $result = $req->execute();
-                            return $result;
-                            $this->db=null;
-
-	}
-
-        public function insertLotValide($prix,$date) {// fonction d'insertion dans la base de données DONNEES
-			$this->load->database();
-
-                            $req = $this->db->conn_id->prepare('INSERT INTO lot (prixActuel, DateFinEnchère ) VALUES (:prix, :date )');
-                            $req->bindParam('prix', $prix, PDO::PARAM_STR); // on associe chaque paramètres
-                            $req->bindParam('date', $date, PDO::PARAM_STR); // on associe chaque paramètres
-                            $result = $req->execute();
-                            return $result;
-                            $this->db=null;
-
-	}
-
-        public function ajoutEnchere($data) {// fonction d'insertion dans la base de données DONNEES
-			$this->load->database();
-                        foreach ($data as $poisson ){
-                            foreach ($poisson as $poi)
-                            $req = $this->db->conn_id->prepare('INSERT INTO Lot(idLot ) VALUES (:poi)');
-                            $req->bindParam('poi', $poi, PDO::PARAM_STR); // on associe chaque paramètres
-                            $result = $req->execute();
-                            return $result;
-                            $this->db=null;
-                        }
-	}
-
-       public function afficheLotPropose() {
-		$this->load->database();
-		$sqql = $this->db->conn_id->prepare("SELECT * FROM lot_proposé");
-
-                 //SELECT ESPECE.LibelleEspece, ESPECE.Image, LOT.Qtt, LOT.Code, LOT.Libelle FROM LOT, ESPECE WHERE Lot.idEspece = Espece.idEspece and LOT.AcheteurMax NOT NULL
-		$sqql->execute();
-		$donnees = $sqql->fetchAll();
-		$this->db=null;
-		return $donnees;
-	}
-
-	public function InsertLot($prx, $dat, $lbl, $datP, $poids) {// fonction d'insertion dans la base de données DONNEES
-		$this->load->database();
-		$req = $this->db->conn_id->prepare('INSERT INTO lot(libelleLot, DatePeche, prixActuel, dateFinEnchere, poids) VALUES (:lbl, :datP, :prx, :dat, :poids)');
-		$req->bindParam('lbl', $lbl, PDO::PARAM_STR);
-		$req->bindParam('datP', $datP, PDO::PARAM_STR);
-		$req->bindParam('prx', $prx, PDO::PARAM_INT); // on associe chaque paramètres
-		$req->bindParam('dat', $dat, PDO::PARAM_STR);
-		$req->bindParam('poids', $poids, PDO::PARAM_INT);
-		$result = $req->execute();
-		return $result;
-		$this->db=null;
-	}
-
-public function lotRemporte($idLot/*, $prix, $acht*/) {
-		$this->load->database();
-
-		$req = $this->db->conn_id->prepare("INSERT INTO lot_remporté(idLot) VALUES (:idL)");
-		$req->bindParam('idL', $idLot, PDO::PARAM_STR);
-
-		$result = $req->execute();
-		return $result;
-		$this->db=null;
-	/*	$this->load->database();
-        echo ($libl. " " .$prix. " " .$acht);
-
-        $pdo = new PDO("mysql:host=localhost;dbname=criee_cornouailles_v1","root","");
-        $req = 'SELECT libelleLot FROM LOT WHERE idLot = 1';
-        $stmt = $pdo->prepare($req);
-        $stmt->execute();
-        var_dump($stmt);
-        return $stmt;
-        $this->db=null;*/
-	}
-
-	public function afficheLotRemporte() {
-		$this->load->database();
-		$sqql = $this->db->conn_id->prepare("SELECT * FROM LOT WHERE LOT.idLot NOT IN (SELECT idLot FROM lot_remporté)");
-		$sqql->execute();
-		$donnees = $sqql->fetchAll();
-		$this->db=null;
-		return $donnees;
-	}
+										<script type="text/javascript">
+										function eventFire(el, etype){
+											  if (el.fireEvent) {
+											    el.fireEvent('on' + etype);
+											  } else {
+											    var evObj = document.createEvent('Events');
+											    evObj.initEvent(etype, true, false);
+											    el.dispatchEvent(evObj);
+											  }
+											}
+										var date1 = new Date("<?php echo $annee?>-<?php if($mois<10) echo ("0")?><?php echo $mois?>-<?php if($jour<10) echo ("0")?><?php echo $jour?>T<?php if($heure<10) echo ("0")?><?php echo $heure?>:<?php if($minute<10) echo ("0")?><?php echo $minute?>:<?php if($seconde<10) echo ("0")?><?php echo $seconde?>");
+										var date = new Date();
+										if (date1 <= date)
+										{
+												var submit = document.getElementById("<?php echo $i?>valider");
+												console.log(submit);
+												eventFire(submit, 'click');
+												event.preventDefault();
+										}
+												// expected output: "NOT positive"
+										</script>
 
 
 
+                               </td>
 
-}
-?>
+
+	</tr>
+
+				<?php $i++; } ?>
+
+</table>
