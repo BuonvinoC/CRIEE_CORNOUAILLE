@@ -88,24 +88,38 @@
                 //$Utilisateur->finEnchere($row['libelleLot'], $row['prixActuel'], $row['AcheteurMax']);
 							//	$this->method_call->finEnchere($row['libelleLot'], $row['prixActuel'], $row['AcheteurMax']);
 
-                /*if ($tps_restant == 0)
-                {
-                echo "L enchere est terminée";}
 
-                else {
                 ?>
 
 
-                    <script type="text/javascript">
-                        var txt=<?php echo $d_restants ?> + 'J ' + <?php echo $H_restantes ?> +'H '
-		   + <?php echo $i_restantes ?> +'MIN et '+ <?php echo $s_restantes ?> +'s ';
+                    <?php
+                        //echo ($d_restants. 'J ' . $H_restantes .'H '. $i_restantes. 'MIN et '. $s_restantes .'s ');?>
+												<div id="time">
+		    <span id="jour">jj</span>:<span id="hour">hh</span>:<span id="min">mm</span>:<span id="sec">ss</span>
+		</div>
+<script>
+		setInterval(update, 1000);
+		function update() {
+		  var date = new Date()
 
-                   function myFunction() {
-                        setInterval(function(){ document.getElementById("time <?php echo $i?>").innerHTML = txt}, 1000);
-                    }
-                    </script>
+			var jours = <?php echo $d_restants ?>;
+		  if (hours < 10) jours = '0'+jours
+		  document.getElementById('hour').innerHTML = jours
 
-                    <?php  } */?>
+		  var hours = <?php echo $H_restantes ?>;
+		  if (hours < 10) hours = '0'+hours
+		  document.getElementById('hour').innerHTML = hours
+
+		  var minutes = <?php echo $i_restantes ?>;
+		  if (minutes < 10) minutes = '0'+minutes
+		  document.getElementById('min').innerHTML = minutes
+
+		  var seconds = <?php echo $s_restantes ?>;
+		  if (seconds < 10) seconds = '0'+seconds
+		  document.getElementById('sec').innerHTML = seconds
+		}
+</script>
+
 
 										<?php
 							      if ($this->session->userdata('logged_in')!=FALSE){
