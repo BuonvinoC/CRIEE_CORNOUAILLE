@@ -5,7 +5,10 @@
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 		<link href="<?php echo base_url('css/bandeau.css');?>" rel="stylesheet" type="text/css">
 	</head>
-
+	<body>
+		
+	</body>
+<div id="style_bandeau">
 <div id="bandeau">
 <h1>Criée de Cornouailles</h1>
 <!-- <img src="<?php echo base_url('images/lafleur.gif');?>" alt="Lafleur" title="Lafleur" id="fleur"/> -->
@@ -45,3 +48,5 @@
 
 </ul>
 </div>
+</div>	
+	

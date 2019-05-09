@@ -2,8 +2,8 @@
 <link href="<?php echo base_url('css/form.css');?>" rel="stylesheet" type="text/css">
 </head>
 
-
-<?php 
+<body>
+	<?php 
 echo "<br/><br/>";
 echo form_open('utilisateur/ajout_utilisateur/');
 
@@ -57,3 +57,5 @@ echo form_close();
 
 
 ?>
+
+</body>

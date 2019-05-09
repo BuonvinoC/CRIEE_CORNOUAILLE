@@ -2,7 +2,8 @@
 <link href="<?php echo base_url('css/form.css');?>" rel="stylesheet" type="text/css">
 </head>
 
-<?php
+<body>
+	<?php
 echo form_open('utilisateur/connexion_utilisateur/');
 	
 	
@@ -33,3 +34,5 @@ echo form_submit('envoi','Connexion');
 echo form_close();
 ?>
 </form>
+</body>
+
