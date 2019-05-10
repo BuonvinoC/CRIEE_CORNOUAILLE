@@ -144,6 +144,15 @@ class Utilisateur extends CI_Controller {
 	header('Location: http://[::1]/CodeIgniter-3.1.9_Criee/index.php/utilisateur/contenu/enchere');
   	  exit();
 	}
+	public function choisirLot()
+	{
+
+		  $LesLotsChoisis = $this->input->post('choixLots');
+		  $this->load->model('main_model');
+		 $this->main_model->ajoutPanierTemporaire($LesLotsChoisis);
+
+	}
+
 	public function index()
 	{
 		$this->load->helper('url_helper');
