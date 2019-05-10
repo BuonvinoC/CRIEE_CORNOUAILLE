@@ -1,6 +1,5 @@
 <head>
 <link href="<?php echo base_url('css/catalogue.css');?>" rel="stylesheet" type="text/css">
-<script src="<?php echo base_url('js/jquery.js');?>"></script>
 </head>
 
 <table>
@@ -19,7 +18,7 @@
 
 		<td><?php echo $row['idLot'];?></td>
                 <td><?php echo $row['libelleLot'];?></td>
-                <td><p><?php echo $row['prixActuel'];?></p></td>
+                <td><p><?php echo $row['prixActuel'];?>€</p></td>
 		<td><?php echo $row['AcheteurMax'];?></td>
 
 
@@ -29,7 +28,7 @@
 				$montant= array(
 				'name'=>'ajoutMontant',
 				'id'=>'ajoutMontant',
-				'placeholder'=>'Montant à ajouter',
+				'placeholder'=>'Montant à définir',
 				"value"=>set_value('ajoutMontant')
 				);
 				echo form_input($montant);
@@ -100,87 +99,91 @@
 
 
 
-										<?php
-							      if ($this->session->userdata('logged_in')!=FALSE){
-							      echo "<br/><br/>";
-							      echo form_open('utilisateur/finEnchere/');
+            <?php
+            if ($this->session->userdata('logged_in')!=FALSE){
+            echo "<br/><br/>";
+            echo form_open('utilisateur/finEnchere/');
 
-							      echo form_hidden('idLot',$row['idLot']);
-							      //echo form_hidden('prx',$row['prixActuel']);
-							      //echo form_hidden('acht',$row['AcheteurMax']);
-							      echo "<br/><br/>";
-							      echo form_submit('envoi','Valider lot',['onclick'=>'this.form.submit()','id'=>$i.'valider']);
-							      echo form_close();
-							      }
-							      ?>
-
-
-										<script type="text/javascript">
-
-										function eventFire(el, etype){
-											  if (el.fireEvent) {
-											    el.fireEvent('on' + etype);
-											  } else {
-											    var evObj = document.createEvent('Events');
-											    evObj.initEvent(etype, true, false);
-											    el.dispatchEvent(evObj);
-											  }
-											}
-
-										var date1 = new Date("<?php echo $annee?>-<?php if($mois<10) echo ("0")?><?php echo $mois?>-<?php if($jour<10) echo ("0")?><?php echo $jour?>T<?php if($heure<10) echo ("0")?><?php echo $heure?>:<?php if($minute<10) echo ("0")?><?php echo $minute?>:<?php if($seconde<10) echo ("0")?><?php echo $seconde?>");
-
-										var date = new Date();
-
-										if (date1 <= date)
-										{
-												var submit = document.getElementById("<?php echo $i?>valider");
-												console.log(submit);
-												eventFire(submit, 'click');
-												event.preventDefault();
-
-										}
+            echo form_hidden('idLot',$row['idLot']);
+            //echo form_hidden('prx',$row['prixActuel']);
+            //echo form_hidden('acht',$row['AcheteurMax']);
+            echo "<br/><br/>";
+            echo form_submit('envoi','Valider lot',['onclick'=>'this.form.submit()','id'=>$i.'valider','hidden'=>1]);
+            echo form_close();
+            }
+            ?>
 
 
-												// expected output: "NOT positive"
-										</script>
-
-										<script>
-										// Set the date we're counting down to
-										var countDownDate<?php echo $i?> = new Date("<?php echo $annee?>-<?php if($mois<10) echo ("0")?><?php echo $mois?>-<?php if($jour<10) echo ("0")?><?php echo $jour?>T<?php if($heure<10) echo ("0")?><?php echo $heure?>:<?php if($minute<10) echo ("0")?><?php echo $minute?>:<?php if($seconde<10) echo ("0")?><?php echo $seconde?>").getTime();
-										console.log("<?php echo $dateF?>");
-
-										// Update the count down every 1 second
-										var x = setInterval(function() {
-
-										  // Get todays date and time
-										  var now<?php echo $i?> = new Date().getTime();
-
-										  // Find the distance between now and the count down date
-										  var distance<?php echo $i?> = countDownDate<?php echo $i?> - now<?php echo $i?>;
-											console.log("<?php echo $i?> "+ distance<?php echo $i?>);
-
-										  // Time calculations for days, hours, minutes and seconds
-										  var days<?php echo $i?> = Math.floor(distance<?php echo $i?> / (1000 * 60 * 60 * 24));
-										  var hours<?php echo $i?> = Math.floor((distance<?php echo $i?> % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-										  var minutes<?php echo $i?> = Math.floor((distance<?php echo $i?> % (1000 * 60 * 60)) / (1000 * 60));
-										  var seconds<?php echo $i?> = Math.floor((distance<?php echo $i?> % (1000 * 60)) / 1000);
-
-										  // Display the result in the element with id="demo"
-										  document.getElementById("<?php echo $i?>demo").innerHTML = days<?php echo $i?> + "d " + hours<?php echo $i?> + "h "
-										  + minutes<?php echo $i?> + "m " + seconds<?php echo $i?> + "s ";
-
-										  // If the count down is finished, write some text
-										  if (distance<?php echo $i?> < 0) {
-										    clearInterval(x);
-										    document.getElementById("<?php echo $i?>demo").innerHTML = "EXPIRED";
-												//ICI LANCER LA FONCTION D'INSERTION !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-										  }
-										}, 1000);
-										</script>
+                              <script type="text/javascript">
 
 
 
-                               </td>
+
+
+
+                                              // expected output: "NOT positive"
+                              </script>
+
+                              <script>
+
+                              function eventFire(el, etype){
+                                        if (el.fireEvent) {
+                                          el.fireEvent('on' + etype);
+                                        } else {
+                                          var evObj = document.createEvent('Events');
+                                          evObj.initEvent(etype, true, false);
+                                          el.dispatchEvent(evObj);
+                                        }
+                                      }   
+
+                              // Set the date we're counting down to
+                              var countDownDate<?php echo $i?> = new Date("<?php echo $annee?>-<?php if($mois<10) echo ("0")?><?php echo $mois?>-<?php if($jour<10) echo ("0")?><?php echo $jour?>T<?php if($heure<10) echo ("0")?><?php echo $heure?>:<?php if($minute<10) echo ("0")?><?php echo $minute?>:<?php if($seconde<10) echo ("0")?><?php echo $seconde?>").getTime();
+                              console.log("<?php echo $dateF?>");
+
+                              // Update the count down every 1 second
+                              var x = setInterval(function() {
+
+                                // Get todays date and time
+                                var now<?php echo $i?> = new Date().getTime();
+
+                                // Find the distance between now and the count down date
+                                var distance<?php echo $i?> = countDownDate<?php echo $i?> - now<?php echo $i?>;
+                                      console.log("<?php echo $i?> "+ distance<?php echo $i?>);
+
+                                // Time calculations for days, hours, minutes and seconds
+                                var days<?php echo $i?> = Math.floor(distance<?php echo $i?> / (1000 * 60 * 60 * 24));
+                                var hours<?php echo $i?> = Math.floor((distance<?php echo $i?> % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                                var minutes<?php echo $i?> = Math.floor((distance<?php echo $i?> % (1000 * 60 * 60)) / (1000 * 60));
+                                var seconds<?php echo $i?> = Math.floor((distance<?php echo $i?> % (1000 * 60)) / 1000);
+
+                                // Display the result in the element with id="demo"
+                                document.getElementById("<?php echo $i?>demo").innerHTML = days<?php echo $i?> + "d " + hours<?php echo $i?> + "h "
+                                + minutes<?php echo $i?> + "m " + seconds<?php echo $i?> + "s ";
+
+                                // If the count down is finished, write some text
+                                if (distance<?php echo $i?> < 0) {
+                                  clearInterval(x);
+                                  document.getElementById("<?php echo $i?>demo").innerHTML = "EXPIRED";
+                                              //ICI LANCER LA FONCTION D'INSERTION !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                                      //var date1 = new Date("<?php echo $annee?>-<?php if($mois<10) echo ("0")?><?php echo $mois?>-<?php if($jour<10) echo ("0")?><?php echo $jour?>T<?php if($heure<10) echo ("0")?><?php echo $heure?>:<?php if($minute<10) echo ("0")?><?php echo $minute?>:<?php if($seconde<10) echo ("0")?><?php echo $seconde?>");
+
+                                      //var date = new Date();
+
+                                      //if (date1 <= date)
+                                      //{
+                                          var submit = document.getElementById("<?php echo $i?>valider");
+                                          console.log(submit);
+                                          eventFire(submit, 'click');
+                                          event.preventDefault();
+
+                                      //}
+                                }
+                              }, 1000);
+                              </script>
+
+
+
+</td>
 
 
 	</tr>
