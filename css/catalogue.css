@@ -24,3 +24,7 @@ th {
   background-color: #a2ccf2;
   color: white;
 }
+
+body{
+  background-image: url('../images/fond_poisson.jpg');
+}
