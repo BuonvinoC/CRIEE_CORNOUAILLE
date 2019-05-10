@@ -36,7 +36,7 @@ class Main_model extends CI_Model{
 		$this->db=null;
 		return $donnees;
 	}
-	public function InsertPanier($designation, $quantite) {// fonction d'insertion dans la base de données DONNEES
+		public function InsertPanier($designation, $quantite) {// fonction d'insertion dans la base de données DONNEES
 		$this->load->database();
 		$req = $this->db->conn_id->prepare('INSERT INTO PANIER(designationProduit, quantite) VALUES (:designation, :quantite)');
 		$req->bindParam('designation', $designation, PDO::PARAM_STR); // on associe chaque paramètres
@@ -187,6 +187,25 @@ public function lotRemporte($idLot) {
 		$donnees = $sqql->fetchAll();
 		$this->db=null;
 		return $donnees;
+	}
+	public function ajoutPanierTemporaire($lesLotsSouhaites){
+		
+			$this->load->database();
+			 $MailUser = $this->session->userdata('login');
+
+		foreach($lesLotsSouhaites as $row) {
+			  
+			$IdLotChoisi = $row['idLot'];
+
+			$req = $this->db->conn_id->prepare('INSERT INTO panier_temporaire(mailAcheteur, idLot) VALUES (:MailUser, :IdLotChoisi)');
+			$req->bindParam('MailUser',  $MailUser, PDO::PARAM_STR);
+			$req->bindParam('IdLotChoisi', $IdLotChoisi, PDO::PARAM_STR);
+		
+			$result = $req->execute();
+
+		}
+		$this->db=null;
+		return $result;
 	}
 }
 ?>
