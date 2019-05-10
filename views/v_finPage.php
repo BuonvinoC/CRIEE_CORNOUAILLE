@@ -4,8 +4,8 @@
 </head>
 <div id="finPage" class="footer">
     <table align="center">
-        <td><img src="./../images/paiement.png" width="50%" align="right"></td>
-        <td><img src="./../images/livraison48.jpg" width="50%" align="left"></td>
+        <td><img src="<?php echo base_url('/images/paiement.png');?>" width="50%" align="right"></td>
+        <td><img src="<?php echo base_url('/images/livraison48.jpg');?>" width="50%" align="left"></td>
     </table>
     <table align="center">
         <td><a href="<?php echo site_url('utilisateur/contenu/contact');?>">Contact</a></td>
