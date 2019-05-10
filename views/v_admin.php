@@ -44,6 +44,7 @@
       );
       echo form_input($dateFinEnchere);
       echo "<br/><br/>";
+      echo form_hidden('idL',$row['idLot']);
       echo form_hidden('lbl',$row['libelleLot']);
       echo form_hidden('poi',$row['poisson']);
       echo form_hidden('datePeche',$row['datePeche']);
