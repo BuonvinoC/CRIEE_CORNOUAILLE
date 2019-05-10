@@ -8,7 +8,7 @@
     <img src="./../images/accueil_bateau.jpg" width="70%" align="left">
     <table align="center">
         <tr><td><a href="<?php echo site_url('utilisateur/contenu/catalogue');?>"><img src="./../images/nos_produits.png" align="left"/></a></td></tr>
-        <tr><td><a href="<?php echo site_url('utilisateur/contenu/enchere');?>"><img src="./../images/img_encheres.jpg" align="right"></a></td></tr></table>
+        <tr><td><a href="<?php echo site_url('utilisateur/contenu/enchere');?>"><img src="./../images/img_enchere.jpg" align="right"></a></td></tr></table>
     <p>Bonjour et bienvenue sur notre boutique en ligne. Vous pourrez y découvrir la sélection de nos poissons dans notre catalogue. Nous vous invitons à vous inscrire et à profiter de nos articles. Veuillez nous contacter pour plus d'informations.</p>
     <h2>Qui sommes nous ?</h2>
 
