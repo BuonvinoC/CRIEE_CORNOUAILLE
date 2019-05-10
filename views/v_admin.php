@@ -1,5 +1,4 @@
 <head>
-<link href="<?php echo base_url('css/commentaire.css');?>" rel="stylesheet" type="text/css">
 <link href="<?php echo base_url('css/catalogue.css');?>" rel="stylesheet" type="text/css">
 </head>
 
@@ -21,7 +20,7 @@
     <td><?php echo $row['libelleLot'];?></td>
     <td><?php echo $row['poisson'];?></td>
     <td><?php echo $row['datePeche'];?></td>
-    <td><?php echo $row['poids'];?></td>
+    <td><?php echo $row['poids'];?>kg</td>
     <td>
       <?php
       if ($this->session->userdata('logged_in')!=FALSE){
