@@ -1,5 +1,6 @@
 body {
     text-align: center;
+	background-image: url('../images/fond_poisson.jpg');
 }
 form {
     margin-top : 5%;
