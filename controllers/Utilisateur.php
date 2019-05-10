@@ -158,6 +158,8 @@ class Utilisateur extends CI_Controller {
 		  $LesLotsChoisis = $this->input->post('choixLots');
 		  $this->load->model('main_model');
 		 $this->main_model->ajoutPanierTemporaire($LesLotsChoisis);
+		header('Location: http://[::1]/CodeIgniter-3.1.9_Criee/index.php/utilisateur/contenu/catalogue');
+  	 	 exit();
 
 	}
 
