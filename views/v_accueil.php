@@ -5,7 +5,7 @@
     <link style="css" href="<?php echo base_url('css/style.css');?>" rel="stylesheet">
 </head>
 <body>
-    <img src="./../images/accueil_bateau.jpg" width="70%" align="left">
+    <img src="./../la_criee.jpg" width="70%" align="left">
     <table align="center">
         <tr><td><a href="<?php echo site_url('utilisateur/contenu/catalogue');?>"><img src="./../images/nos_produits.png" align="left"/></a></td></tr>
         <tr><td><a href="<?php echo site_url('utilisateur/contenu/enchere');?>"><img src="./../images/img_encheres.jpg" align="right"></a></td></tr></table>
