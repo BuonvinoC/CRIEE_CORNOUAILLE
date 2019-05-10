@@ -43,6 +43,10 @@ class Utilisateur extends CI_Controller {
 			header('Location: http://[::1]/CodeIgniter-3.1.9_Criee/index.php/utilisateur');
 			exit();
 			break;
+		case 'contact':
+			$this->load->view('v_bandeau');
+			$this->load->view('v_contact');
+			break;
 		case 'mentions':
 			$this->load->view('v_bandeau');
 			$this->load->view('v_mentions');
