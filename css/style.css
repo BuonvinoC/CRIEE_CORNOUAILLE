@@ -6,3 +6,10 @@ body{
 p{
 	color: white;
 }
+
+label
+{
+	display: block; /* La balise devient de type block. */
+	width: 999px;
+}
+
