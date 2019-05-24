@@ -243,7 +243,7 @@ ADD CONSTRAINT `FK_lot_espece` FOREIGN KEY (`idEsp`) REFERENCES `espece`(`idEspe
 -- Contraintes pour la table `encherir`
 
 ALTER TABLE `encherir`
-ADD CONSTRAINT `FK_encherir_acheteur` FOREIGN KEY (`mailAcheteur`) REFERENCES `acheteur` (`mail`),
+ADD CONSTRAINT `FK_encherir_acheteur` FOREIGN KEY (`mailAcheteur`) REFERENCES `acheteur` (`mail_acheteur`),
 ADD CONSTRAINT `FK_encherir_lot` FOREIGN KEY (`idLot`) REFERENCES `lot` (`idLot`);
 
 
