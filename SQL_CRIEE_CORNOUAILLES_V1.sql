@@ -199,11 +199,11 @@ INSERT INTO `espece` (`idEspece`, `nomEsp`, `nomSciEsp`, `image`) VALUES
 ('TRU', 'Truite', 'Salmo trutta', 'truite.png');
 
 
-INSERT INTO `lot` (`idLot`, `libelleLot`, `DatePeche`, `prixActuel`, `AcheteurMax`, `dateFinEnchere`, `idEsp`, `poids`) VALUES
-(1, 'libelleLot', '2019-05-14', 500, 'Buonvino.clement@gmail.com', '2019-05-30 10:30:00','CARP', 50),
-(2, 'Gros pack de harengs', '2019-05-14', 500, 'Buonvino.clement@gmail.com', '2019-05-30 12:30:00','HARG', 100),
-(3, 'Lot de harengs peu utilisés', '2019-05-14', 500, 'Buonvino.clement@gmail.com', '2111-11-11 11:11:11','HARG', 12),
-(4, 'Je vends ma femme, bon etat', '2019-05-14', 500, 'Buonvino.clement@gmail.com', '2019-02-30 09:30:00','THON', 666);
+INSERT INTO `lot` (`idLot`, `libelleLot`, `DatePeche`, `prixActuel`, `AcheteurMax`, `dateFinEnchere`, `idEsp`, `poids`, `noteLot`) VALUES
+(1, 'libelleLot', '2019-05-14', 500, 'Buonvino.clement@gmail.com', '2019-05-30 10:30:00','CARP', 50, 90),
+(2, 'Gros pack de harengs', '2019-05-14', 500, 'Buonvino.clement@gmail.com', '2019-05-30 12:30:00','HARG', 100, 70),
+(3, 'Lot de harengs peu utilisés', '2019-05-14', 500, 'Buonvino.clement@gmail.com', '2111-11-11 11:11:11','HARG', 12, 50),
+(4, 'Je vends ma femme, bon etat', '2019-05-14', 500, 'Buonvino.clement@gmail.com', '2019-02-30 09:30:00','THON', 666, 100);
 
 
 INSERT INTO `lot_remporté`(idLot) VALUES (1);
