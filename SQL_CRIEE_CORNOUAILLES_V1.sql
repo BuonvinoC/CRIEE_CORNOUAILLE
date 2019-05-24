@@ -49,12 +49,12 @@ CREATE TABLE IF NOT EXISTS `client` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 CREATE TABLE IF NOT EXISTS `vendeur` (
-  `vendeur_mail` varchar(50) PRIMARY KEY REFERENCES client(mail)
+  `mail_vendeur` varchar(50) PRIMARY KEY REFERENCES client(mail)
 
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 CREATE TABLE IF NOT EXISTS `acheteur` (
-  `acheteur_mail` varchar(50) PRIMARY KEY REFERENCES client(mail)
+  `mail_acheteur` varchar(50) PRIMARY KEY REFERENCES client(mail)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
