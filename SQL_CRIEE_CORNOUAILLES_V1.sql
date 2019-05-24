@@ -7,9 +7,9 @@
 -- Version du serveur :  10.1.36-MariaDB
 -- Version de PHP :  7.2.10
 
-DROP DATABASE IF EXISTS CRIEE_CORNOUAILLES_V1;
-CREATE DATABASE IF NOT EXISTS CRIEE_CORNOUAILLES_V1;
-USE CRIEE_CORNOUAILLES_V1;
+DROP DATABASE IF EXISTS CRIEE_CORNOUAILLES_V2;
+CREATE DATABASE IF NOT EXISTS CRIEE_CORNOUAILLES_V2;
+USE CRIEE_CORNOUAILLES_V2;
 
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
@@ -38,7 +38,7 @@ SET time_zone = "+00:00";
 -- Structure de la table `acheteur`
 --
 
-CREATE TABLE IF NOT EXISTS `acheteur` (
+CREATE TABLE IF NOT EXISTS `client` (
   `mail` varchar(50) NOT NULL,
   `pwd` varchar(50) DEFAULT NULL,
   `prenom` varchar(50) DEFAULT NULL,
@@ -46,6 +46,15 @@ CREATE TABLE IF NOT EXISTS `acheteur` (
   `adresse` varchar(50) DEFAULT NULL,
   `ville` varchar(50) DEFAULT NULL,
   `codePostal` varchar(50) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+CREATE TABLE IF NOT EXISTS `vendeur` (
+  `vendeur_mail` varchar(50) PRIMARY KEY REFERENCES client(mail)
+
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+CREATE TABLE IF NOT EXISTS `acheteur` (
+  `acheteur_mail` varchar(50) PRIMARY KEY REFERENCES client(mail)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -145,15 +154,7 @@ CREATE TABLE IF NOT EXISTS `panier_temporaire` (
 -- Structure de la table `vendeur`
 --
 
-CREATE TABLE IF NOT EXISTS `vendeur` (
-  `mail` varchar(50) NOT NULL,
-  `pwd` varchar(50) DEFAULT NULL,
-  `prenom` varchar(50) DEFAULT NULL,
-  `nom` varchar(50) DEFAULT NULL,
-  `adresse` varchar(50) DEFAULT NULL,
-  `ville` varchar(50) DEFAULT NULL,
-  `codePostal` varchar(50) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
 
 
 
@@ -199,7 +200,7 @@ INSERT INTO `lot_remporté`(idLot) VALUES (1);
 --
 -- Index pour la table `acheteur`
 --
-ALTER TABLE `acheteur`
+ALTER TABLE `client`
  ADD PRIMARY KEY (`mail`);
 
 --
@@ -227,13 +228,9 @@ ALTER TABLE `panier_temporaire`
  ADD PRIMARY KEY (`mailAcheteur`,`idLot`),
 
 
- ADD CONSTRAINT `FK_panier_acheteur` FOREIGN KEY (`mailAcheteur`) REFERENCES `acheteur`(`mail`),
+ADD CONSTRAINT `FK_panier_acheteur` FOREIGN KEY (`mailAcheteur`) REFERENCES `acheteur`(`mail_acheteur`),
 ADD CONSTRAINT `FK_panier_lot` FOREIGN KEY (`idLot`) REFERENCES `lot`(`idLot`);
 --
--- Index pour la table `vendeur`
---
-ALTER TABLE `vendeur`
- ADD PRIMARY KEY (`mail`);
 
 
 ALTER TABLE `lot`
