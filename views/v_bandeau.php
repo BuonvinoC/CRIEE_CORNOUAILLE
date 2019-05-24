@@ -42,7 +42,7 @@
 	<?php } ?>
 
 	<?php
-if ($this->session->userdata('login')=="admin"){?>
+if ($this->session->userdata('logged_in')==TRUE){?>
 <li><a href="<?php echo site_url('utilisateur/contenu/propose');?>"> Proposer lot </a></li>
 
 <?php } ?>
