@@ -182,6 +182,16 @@ END
 $$
 DELIMITER ;
 
+DELIMITER $$
+CREATE TRIGGER `refuser_note` BEFORE UPDATE ON `lot` FOR EACH ROW BEGIN
+    IF NEW.noteLot > 100 THEN
+EXECUTE PROCEDURE exit();
+END IF;
+END
+$$
+DELIMITER ;
+
+
 --
 -- Index pour les tables exportées
 --
