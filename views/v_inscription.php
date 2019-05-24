@@ -3,7 +3,7 @@
 </head>
 
 
-<?php 
+<?php
 echo "<br/><br/>";
 echo form_open('utilisateur/ajout_utilisateur/');
 
@@ -11,7 +11,8 @@ $nom= array(
 'name'=>'nomClient',
 'id'=>'nom',
 'placeholder'=>'Nom',
-"value"=>set_value('Nom')
+"value"=>set_value('Nom'),
+"required"=>"true"
 );
 
 echo form_input($nom);
@@ -22,7 +23,8 @@ $prenom= array(
 'name'=>'prenomClient',
 'id'=>'prenom',
 'placeholder'=>'Prénom',
-"value"=>set_value('Prenom')
+"value"=>set_value('Prenom'),
+"required"=>"true"
 );
 
 echo form_input($prenom);
@@ -33,7 +35,8 @@ $mail= array(
 'name'=>'mailClient',
 'id'=>'mail',
 'placeholder'=>'Mail',
-"value"=>set_value('Mail')
+"value"=>set_value('Mail'),
+"required"=>"true"
 );
 
 echo form_input($mail);
@@ -44,10 +47,40 @@ $mdp= array(
 'name'=>'mdpClient',
 'id'=>'mdp',
 'placeholder'=>'Mot de passe',
-"value"=>set_value('Mdp')
+"value"=>set_value('Mdp'),
+"required"=>"true"
 );
 
-echo form_password($mdp);
+echo form_input($mdp);
+
+echo "<br/><br/>";
+
+$acheteur= array(
+'name'=>'typeClient[]',
+'id'=>'acheteur',
+'placeholder'=>'acheteur',
+"value"=>set_value('acheteur'),
+"required"=>"true"
+);
+
+echo form_radio($acheteur);
+
+echo form_label("acheteur","typeClient[]");
+
+echo "<br/><br/>";
+
+$vendeur= array(
+'name'=>'typeClient[]',
+'id'=>'vendeur',
+'placeholder'=>'vendeur',
+"value"=>set_value('vendeur'),
+"required"=>"true"
+);
+
+echo form_radio($vendeur);
+
+echo form_label("vendeur","typeClient[]");
+
 echo "<br/><br/>";
 
 echo form_submit('envoi','Valider');
