@@ -121,6 +121,7 @@ CREATE TABLE IF NOT EXISTS `lot` (
   `dateFinEnchere` datetime NOT NULL,
   `idEsp` varchar(50) NULL,
   `poids` int(20) NULL, -- IL FAUDRA LE METTRE EN NOT NULL PLUS TARD
+  `noteLot` int(11) DEFAULT NULL,
   PRIMARY KEY(idLot)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
