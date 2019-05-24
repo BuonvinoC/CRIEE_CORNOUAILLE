@@ -178,18 +178,13 @@ CREATE TRIGGER `refuser_encherir_inferieur` BEFORE UPDATE ON `lot` FOR EACH ROW 
 SET NEW.prixActuel = OLD.prixActuel;
 SET NEW.AcheteurMax = OLD.AcheteurMax;
 END IF;
-END
-$$
-DELIMITER ;
-
-DELIMITER $$
-CREATE TRIGGER `refuser_note` BEFORE UPDATE ON `lot` FOR EACH ROW BEGIN
     IF NEW.noteLot > 100 THEN
-EXECUTE PROCEDURE exit();
+SET NEW.noteLOT = NULL;
 END IF;
 END
 $$
 DELIMITER ;
+
 
 
 --
