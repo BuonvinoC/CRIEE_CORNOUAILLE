@@ -56,30 +56,28 @@ echo form_input($mdp);
 echo "<br/><br/>";
 
 $acheteur= array(
-'name'=>'typeClient[]',
+'name'=>'typeClient',
 'id'=>'acheteur',
-'placeholder'=>'acheteur',
-"value"=>set_value('acheteur'),
+"value"=>'acheteur',
 "required"=>"true"
 );
 
 echo form_radio($acheteur);
 
-echo form_label("acheteur","typeClient[]");
+echo form_label("acheteur","typeClient");
 
 echo "<br/><br/>";
 
 $vendeur= array(
-'name'=>'typeClient[]',
+'name'=>'typeClient',
 'id'=>'vendeur',
-'placeholder'=>'vendeur',
-"value"=>set_value('vendeur'),
+"value"=>'vendeur',
 "required"=>"true"
 );
 
 echo form_radio($vendeur);
 
-echo form_label("vendeur","typeClient[]");
+echo form_label("vendeur","typeClient");
 
 echo "<br/><br/>";
 
