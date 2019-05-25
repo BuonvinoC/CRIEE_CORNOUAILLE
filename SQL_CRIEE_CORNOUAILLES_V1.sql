@@ -136,6 +136,7 @@ CREATE TABLE IF NOT EXISTS `lot_proposé` (
   `poisson` varchar(100) NOT NULL,
   `datePeche` date NOT NULL,
   `poids` int(20) NULL, -- IL FAUDRA LE METTRE EN NOT NULL PLUS TARD
+  `vendeur` varchar(50) NOT NULL,
   PRIMARY KEY(idLot)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
