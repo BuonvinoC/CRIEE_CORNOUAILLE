@@ -12,6 +12,7 @@
         <th>Reference Lot</th>
         <th>Libelle Lot</th>
         <th>Prix d'achat</th>
+        <th>Noter le Lot</th>
     </tr>
                 <?php
                                 $i=0;
@@ -21,6 +22,25 @@
         <td><?php echo $row['idLot'];?></td>
         <td><?php echo $row['libelleLot'];?></td>
         <td><?php echo $row['prixActuel'];?></td>
+        <td><?php if($row['noteLot'])
+        {
+            echo $row['noteLot'] . '/100';
+        }
+        else
+        {
+                echo form_open('utilisateur/ajouter_note');
+                $note= array(
+                'name'=>'ajoutNote',
+                'id'=>'ajoutNote',
+                'placeholder'=>'Une note sur 100',
+                "value"=>set_value('ajoutNote')
+                );
+                echo form_input($note);
+                echo form_hidden('idL',$row['idLot']);
+                echo form_submit('envoi','Noter');
+                echo form_close();
+        }
+            ?></td>
 
 
  
