@@ -14,15 +14,24 @@ class Main_model extends CI_Model{
 		$req->bindParam('nvAcheteur', $util, PDO::PARAM_STR);
 		$result = $req->execute();
 		$this->db=null;
-                return $result;
-
+        return $result;
+		}
+	public function updateNote($note, $id) {
+        $this->load->database();
+		$req = $this->db->conn_id->prepare("UPDATE LOT SET noteLot=:nvNote WHERE LOT.idLot= $id");
+		$req->bindParam('nvNote', $note, PDO::PARAM_INT); // on associe chaque paramètres
+		$result = $req->execute();
+		$reqq = $this->db->conn_id->prepare("UPDATE VENDEUR SET note=(SELECT AVG(LOT.noteLot) FROM LOT WHERE LOT.vendeur='vendeur')");
+		$result = $reqq->execute();
+		$this->db=null;
+        return $result;
 		}
 	public function afficheProduits1() {
 		$this->load->database();
 		//$sql = $this->db->conn_id->prepare("SELECT * FROM espece");
                 //CATALOGUE
                 //SELECT ESPECE.LibelleEspece, ESPECE.Image, LOT.Qtt, LOT.Code, LOT.Libelle FROM LOT, ESPECE WHERE Lot.idEspece = Espece.idEspece
-		$sql = $this->db->conn_id->prepare("select lot.idLot, lot.libelleLot, lot.PrixActuel, lot.poids, espece.nomEsp, espece.nomSciEsp, espece.image from lot, espece where lot.idEsp = espece.idEspece");
+		$sql = $this->db->conn_id->prepare("select lot.idLot, lot.libelleLot, lot.PrixActuel, lot.poids, lot.noteLot, espece.nomEsp, espece.nomSciEsp, espece.image from lot, espece where lot.idEsp = espece.idEspece");
 		$sql->execute();
 		$donnees = $sql->fetchAll();
 		$this->db=null;
@@ -37,6 +46,14 @@ class Main_model extends CI_Model{
 		$this->db=null;
 		return $donnees;
 	}
+	public function afficheNote(){
+		$this->load->database();
+		$sql = $this->db->conn_id->prepare("SELECT note FROM VENDEUR");
+		$sql->execute();
+		$donnees2 = $sqql->fetchAll();
+		$this->db=null;
+		return $donnees2;
+	}
 	public function InsertPanier($designation, $quantite) {// fonction d'insertion dans la base de données DONNEES
 		$this->load->database();
 		$req = $this->db->conn_id->prepare('INSERT INTO PANIER(designationProduit, quantite) VALUES (:designation, :quantite)');
@@ -45,7 +62,6 @@ class Main_model extends CI_Model{
 		$result = $req->execute();
 		$this->db=null;
                 return $result;
-
 	}
 	public function InsertClient($data) {// fonction d'insertion dans la base de données DONNEES
 		$this->load->database();
@@ -62,7 +78,6 @@ class Main_model extends CI_Model{
 			$this->load->view('v_error_inscription');
 		else
 		{
-
 			$reqq = $this->db->conn_id->prepare('INSERT INTO client (mail, pwd, prenom, nom) VALUES (:mail, :pwd, :prenom, :nom)');
 			$reqq->bindParam('mail', $data['mail'], PDO::PARAM_STR); // on associe chaque paramètres
 			$reqq->bindParam('pwd', $data['pwd'], PDO::PARAM_STR); // on associe chaque paramètres
@@ -72,9 +87,7 @@ class Main_model extends CI_Model{
 			//$this->db->insert('ACHETEUR',$data);
 			if($data['type']=="acheteur")
 			{
-
-
-			$req = $this->db->conn_id->prepare('INSERT INTO Acheteur (/*attributs de acheteur*/) VALUES (/*attributs de acheteur*/)');
+			$req = $this->db->conn_id->prepare('INSERT INTO Acheteur (mail_acheteur, pwd, prenom, nom) VALUES (:mail, :pwd, :prenom, :nom)');
 			$req->bindParam('mail', $data['mail'], PDO::PARAM_STR); // on associe chaque paramètres
 			$req->bindParam('pwd', $data['pwd'], PDO::PARAM_STR); // on associe chaque paramètres
 			$req->bindParam('prenom', $data['prenom'], PDO::PARAM_STR); // on associe chaque paramètres
@@ -83,10 +96,9 @@ class Main_model extends CI_Model{
 			$this->db=null;
 			return $result;
 			}
-
 			else
 			{
-			$req = $this->db->conn_id->prepare('INSERT INTO vendeur (/*attributs de vendeur*/) VALUES (/*attributs de vendeur*/)');
+			$req = $this->db->conn_id->prepare('INSERT INTO vendeur (mail_vendeur, pwd, prenom, nom) VALUES (:mail, :pwd, :prenom, :nom)');
 			$req->bindParam('mail', $data['mail'], PDO::PARAM_STR); // on associe chaque paramètres
 			$req->bindParam('pwd', $data['pwd'], PDO::PARAM_STR); // on associe chaque paramètres
 			$req->bindParam('prenom', $data['prenom'], PDO::PARAM_STR); // on associe chaque paramètres
@@ -95,23 +107,18 @@ class Main_model extends CI_Model{
 			$this->db=null;
 			return $result;
 			}
-
-
 		}
-
 	}
-
 	/*public function InsertCommentaire($data) {// fonction d'insertion dans la base de données DONNEES
 			$this->load->database();
 			$this->db->insert('COMMENTAIRE',$data);
 			//$this->load->helper('url_helper');
 		$this->db=null;
 	}*/
-
 	public function connexionClient($data) {
 		$session = 0;
 		$this->load->database();
-		$sql = $this->db->conn_id->prepare("SELECT mail,pwd FROM ACHETEUR");
+		$sql = $this->db->conn_id->prepare("SELECT mail,pwd FROM CLIENT");
 		$sql->execute();
 		$donnees = $sql->fetchAll();
 		foreach ($donnees as $row)
@@ -151,19 +158,18 @@ class Main_model extends CI_Model{
   	  		exit();
 		}
 	}
-         public function insertLotPropose($lbl,$poi,$date,$poids) {// fonction d'insertion dans la base de données DONNEES
+         public function insertLotPropose($lbl,$poi,$date,$poids,$login) {// fonction d'insertion dans la base de données DONNEES
 			$this->load->database();
-                            $req = $this->db->conn_id->prepare('INSERT INTO lot_proposé (libelleLot, poisson, datePeche, poids) VALUES (:lbl, :poi, :date, :poids )');
+                            $req = $this->db->conn_id->prepare('INSERT INTO lot_proposé (libelleLot, poisson, datePeche, poids, vendeur) VALUES (:lbl, :poi, :date, :poids, :login )');
                             $req->bindParam('lbl', $lbl, PDO::PARAM_STR); // on associe chaque paramètres
                             $req->bindParam('poi', $poi, PDO::PARAM_STR); // on associe chaque paramètres
                             $req->bindParam('date', $date, PDO::PARAM_STR); // on associe chaque paramètres
-														$req->bindParam('poids', $poids, PDO::PARAM_STR); // on associe chaque paramètres
+							$req->bindParam('poids', $poids, PDO::PARAM_STR); // on associe chaque paramètres
+							$req->bindParam('login', $login, PDO::PARAM_STR);
                             $result = $req->execute();
                             $this->db=null;
                             return $result;
-
 	}
-
         /*public function DeleteLotPropose($id) {// fonction d'insertion dans la base de données DONNEES
 			$this->load->database();
                             $req = $this->db->conn_id->prepare("DELETE FROM lot_proposé WHERE lot_proposé.idLot =$id");
@@ -174,10 +180,7 @@ class Main_model extends CI_Model{
                             $result = $req->execute();
                             $this->db=null;
                             return $result;
-
 	}*/
-
-
         public function insertLotValide($prix,$date) {// fonction d'insertion dans la base de données DONNEES
 			$this->load->database();
                             $req = $this->db->conn_id->prepare('INSERT INTO lot (prixActuel, DateFinEnchère ) VALUES (:prix, :date )');
@@ -186,7 +189,6 @@ class Main_model extends CI_Model{
                             $result = $req->execute();
                             $this->db=null;
                             return $result;
-
 	}
         public function ajoutEnchere($data) {// fonction d'insertion dans la base de données DONNEES
 			$this->load->database();
@@ -207,29 +209,21 @@ class Main_model extends CI_Model{
 		$this->db=null;
 		return $donnees;
 	}
-	public function InsertLot($id, $prx, $dat, $lbl, $datP, $poids) {// fonction d'insertion dans la base de données DONNEES
+	public function InsertLot($id, $prx, $dat, $lbl, $datP, $poids, $vendeur) {// fonction d'insertion dans la base de données DONNEES
 		$this->load->database();
-		$req = $this->db->conn_id->prepare('INSERT INTO lot(libelleLot, DatePeche, prixActuel, dateFinEnchere, poids) VALUES (:lbl, :datP, :prx, :dat, :poids)');
+		$req = $this->db->conn_id->prepare('INSERT INTO lot(libelleLot, DatePeche, prixActuel, dateFinEnchere, poids, vendeur) VALUES (:lbl, :datP, :prx, :dat, :poids, :vendeur)');
 		$req->bindParam('lbl', $lbl, PDO::PARAM_STR);
 		$req->bindParam('datP', $datP, PDO::PARAM_STR);
 		$req->bindParam('prx', $prx, PDO::PARAM_INT); // on associe chaque paramètres
 		$req->bindParam('dat', $dat, PDO::PARAM_STR);
 		$req->bindParam('poids', $poids, PDO::PARAM_INT);
+		$req->bindParam('vendeur', $vendeur, PDO::PARAM_STR);
 		$result = $req->execute();
 
-
-
-                $reqq = $this->db->conn_id->prepare("DELETE FROM lot_proposé WHERE lot_proposé.idLot =$id");
-                /*$req->bindParam('id', $id, PDO::PARAM_STR); // on associe chaque paramètres
-                $req->bindParam('poi', $poi, PDO::PARAM_STR); // on associe chaque paramètres
-                $req->bindParam('date', $date, PDO::PARAM_STR); // on associe chaque paramètres
-                $req->bindParam('poids', $poids, PDO::PARAM_STR); // on associe chaque paramètres*/
-                $result = $reqq->execute();
-                $this->db=null;
-
-
-                return $result;
-
+        $reqq = $this->db->conn_id->prepare("DELETE FROM lot_proposé WHERE lot_proposé.idLot =$id");
+        $result = $reqq->execute();
+        $this->db=null;
+        return $result;
 	}
 public function lotRemporte($idLot) {
 		$this->load->database();
@@ -238,8 +232,6 @@ public function lotRemporte($idLot) {
 		$result = $req->execute();
 		$this->db=null;
                 return $result;
-
-
 	}
 	public function afficheLotRemporte() {
 		$this->load->database();
@@ -249,19 +241,15 @@ public function lotRemporte($idLot) {
 		$this->db=null;
 		return $donnees;
 	}
-
         	public function ajoutPanierTemporaire($lesLotsSouhaites){
-
 			$this->load->database();
 			 $MailUser = $this->session->userdata('login');
                          print_r($lesLotsSouhaites);
 		foreach($lesLotsSouhaites as $row) {
-
 			$IdLotChoisi = $row['idLot'];
 			$req = $this->db->conn_id->prepare('INSERT INTO panier_temporaire(mailAcheteur, idLot) VALUES (:MailUser, :IdLotChoisi)');
 			$req->bindParam('MailUser',  $MailUser, PDO::PARAM_STR);
 			$req->bindParam('IdLotChoisi', $IdLotChoisi, PDO::PARAM_STR);
-
 			$result = $req->execute();
 		}
 		$this->db=null;
