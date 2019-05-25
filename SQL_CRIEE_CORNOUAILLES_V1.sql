@@ -56,7 +56,7 @@ CREATE TABLE IF NOT EXISTS `vendeur` (
   `adresse` varchar(50) DEFAULT NULL,
   `ville` varchar(50) DEFAULT NULL,
   `codePostal` varchar(50) DEFAULT NULL,
-  `note` int DEFAULT NULL
+  `note` double DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 CREATE TABLE IF NOT EXISTS `acheteur` (
