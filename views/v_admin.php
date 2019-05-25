@@ -1,5 +1,4 @@
 <head>
-<link href="<?php echo base_url('css/commentaire.css');?>" rel="stylesheet" type="text/css">
 <link href="<?php echo base_url('css/catalogue.css');?>" rel="stylesheet" type="text/css">
 </head>
 
@@ -11,7 +10,8 @@
     <th>Nom du lot</th>
     <th>Poisson</th>
     <th>Date de peche</th>
-    <th>poids</th>
+    <th>Poids</th>
+    <th>Vendeur</th>
     <th>Valider le lot</th>
   </tr>
         <?php
@@ -21,7 +21,8 @@
     <td><?php echo $row['libelleLot'];?></td>
     <td><?php echo $row['poisson'];?></td>
     <td><?php echo $row['datePeche'];?></td>
-    <td><?php echo $row['poids'];?></td>
+    <td><?php echo $row['poids'];?>kg</td>
+    <td><?php echo $row['vendeur'];?></td>
     <td>
       <?php
       if ($this->session->userdata('logged_in')!=FALSE){
@@ -49,6 +50,7 @@
       echo form_hidden('poi',$row['poisson']);
       echo form_hidden('datePeche',$row['datePeche']);
       echo form_hidden('poids',$row['poids']);
+      echo form_hidden('vendeur',$row['vendeur']);
       echo "<br/><br/>";
       echo form_submit('envoi','Valider lot');
       echo form_close();
