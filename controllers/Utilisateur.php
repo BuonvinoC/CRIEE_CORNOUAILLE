@@ -16,7 +16,6 @@ class Utilisateur extends CI_Controller {
 		case 'enchere':
 			$this->load->model('main_model');
 			$data['donnees']=$this->main_model->afficheProduits2();
-
 			$this->load->view('v_enchere',$data);
 			break;
 			case 'remporte':
@@ -42,6 +41,7 @@ class Utilisateur extends CI_Controller {
 					'mdp' => $this->session->userdata('mdp'),
 					'logged_in' => FALSE
 				);
+			header('Location: http://[::1]/CodeIgniter-3.1.9_Criee/index.php/utilisateur/contenu/connexion');
 			$this->session->set_userdata($sessionData);
 			session_destroy();
 			break;
@@ -57,12 +57,10 @@ class Utilisateur extends CI_Controller {
 		case 'faq':
 			$this->load->view('v_faq');
 			break;
-
 		default:
 			$this->load->view('v_accueil');
 			}
 	$this->load->view('v_finPage');
-
 		}
 	public function ajout_utilisateur() {
   /**Chargement des méthodes si déclarées dans le contrôleur**/
@@ -81,9 +79,8 @@ class Utilisateur extends CI_Controller {
 	  $this->main_model->InsertClient($nom,$prenom,$mail);*/
 	  $this->load->model('main_model');
 	  $this->main_model->InsertClient($data);
-
-          //header('Location: http://[::1]/CodeIgniter-3.1.9_Criee/index.php/utilisateur/contenu/connexion');
-		exit();
+      header('Location: http://[::1]/CodeIgniter-3.1.9_Criee/index.php/utilisateur/contenu/connexion');
+	  exit();
 	  /*$this->load->database();
 	  $sql = $this->db->conn_id->prepare("INSERT INTO client(nomClient, prenomClient, mailClient) VALUES ($nom,$prenom,$mail);");
     $sql->execute();*/
@@ -99,32 +96,47 @@ class Utilisateur extends CI_Controller {
 		$this->load->view('v_bandeau');
 		$this->load->view('v_commentaire');
 		}*/
-
-
 	public function connexion_utilisateur () {
 		$dataConnect = array ('mail' => $this->input->post('mailClient'),
 		'pwd' => $this->input->post('mdpClient'),
 		);
 		$this->load->model('main_model');
 		$this->main_model->connexionClient($dataConnect);
-                /*header('Location: http://[::1]/CodeIgniter-3.1.9_Criee/index.php/utilisateur/contenu/catalogue');
-		exit();*/
+                header('Location: http://[::1]/CodeIgniter-3.1.9_Criee/index.php/utilisateur/contenu/catalogue');
+		exit();
 	}
 	public function encherir () {
-                $data = array ('prix_propose' => $this->input->post('ajoutMontant'), 'utilisateur' => $this->session->userdata('login'), 'idLot' =>$this->input->post('idL'));
+        $data = array ('prix_propose' => $this->input->post('ajoutMontant'), 'utilisateur' => $this->session->userdata('login'), 'idLot' =>$this->input->post('idL'));
 		$this->load->model('main_model');
 		$this->main_model->updateEnchere($data['prix_propose'], $data['utilisateur'], $data['idLot']);
-                echo ($data['utilisateur'].' '.$data['prix_propose']);
+        header('Location: http://[::1]/CodeIgniter-3.1.9_Criee/index.php/utilisateur/contenu/enchere');
+        exit();
+	}
+	public function ajouter_note () {
+        $data = array ('nvNote' => $this->input->post('ajoutNote'), 'idLot' =>$this->input->post('idL'));
+		$this->load->model('main_model');
+		$this->main_model->updateNote($data['nvNote'], $data['idLot']);
+        header('Location: http://[::1]/CodeIgniter-3.1.9_Criee/index.php/utilisateur/contenu/remporte');
+        exit();
+	}
+	public function afficher_note(){
+		$this->load->model('main_model');
+		$this->main_model->afficheNote();
+		header('Location: http://[::1]/CodeIgniter-3.1.9_Criee/index.php/utilisateur/contenu/enchere');
+		exit();
 	}
 	public function proposer_lot() {
 		$data = array ('lbl' => $this->input->post('lblLot'),
 		'poi' => $this->input->post('poissonLot'),
 		'datePeche' => $this->input->post('datePeche'),
-		'poids' => $this->input->post('poids')
+		'poids' => $this->input->post('poids'),
+		'login' => $this->input->post('login')
 		);
 	  $this->load->model('main_model');
-	  $this->main_model->InsertLotPropose($data['lbl'], $data['poi'], $data['datePeche'], $data['poids']);
-		header('Location: http://[::1]/CodeIgniter-3.1.9_Criee/index.php/utilisateur/');
+	  $this->main_model->InsertLotPropose($data['lbl'], $data['poi'], $data['datePeche'], $data['poids'], $data['login']);
+	  // var_dump($data['lbl']);
+	  // var_dump($data['login']);
+		header('Location: http://[::1]/CodeIgniter-3.1.9_Criee/index.php/utilisateur/contenu/enchere');
 		exit();
 		}
         public function valider_lot() {
@@ -133,13 +145,13 @@ class Utilisateur extends CI_Controller {
                 'dateFin' => $this->input->post('dateFinEnchere'),
                 'libel' => $this->input->post('lbl'),
                 'dat' => $this->input->post('datePeche'),
-                'poids' => $this->input->post('poids')
+                'poids' => $this->input->post('poids'),
+                'vendeur' => $this->input->post('vendeur')
                 );
                 $this->load->model('main_model');
-                $this->main_model->InsertLot($data['idLot'],$data['prix'], $data['dateFin'], $data['libel'], $data['dat'], $data['poids']);
+                $this->main_model->InsertLot($data['idLot'],$data['prix'], $data['dateFin'], $data['libel'], $data['dat'], $data['poids'], $data['vendeur']);
                 /*$this->load->model('main_model');
                 $this->main_model->DeleteLotPropose($data['idLot']);*/
-
                 header('Location: http://[::1]/CodeIgniter-3.1.9_Criee/index.php/utilisateur/contenu/enchere');
                 exit();
                 }
@@ -154,7 +166,6 @@ class Utilisateur extends CI_Controller {
 	header('Location: http://[::1]/CodeIgniter-3.1.9_Criee/index.php/utilisateur/contenu/enchere');
   	  exit();
 	}
-
         	public function choisirLot()
 	{
 		  $LesLotsChoisis = $this->input->post('choixLots[]');
@@ -163,8 +174,6 @@ class Utilisateur extends CI_Controller {
                  		header('Location: http://[::1]/CodeIgniter-3.1.9_Criee/index.php/utilisateur/contenu/enchere');
   	 	 exit();
 	}
-
-
 	public function index()
 	{
 		$this->load->helper('url_helper');
