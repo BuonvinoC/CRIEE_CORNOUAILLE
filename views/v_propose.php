@@ -44,6 +44,14 @@ $poids= array(
 );
 echo form_input($poids);
 echo "<br/><br/>";
+$login= array(
+'name'=>'login',
+'id'=>'login',
+'placeholder'=>'Login',
+'type'=>'text',
+'value' => $this->session->userdata('login')
+);
+echo form_hidden('login', $login['value']);
 echo form_submit('envoi','Proposer lot');
 echo form_close();
 }
