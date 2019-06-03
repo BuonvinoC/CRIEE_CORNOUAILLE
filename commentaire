@@ -1,0 +1,69 @@
+<head>
+<link href="<?php echo base_url('css/commentaire.css');?>" rel="stylesheet" type="text/css">
+</head>
+
+
+
+<script>
+                              function etoile(){
+                                  var etoile = document.getElementsByClassName('etoile');
+                                  console.log(etoile);
+                                  etoile.checked=true;
+                                  console.log(etoile);
+                              }
+                              </script>
+
+
+
+<?php 
+if ($this->session->userdata('logged_in')!=FALSE){
+
+echo "<br/><br/>";
+echo form_open('Utilisateur/ajout_commentaire/');
+
+$comm= array(
+'name'=>'textCommentaire',
+'id'=>'comm',
+'placeholder'=>'Votre commentaire ...',
+'type'=>'textarea',
+"value"=>set_value('Commentaire')
+);
+
+echo form_textarea($comm);
+
+echo "<br/><br/>";
+?>
+<script> var etoiles = document.getElementsByClassName('etoile'); </script>
+<?php 
+$i=5;
+while ($i>0)
+{ ?>
+<div class="rating"><!--
+   --><a <?php echo ("href=#$i title='Donner $i étoiles' id=etoile$i class=etoile onclick=etoile$i()")?>>☆</a>
+   <script>
+                            
+                            function etoile<?php echo $i ?>(){
+                                  var etoile = document.getElementById('etoile<?php echo $i ?>');
+                                  
+                                  console.log(etoiles);
+                                   for (var i = 0; i < 5; i++) {
+                                       console.log(etoiles[i]);
+                                        etoiles[i].className="etoile";
+                                      }
+                                  
+                                 // for (var y = 0; y < <?php echo $i ?>; y++) {
+                                   //     etoiles[y].className="checked";
+                                     // }
+                                  etoile.className="checked";
+                              }
+                              </script>
+</div>
+<?php $i--; }?>
+<?php 
+
+echo form_submit('envoi','Ajouter commentaire');
+
+echo form_close();
+
+}
+?>
