@@ -1,0 +1,185 @@
+<?php
+defined('BASEPATH') OR exit('No direct script access allowed');
+class Utilisateur extends CI_Controller {
+	public function contenu($id){
+		$this->load->helper('url_helper');
+		$this->load->view('v_entete');
+                $this->load->view('v_bandeau');
+		//$data['Utilisateur'] = $this;
+		//$this->method_call =& get_instance();
+	switch ($id) {
+		case 'catalogue':
+			$this->load->Model('Main_Model');
+			$data['donnees']=$this->Main_Model->afficheProduits1();
+			$this->load->view('v_catalogue',$data);
+			break;
+		case 'enchere':
+			$this->load->Model('Main_Model');
+			$data['donnees']=$this->Main_Model->afficheProduits2();
+			$this->load->view('v_enchere',$data);
+			break;
+		case 'remporte':
+				$this->load->Model('Main_Model');
+				$login=$this->session->userdata('login');
+                $data['donnees']=$this->Main_Model->afficheLotRemporte($login);
+				$this->load->view('v_remporte',$data);
+				break;
+		case 'admin':
+		$this->load->Model('Main_Model');
+		$data['donnees']=$this->Main_Model->afficheLotPropose();
+			$this->load->view('v_admin',$data);
+			break;
+		case 'inscription':
+			$this->load->view('v_inscription');
+			break;
+		case 'connexion':
+			$this->load->view('v_connexion');
+			break;
+		case 'deconnexion':
+			$sessionData= array(
+					'login' => $this->session->userdata('login'),
+					'mdp' => $this->session->userdata('mdp'),
+					'logged_in' => FALSE
+				);
+                        $this->load->helper('url_helper');
+			
+			$this->session->set_userdata($sessionData);
+			session_destroy();
+                        redirect(base_url('/index.php/Utilisateur/contenu/connexion'));
+			break;
+                case 'commentaire':
+			$this->load->view('v_commentaire');
+			break;    
+		case 'propose':
+			$this->load->view('v_propose');
+			break;
+                case 'contact':
+			$this->load->view('v_contact');
+			break;
+		case 'mentions':
+			$this->load->view('v_mentions');
+			break;
+		case 'faq':
+			$this->load->view('v_faq');
+			break;
+		default:
+			$this->load->view('v_accueil');
+			}
+	$this->load->view('v_finPage');
+		}
+	public function ajout_Utilisateur() {
+  /**Chargement des méthodes si déclarées dans le contrôleur**/
+		/*$mail=$_POST['mail'];
+		$nom=$_POST['nom'];
+		$prenom=$_POST['prenom'];*/
+		/*$test=$mail+"bonjour";*/
+		$data = array ('nom' => $this->input->post('nomClient'),
+		'prenom' => $this->input->post('prenomClient'),
+		'mail' => $this->input->post('mailClient'),
+		'pwd' => $this->input->post('mdpClient'),
+		'type' => $this->input->post('typeClient')
+		);
+		
+	  /*$this->load->Model('Main_Model');
+	  $this->Main_Model->InsertClient($nom,$prenom,$mail);*/
+	  $this->load->Model('Main_Model');
+	  $this->Main_Model->InsertClient($data);
+          $this->load->helper('url_helper');
+      redirect(base_url('/index.php/Utilisateur/contenu/connexion'));
+	  /*$this->load->database();
+	  $sql = $this->db->conn_id->prepare("INSERT INTO client(nomClient, prenomClient, mailClient) VALUES ($nom,$prenom,$mail);");
+    $sql->execute();*/
+		}
+	/*public function ajout_commentaire() {
+	$chex = array ('idLot'=>$this->input->post('chbx'),
+	'mail'=>$this->session->userdata('login'));
+	var_dump($chex);
+	  //foreach ($data as $row) {array_push($data,"'chbx' => $this->input->post('chbx')");}
+	  $this->load->helper('url_helper');
+	  $this->load->Model('Main_Model');
+	  $this->Main_Model->InsertPanierIntermediaire($chex);
+		$this->load->view('v_bandeau');
+		$this->load->view('v_commentaire');
+		}*/
+	public function connexion_utilisateur () {
+		$dataConnect = array ('mail' => $this->input->post('mailClient'),
+		'pwd' => $this->input->post('mdpClient')
+		);
+		$this->load->Model('Main_Model');
+		$this->Main_Model->connexionClient($dataConnect);
+                $this->load->helper('url_helper');
+        redirect(base_url('/index.php/Utilisateur/contenu/catalogue'));
+	}
+	public function encherir () {
+        $data = array ('prix_propose' => $this->input->post('ajoutMontant'), 'Utilisateur' => $this->session->userdata('login'), 'idLot' =>$this->input->post('idL'));
+		$this->load->Model('Main_Model');
+		$this->Main_Model->updateEnchere($data['prix_propose'], $data['Utilisateur'], $data['idLot']);
+                $this->load->helper('url_helper');
+        redirect(base_url('/index.php/Utilisateur/contenu/enchere'));
+	}
+	public function ajouter_note () {
+        $data = array ('nvNote' => $this->input->post('ajoutNote'), 'idLot' =>$this->input->post('idL'), 'vendeur'=>$this->input->post('vendeur'));
+		$this->load->Model('Main_Model');
+		$this->Main_Model->updateNote($data['nvNote'], $data['idLot'], $data['vendeur']);
+                $this->load->helper('url_helper');
+        redirect(base_url('/index.php/Utilisateur/contenu/remporte'));
+	}
+	public function proposer_lot() {
+		$data = array ('lbl' => $this->input->post('lblLot'),
+		'poi' => $this->input->post('poissonLot'),
+		'datePeche' => $this->input->post('datePeche'),
+		'poids' => $this->input->post('poids'),
+		'login' => $this->input->post('login')
+		);
+	  $this->load->Model('Main_Model');
+	  $this->Main_Model->InsertLotPropose($data['lbl'], $data['poi'], $data['datePeche'], $data['poids'], $data['login']);
+	  // var_dump($data['lbl']);
+	  // var_dump($data['login']);
+          $this->load->helper('url_helper');
+		redirect(base_url('/index.php/Utilisateur/contenu/enchere'));
+		}
+        public function valider_lot() {
+                $data = array ('idLot' => $this->input->post('idL'),
+                'prix' => $this->input->post('prixLot'),
+                'dateFin' => $this->input->post('dateFinEnchere'),
+                'libel' => $this->input->post('lbl'),
+                'dat' => $this->input->post('datePeche'),
+                'poids' => $this->input->post('poids'),
+                'vendeur' => $this->input->post('vendeur')
+                );
+                $this->load->Model('Main_Model');
+                $this->Main_Model->InsertLot($data['idLot'],$data['prix'], $data['dateFin'], $data['libel'], $data['dat'], $data['poids'], $data['vendeur']);
+                /*$this->load->Model('Main_Model');
+                $this->Main_Model->DeleteLotPropose($data['idLot']);*/
+                $this->load->helper('url_helper');
+                redirect(base_url('/index.php/Utilisateur/contenu/enchere'));
+                }
+        public function finEnchere()
+	{
+		$data = array ('idLot' => $this->input->post('idLot')
+		//'prix' => $this->input->post('prx'),
+		//'acheteur' => $this->input->post('acht')
+		);
+		$this->load->Model('Main_Model');
+	$this->Main_Model->lotRemporte($data['idLot']/*,$data['prix'],$data['acheteur']*/);
+        $this->load->helper('url_helper');
+	redirect(base_url('/index.php/Utilisateur/contenu/enchere'));
+	}
+        	public function choisirLot()
+	{
+		  $LesLotsChoisis = $this->input->post('choixLots[]');
+		  $this->load->Model('Main_Model');
+		 $this->Main_Model->ajoutPanierTemporaire($LesLotsChoisis);
+                 $this->load->helper('url_helper');
+                 		redirect(base_url('/index.php/Utilisateur/contenu/enchere'));
+	}
+	public function index()
+	{
+		$this->load->helper('url_helper');
+		$this->load->view('v_entete');
+		$this->load->view('v_bandeau');
+		$this->load->view('v_accueil');
+		$this->load->view('v_finPage');
+	}
+}
+?>
